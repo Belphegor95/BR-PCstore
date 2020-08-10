@@ -4,8 +4,8 @@
     <div class="leftbox">
       <p>欢迎来到开心兔</p>
       <p>
-        <span>请登录</span> |
-        <span>注册</span>
+        <span @click="rtu('guide','login')">请登录</span> |
+        <span @click="rtu('guide','register')">注册</span>
       </p>
     </div>
     <div class="rightbox">
@@ -15,7 +15,7 @@
         购物车
         <b>0</b>
       </span>|
-      <span>个人中心</span>|
+      <span @click="rtu('person','userinfo')">个人中心</span>|
       <span>联系客服</span>
     </div>
   </div>
@@ -25,6 +25,11 @@
 export default {
   data() {
     return {};
+  },
+  methods: {
+    rtu: function (name, name1) {
+      this.$router.push(`/${name}/${name1}`);
+    },
   },
 };
 </script>
@@ -74,5 +79,8 @@ export default {
       margin-right: 0;
     }
   }
+}
+span:hover {
+  color: #ff8900;
 }
 </style>

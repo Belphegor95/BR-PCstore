@@ -3,7 +3,7 @@
   <div class="searchBox">
     <div>
       <div class="happyname">开心兔商城</div>
-      <div class="serachbox">
+      <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
           <input type="text" v-model="search" />
           <span>搜索</span>
@@ -16,7 +16,7 @@
           <span>办公产品</span>
         </div>
       </div>
-      <div class="visitbox">
+      <div class="visitbox" v-show="isSearch">
         <button>
           <img src="../assets/img/home/sm.png" alt />
           <p>上门服务</p>
@@ -30,6 +30,9 @@
 
 <script>
 export default {
+  props: {
+    isSearch: Boolean,
+  },
   data() {
     return {
       search: "",

@@ -7,12 +7,20 @@
   margin: 0;
   padding: 0;
 }
-/* html,
-body,
 #app {
+  /* font-size: 14px; */
+  background-color: #fff;
+}
+#app > div {
   width: 100%;
-  height: 100%;
-} */
+}
+#app > div > div {
+  width: 75rem;
+  margin: auto;
+}
+.nav {
+  background-color: #f1f1f1;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -26,5 +34,8 @@ button {
 }
 li {
   list-style: none;
+}
+input {
+  outline: none;
 }
 </style>

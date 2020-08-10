@@ -3,8 +3,8 @@
     <div class="nav">
       <shortcut />
     </div>
-    <div class="happybox">
-      <search />
+    <div class="search_box">
+      <search :isSearch="true" />
     </div>
     <div class="classifybox">
       <div class="w">
@@ -78,17 +78,6 @@ export default {
 
 <style lang="less" scoped>
 .home {
-  background-color: #fff;
-  > div {
-    width: 100%;
-    > div {
-      width: 75rem;
-      margin: auto;
-    }
-  }
-  .nav {
-    background-color: #f1f1f1;
-  }
   .classifybox {
     background-color: #f9f9f9;
     .w {
