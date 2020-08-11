@@ -43,6 +43,7 @@ export default {
 <style lang="less" scoped>
 .statement {
   display: flex;
+  border-top: 1px solid #f0f0f0;
   > div {
     flex: 1;
     text-indent: 4rem;

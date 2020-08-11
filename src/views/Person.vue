@@ -10,13 +10,12 @@
     <div class="content">
       <div>
         <ul>
-          <li>个人中心</li>
-          <li>我的购物车</li>
-          <li>我的订单</li>
-          <li>收货地址</li>
-          <li>修改登录密码</li>
-          <li>手机绑定</li>
-          <li>我的优惠券</li>
+          <li v-for="(item,index) in personnames" :key="index">
+            <span
+              :class="personid == index? 'active':''"
+              @click="rut(index, item.site)"
+            >{{ item.name }}</span>
+          </li>
         </ul>
         <router-view />
       </div>
@@ -38,7 +37,50 @@ export default {
     statement,
   },
   data() {
-    return {};
+    return {
+      personnames: [
+        {
+          name: "个人中心",
+          site: "userinfo",
+        },
+        {
+          name: "我的购物车",
+          site: "cart",
+        },
+        {
+          name: "我的订单",
+          site: "orderForm",
+        },
+        {
+          name: "收货地址",
+          site: "orderDetails",
+        },
+        {
+          name: "修改登录密码",
+          site: "cart",
+        },
+        {
+          name: "手机绑定",
+          site: "cart",
+        },
+        {
+          name: "我的优惠券",
+          site: "cart",
+        },
+      ],
+      personid: 0,
+    };
+  },
+  methods: {
+    rut: function (id, name) {
+      if (this.personid == id) return;
+      this.personid = id;
+      if (this.personid == 1) {
+        this.$router.push(`/${name}`);
+      } else {
+        this.$router.push(`/person/${name}`);
+      }
+    },
   },
 };
 </script>
@@ -53,9 +95,16 @@ export default {
         padding-top: 2rem;
         text-indent: 2rem;
         > li {
-          line-height: 2.5rem;
+          padding: 0.5rem;
+          // line-height: 2.5rem;
           font-size: 1rem;
           color: #999;
+          > span {
+            cursor: pointer;
+          }
+          .active {
+            color: #ff8400;
+          }
         }
       }
     }

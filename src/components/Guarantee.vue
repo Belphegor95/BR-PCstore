@@ -44,7 +44,6 @@ export default {
 .guarantee {
   display: flex;
   justify-content: space-around;
-  border-bottom: 1px solid #f0f0f0;
   > div {
     display: flex;
     padding: 1rem;

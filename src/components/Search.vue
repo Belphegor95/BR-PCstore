@@ -2,7 +2,9 @@
 <template>
   <div class="searchBox">
     <div>
-      <div class="happyname">开心兔商城</div>
+      <div class="happyname">
+        <span @click="gohome">开心兔商城</span>
+      </div>
       <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
           <input type="text" v-model="search" />
@@ -38,6 +40,11 @@ export default {
       search: "",
     };
   },
+  methods: {
+    gohome: function () {
+      if (this.$route.path != "/") this.$router.push("/");
+    },
+  },
 };
 </script>
 
@@ -49,11 +56,14 @@ export default {
     .happyname {
       flex: 2.5;
       display: flex;
-      align-items: center;
       font-size: 2rem;
       font-weight: 700;
       color: #ff8400;
       text-indent: 1rem;
+      align-items: center;
+      > span {
+        cursor: pointer;
+      }
     }
     .serachbox {
       flex: 2.2;

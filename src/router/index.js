@@ -40,7 +40,20 @@ const routes = [
       path: '/person/userinfo',
       component: () => import('../views/person/Userinfo.vue'),
     },
+    {
+      path: '/person/orderForm',
+      component: () => import('../views/person/OrderForm.vue'),
+    },
+    {
+      path: '/person/orderDetails',
+      component: () => import('../views/person/OrderDetails.vue'),
+    },
     ]
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: () => import('../views/sundry/Cart.vue'),
   },
 ]
 

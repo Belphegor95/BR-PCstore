@@ -3,7 +3,7 @@
   <div class="guide">
     <div class="search_box">
       <div>
-        <p>开心兔商城</p>
+        <span @click="$router.push('/')">开心兔商城</span>
       </div>
       <!-- <search :isSearch="false" /> -->
     </div>
@@ -43,7 +43,8 @@ export default {
   .search_box {
     height: 7rem;
     display: flex;
-    p {
+    span {
+      cursor: pointer;
       font-weight: 700;
       color: #ff8400;
       font-size: 1.6rem;
