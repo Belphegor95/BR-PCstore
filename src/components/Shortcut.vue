@@ -15,7 +15,20 @@
         购物车
         <b>0</b>
       </span>|
-      <span @click="rtu('person','userinfo')">个人中心</span>|
+      <Dropdown style="margin-left: 20px" @on-click="ok">
+        <a href="javascript:void(0)">
+          个人中心
+          <Icon type="ios-arrow-down" />
+        </a>
+        <DropdownMenu slot="list">
+          <DropdownItem name="/person/userinfo">个人中心</DropdownItem>
+          <DropdownItem name="/person/orderForm">我的订单</DropdownItem>
+          <DropdownItem name="/person/deliveryAddress">收货地址</DropdownItem>
+          <DropdownItem name="/person/userinfo">修改登录密码</DropdownItem>
+          <DropdownItem name="/person/userinfo">手机绑定</DropdownItem>
+          <DropdownItem name="/person/userinfo">我的优惠券</DropdownItem>
+        </DropdownMenu>
+      </Dropdown>|
       <span>联系客服</span>
     </div>
   </div>
@@ -27,6 +40,10 @@ export default {
     return {};
   },
   methods: {
+    ok(name) {
+      if (this.$route.path == name) return;
+      this.$router.push(name);
+    },
     rtu: function (name, name1) {
       this.$router.push(`/${name}/${name1}`);
     },
@@ -41,7 +58,7 @@ export default {
   font-size: 0.9rem;
   padding: 0.5rem 0;
   justify-content: space-between;
-  div {
+  > div {
     display: flex;
     p:nth-child(2) {
       > span {
@@ -81,6 +98,19 @@ export default {
   }
 }
 span:hover {
+  color: #ff8900;
+}
+</style>
+
+<style>
+.shortcut .ivu-dropdown {
+  margin-left: 0;
+  margin: 0 0.5rem;
+}
+.shortcut .ivu-dropdown a {
+  color: #8b8b8b;
+}
+.shortcut .ivu-dropdown a:hover {
   color: #ff8900;
 }
 </style>

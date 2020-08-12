@@ -41,23 +41,23 @@ export default {
       personnames: [
         {
           name: "个人中心",
-          site: "userinfo",
+          site: "/userinfo",
         },
         {
           name: "我的购物车",
-          site: "cart",
+          site: "/cart",
         },
         {
           name: "我的订单",
-          site: "orderForm",
+          site: "/orderForm",
         },
         {
           name: "收货地址",
-          site: "orderDetails",
+          site: "/deliveryAddress",
         },
         {
           name: "修改登录密码",
-          site: "cart",
+          site: "/password",
         },
         {
           name: "手机绑定",
@@ -76,9 +76,9 @@ export default {
       if (this.personid == id) return;
       this.personid = id;
       if (this.personid == 1) {
-        this.$router.push(`/${name}`);
+        this.$router.push(name);
       } else {
-        this.$router.push(`/person/${name}`);
+        this.$router.push(`/person${name}`);
       }
     },
   },
@@ -109,5 +109,10 @@ export default {
       }
     }
   }
+}
+</style>
+<style>
+.person input {
+  border-radius: 0;
 }
 </style>

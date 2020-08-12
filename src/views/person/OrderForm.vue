@@ -26,8 +26,8 @@
         <div class="orderlist">
           <div>
             <div class="imgbox" v-for="(itemJ,indeJ) in index" :key="indeJ">
-              <img src="../../assets/img/home/a.png" alt />
-              <div>
+              <img src="../../assets/img/home/a.png" alt @click="ordetails" />
+              <div @click="ordetails">
                 <h6>这是商品名称</h6>
                 <span>颜色: 白色</span>
                 <span>单位: 件</span>
@@ -55,6 +55,12 @@
 export default {
   data() {
     return {};
+  },
+  methods: {
+    // 详情页
+    ordetails: function () {
+      this.$router.push("/person/orderDetails");
+    },
   },
 };
 </script>
@@ -122,6 +128,7 @@ export default {
         > div {
           flex: 1;
           display: flex;
+          align-items: center;
           flex-direction: column;
           justify-content: center;
           .imgbox {
@@ -130,9 +137,11 @@ export default {
             > img {
               width: 5rem;
               height: 5rem;
+              cursor: pointer;
             }
             > div {
               display: flex;
+              cursor: pointer;
               font-size: 0.9rem;
               margin-left: 0.5rem;
               flex-direction: column;

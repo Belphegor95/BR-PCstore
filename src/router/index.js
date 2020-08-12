@@ -48,12 +48,25 @@ const routes = [
       path: '/person/orderDetails',
       component: () => import('../views/person/OrderDetails.vue'),
     },
+    {
+      path: '/person/deliveryAddress',
+      component: () => import('../views/person/DeliveryAddress.vue'),
+    },
+    {
+      path: '/person/password',
+      component: () => import('../views/person/Password.vue'),
+    },
     ]
   },
   {
     path: '/cart',
     name: 'Cart',
     component: () => import('../views/sundry/Cart.vue'),
+  },
+  {
+    path: '/details',
+    name: 'Details',
+    component: () => import('../views/sundry/Details.vue'),
   },
 ]
 
