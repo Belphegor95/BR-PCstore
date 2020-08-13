@@ -11,10 +11,7 @@
       <div>
         <ul>
           <li v-for="(item,index) in personnames" :key="index">
-            <span
-              :class="personid == index? 'active':''"
-              @click="rut(index, item.site)"
-            >{{ item.name }}</span>
+            <span :class="personid == index? 'active':''" @click="rut(index, item.site)">{{ item.name }}</span>
           </li>
         </ul>
         <router-view />
@@ -61,11 +58,11 @@ export default {
         },
         {
           name: "手机绑定",
-          site: "cart",
+          site: "/phone",
         },
         {
           name: "我的优惠券",
-          site: "cart",
+          site: "/coupon",
         },
       ],
       personid: 0,
@@ -91,7 +88,8 @@ export default {
     > div {
       display: flex;
       > ul {
-        width: 18rem;
+        flex:1;
+        // width: 18rem;
         padding-top: 2rem;
         text-indent: 2rem;
         > li {
@@ -114,5 +112,12 @@ export default {
 <style>
 .person input {
   border-radius: 0;
+}
+.person h4 {
+  color: #000;
+  height: 2.5rem;
+  font-weight: 400;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #e9e9e9;
 }
 </style>

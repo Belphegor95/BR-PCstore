@@ -1,8 +1,8 @@
 <!-- 价格  展示 -->
 <template>
-  <span class="price">
+  <span class="price" :style="{'font-size': size + 'rem'}">
     ¥
-    <b>{{ integer }}</b>
+    <b :style="{'font-size': size + 0.3 + 'rem'}">{{ integer }}</b>
     <p>.{{ decimals | decimalsNum}}</p>
   </span>
 </template>
@@ -12,6 +12,7 @@ export default {
   name: "price",
   props: {
     priceNum: [Number, String],
+    size: [Number, String],
   },
   data() {
     return {
@@ -53,7 +54,6 @@ export default {
   align-items: baseline;
   > b {
     margin-left: 0.2rem;
-    font-size: 1.3rem;
   }
 }
 </style>

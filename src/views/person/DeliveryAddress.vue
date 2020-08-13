@@ -1,7 +1,7 @@
 <!-- 收货地址 -->
 <template>
   <div class="deliveryAddress">
-    <h5>收货地址</h5>
+    <h4>收货地址</h4>
     <div class="mark">收货地址</div>
     <div>新增收货地址</div>
     <div class="mark location">
@@ -129,13 +129,7 @@ export default {
 
 <style lang='less' scoped>
 .deliveryAddress {
-  flex: auto;
-  > h5 {
-    height: 2.5rem;
-    font-weight: 400;
-    font-size: 1.2rem;
-    border-bottom: 1px solid #e9e9e9;
-  }
+  flex: 4;
   .mark {
     background-color: #f5f5f5;
     border: 1px solid #e6e6e6;

@@ -3,7 +3,8 @@
   <div class="searchBox">
     <div>
       <div class="happyname">
-        <span @click="gohome">开心兔商城</span>
+        <!-- <span @click="gohome">开心兔商城</span> -->
+        <h1 @click="gohome">开心兔商城</h1>
       </div>
       <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
@@ -56,12 +57,12 @@ export default {
     .happyname {
       flex: 2.5;
       display: flex;
-      font-size: 2rem;
       font-weight: 700;
       color: #ff8400;
       text-indent: 1rem;
       align-items: center;
-      > span {
+      > h1 {
+        font-size: 2rem;
         cursor: pointer;
       }
     }

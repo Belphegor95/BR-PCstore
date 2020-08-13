@@ -69,7 +69,7 @@
             </div>
           </div>
           <div>
-            <Button type="warning">去结算</Button>
+            <Button type="warning" @click="$router.push('/payment')">去结算</Button>
           </div>
         </div>
         <div class="imgbox" v-show="is_imgbox">

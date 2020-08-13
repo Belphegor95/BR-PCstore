@@ -1,12 +1,12 @@
 <!-- 商品卡 -->
 <template>
-  <div class="commodityCard">
+  <div class="commodityCard" @click="rut">
     <img src="../assets/img/home/a.png" alt />
     <div class="contentbox">
       <p>打印机</p>
       <p>会员价: 90.00￥</p>
       <p>
-        <price :priceNum="27.12" />
+        <price :priceNum="27.12" :size="1" />
         <span>原价 ￥90.00</span>
       </p>
     </div>
@@ -22,6 +22,11 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    rut: function () {
+      this.$router.push("/details")
+    }
+  }
 };
 </script>
 

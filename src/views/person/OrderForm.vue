@@ -1,7 +1,7 @@
 <!-- 我的订单 -->
 <template>
   <div class="orderForm">
-    <h5>我的订单</h5>
+    <h4>我的订单</h4>
     <div class="ordertypebox">
       <span>所有订单</span>
       <span>待付款</span>
@@ -67,13 +67,7 @@ export default {
 
 <style lang='less' scoped>
 .orderForm {
-  flex: auto;
-  > h5 {
-    height: 2.5rem;
-    font-weight: 400;
-    font-size: 1.2rem;
-    border-bottom: 1px solid #e9e9e9;
-  }
+  flex: 4;
   > div {
     margin-top: 1rem;
     border: 1px solid #ececec;

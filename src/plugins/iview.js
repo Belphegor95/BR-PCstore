@@ -13,7 +13,8 @@ import { DropdownItem } from 'view-design';
 import { CheckboxGroup, Checkbox } from 'view-design';
 import { InputNumber } from 'view-design';
 import { Select, Option } from 'view-design';
-
+import { RadioGroup, Radio  } from 'view-design';
+ 
 import 'view-design/dist/styles/iview.css';
 
 Vue.component('Button', Button);
@@ -33,5 +34,7 @@ Vue.component('Checkbox', Checkbox);
 Vue.component('InputNumber', InputNumber);
 Vue.component('Select', Select);
 Vue.component('Option', Option);
+Vue.component('RadioGroup', RadioGroup);
+Vue.component('Radio', Radio);
 
 

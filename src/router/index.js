@@ -56,6 +56,14 @@ const routes = [
       path: '/person/password',
       component: () => import('../views/person/Password.vue'),
     },
+    {
+      path: '/person/phone',
+      component: () => import('../views/person/Phone.vue'),
+    },
+    {
+      path: '/person/coupon',
+      component: () => import('../views/person/Coupon.vue'),
+    },
     ]
   },
   {
@@ -67,6 +75,11 @@ const routes = [
     path: '/details',
     name: 'Details',
     component: () => import('../views/sundry/Details.vue'),
+  },
+  {
+    path: '/payment',
+    name: 'Payment',
+    component: () => import('../views/sundry/Payment.vue'),
   },
 ]
 

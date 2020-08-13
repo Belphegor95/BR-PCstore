@@ -1,7 +1,7 @@
 <!-- 更改密码 -->
 <template>
   <div class="password">
-    <h5>修改登录密码</h5>
+    <h4>修改登录密码</h4>
     <div class="formbox">
       <div>
         <span>我的手机号:</span>
@@ -39,13 +39,7 @@ export default {
 
 <style lang='less' scoped>
 .password {
-  flex: auto;
-  > h5 {
-    height: 2.5rem;
-    font-weight: 400;
-    font-size: 1.2rem;
-    border-bottom: 1px solid #e9e9e9;
-  }
+  flex: 4;
   > div {
     margin-top: 1rem;
   }

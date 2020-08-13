@@ -1,7 +1,7 @@
 <!-- 订单详情 -->
 <template>
   <div class="orderDetails">
-    <h5>订单详情</h5>
+    <h4>订单详情</h4>
     <div class="stepsbox">
       <div :class="pitchon >= 0? 'active':''">
         <span>
@@ -97,13 +97,7 @@ export default {
 
 <style lang='less' scoped>
 .orderDetails {
-  flex: auto;
-  > h5 {
-    height: 2.5rem;
-    font-weight: 400;
-    font-size: 1.2rem;
-    border-bottom: 1px solid #e9e9e9;
-  }
+  flex: 4;
   > div {
     margin-top: 1rem;
   }
