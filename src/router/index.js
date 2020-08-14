@@ -81,6 +81,11 @@ const routes = [
     name: 'Payment',
     component: () => import('../views/sundry/Payment.vue'),
   },
+  {
+    path: '/classify',
+    name: 'Classify',
+    component: () => import('../views/sundry/Classify.vue'),
+  },
 ]
 
 const router = new VueRouter({

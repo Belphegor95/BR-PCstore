@@ -9,7 +9,7 @@
       <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
           <input type="text" v-model="search" />
-          <span>搜索</span>
+          <button @click="rut">搜索</button>
         </div>
         <div class="btnbox">
           <span>打印机</span>|
@@ -45,6 +45,9 @@ export default {
     gohome: function () {
       if (this.$route.path != "/") this.$router.push("/");
     },
+    rut: function () {
+      this.$router.push("/classify");
+    },
   },
 };
 </script>
@@ -73,17 +76,16 @@ export default {
       flex-direction: column;
       .serachinput {
         display: flex;
-        input {
+        > input {
           outline: 0px;
           width: 20rem;
           height: 2.5rem;
           padding-left: 0.8rem;
           border: 0.1rem solid #ff8900;
         }
-        span {
-          cursor: pointer;
+        > button {
+          // cursor: pointer;
           color: #fff;
-          line-height: 2.5rem;
           padding: 0 1.2rem;
           background-color: #ff8900;
         }

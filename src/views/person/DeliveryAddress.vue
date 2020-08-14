@@ -45,6 +45,27 @@
           <Input v-model="value" placeholder="Enter something..." style="width: 200px" />
         </div>
       </div>
+      <span>
+        <div>
+          <label>
+            地区：
+            <Input v-model="location" placeholder="请输入地区" style="width: 300px" />
+          </label>
+          <label>
+            关键词：
+            <Input v-model="keyword" placeholder="请输入位置关键词" style="width: 300px" />
+          </label>
+
+          <label>
+            位置：
+            <span>{{ site ? site: '未选择' }}</span>
+          </label>
+        </div>
+        <baidu-map ak="FMxNKCVYPKKweAKH5b5Drv31Kz6pOGAg" class="map">
+          <!-- <bm-view class="map"></bm-view> -->
+          <bm-local-search class="search" :keyword="keyword" :auto-viewport="true" @infohtmlset="ok" :location="location"></bm-local-search>
+        </baidu-map>
+      </span>
       <div>
         <span></span>
         <div class="default">
@@ -90,7 +111,16 @@
 </template>
 
 <script>
+import BaiduMap from "vue-baidu-map/components/map/Map.vue";
+// import BmView from "vue-baidu-map/components/map/MapView.vue";
+import BmLocalSearch from "vue-baidu-map/components/search/LocalSearch.vue";
+// import { BmLocalSearch } from "vue-baidu-map";
 export default {
+  components: {
+    BaiduMap,
+    // BmView,
+    BmLocalSearch,
+  },
   data() {
     return {
       value: "",
@@ -122,7 +152,16 @@ export default {
       ],
       model1: 0,
       single: false,
+      location: "",
+      keyword: "",
+      site: "",
     };
+  },
+  methods: {
+    ok(a) {
+      this.site = a.title;
+      console.info(a);
+    },
   },
 };
 </script>
@@ -160,8 +199,8 @@ export default {
     font-size: 0.8rem;
   }
   .formbox {
-    width: 28.5rem;
     > div {
+      width: 28.5rem;
       display: flex;
       align-items: center;
       margin-bottom: 1rem;
@@ -170,7 +209,7 @@ export default {
         text-align: right;
         margin-right: 0.5rem;
         > b {
-            color: #ff8400;
+          color: #ff8400;
         }
       }
       > div {
@@ -181,6 +220,32 @@ export default {
       }
       .default {
         justify-content: end;
+      }
+    }
+    > span:nth-child(6) {
+      width: 100%;
+      height: 47rem;
+      display: block;
+      position: relative;
+      > div:nth-child(1) {
+        padding: 0.5rem;
+      }
+      .map {
+        width: 75%;
+        height: 43rem;
+        float: right;
+        .search {
+          width: 25%;
+          height: 43rem;
+          position: absolute;
+          top: 3rem;
+          left: 0;
+          overflow-y: auto;
+          // overflow: hidden;
+          > div {
+            height: 43rem;
+          }
+        }
       }
     }
   }

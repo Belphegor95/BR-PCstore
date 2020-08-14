@@ -2,15 +2,15 @@
 <template>
   <div class="shortcut">
     <div class="leftbox">
-      <p>欢迎来到开心兔</p>
+      <p @click="gohome">欢迎来到开心兔</p>
       <p>
-        <span @click="rtu('guide','login')">请登录</span> |
-        <span @click="rtu('guide','register')">注册</span>
+        <span @click="rut('guide','login')">请登录</span> |
+        <span @click="rut('guide','register')">注册</span>
       </p>
     </div>
     <div class="rightbox">
-      <span>我的订单</span>|
-      <span class="gwcbox">
+      <span @click="rut('person','orderForm')">我的订单</span>|
+      <span class="gwcbox" @click="rut('cart')">
         <img src="../assets/img/home/gwc.png" alt />
         购物车
         <b>0</b>
@@ -40,12 +40,16 @@ export default {
     return {};
   },
   methods: {
+    gohome: function () {
+      if (this.$route.path != "/") this.$router.push("/");
+    },
     ok(name) {
       if (this.$route.path == name) return;
       this.$router.push(name);
     },
-    rtu: function (name, name1) {
-      this.$router.push(`/${name}/${name1}`);
+    rut: function (name, name1) {
+      if (name1) return this.$router.push(`/${name}/${name1}`);
+      this.$router.push(`/${name}`);
     },
   },
 };
@@ -76,6 +80,7 @@ export default {
     p:nth-child(1) {
       color: #ff8900;
       margin-right: 1rem;
+      cursor: pointer;
     }
   }
   .rightbox {

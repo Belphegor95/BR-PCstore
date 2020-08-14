@@ -10,9 +10,11 @@
     <div class="content">
       <div>
         <div class="imgbox">
-          <div>
+          <pic-zoom url="https://img.yzcdn.cn/vant/apple-2.jpg" :scale="3"></pic-zoom>
+          <!-- <div>
             <img src="../../assets/img/sundry/zt.png" alt />
-          </div>
+            
+          </div>-->
           <div>
             <img src="../../assets/img/sundry/zh.png" @click="leftClick" alt />
             <div>
@@ -95,6 +97,7 @@ import search from "@/components/Search.vue";
 import guarantee from "@/components/Guarantee.vue";
 import statement from "@/components/Statement.vue";
 import price from "@/components/Price.vue";
+import PicZoom from "vue-piczoom";
 export default {
   components: {
     shortcut,
@@ -102,6 +105,7 @@ export default {
     guarantee,
     statement,
     price,
+    PicZoom,
   },
   data() {
     return {
@@ -252,7 +256,7 @@ export default {
       }
     }
     .namebox {
-      margin-top: 4rem!important;
+      margin-top: 4rem !important;
       border: 1px solid #eaeaea;
       > span {
         border-top: 0.3rem solid #ff8900;

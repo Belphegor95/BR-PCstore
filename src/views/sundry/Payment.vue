@@ -354,7 +354,7 @@ export default {
           background-color: #f5f5f5;
           > div:nth-child(2),
           > div:nth-child(5) {
-            color: #515a6e;
+            color: #000;
           }
         }
       }
@@ -443,9 +443,30 @@ export default {
       > div {
         width: 30rem;
         display: flex;
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         flex-direction: column;
         border: 1px solid #ff8400;
+        > p,
+        > span {
+          text-align: right;
+        }
+        >p {
+          color: #ff8400;
+          font-size: 1.6rem;
+          font-weight: 700;
+          > span {
+            color: #000;
+            font-weight: 400;
+            font-size: 1rem;
+          }
+        }
+        > div {
+          display: flex;
+          margin: 0.5rem 0;
+          > span {
+            width: 5rem;
+          }
+        }
       }
       > button {
         border: 1px solid #ff8400;
