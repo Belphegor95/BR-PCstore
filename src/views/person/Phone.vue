@@ -88,6 +88,7 @@ export default {
       value: "",
     };
   },
+  
   watch: {
     $route(to) {
       if (to.query.pitchon) {
@@ -98,6 +99,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit("show_personid", 5);
     if(this.$route.query.pitchon) this.pitchon = this.$route.query.pitchon;
   },
   methods: {

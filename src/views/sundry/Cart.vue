@@ -12,11 +12,7 @@
       <div class="listbox">
         <span>
           <div>
-            <Checkbox
-              :indeterminate="indeterminate"
-              :value="checkAll"
-              @click.prevent.native="handleCheckAll"
-            >全选</Checkbox>
+            <Checkbox :indeterminate="indeterminate" :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
           </div>
           <div class="namebox">商品信息</div>
           <div>单价</div>
@@ -46,11 +42,7 @@
       </div>
       <div class="operationbox">
         <div>
-          <Checkbox
-            :indeterminate="indeterminate"
-            :value="checkAll"
-            @click.prevent.native="handleCheckAll"
-          >全选</Checkbox>
+          <Checkbox :indeterminate="indeterminate" :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
         </div>
         <div class="btnbox">
           <div>
@@ -77,6 +69,7 @@
             <img src="../../assets/img/home/a.png" alt />
             <p>取消选择</p>
           </div>
+          <span></span>
         </div>
       </div>
     </div>
@@ -191,6 +184,10 @@ export default {
         color: #999;
       }
       > div:nth-child(6) > span {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
         cursor: pointer;
         color: #ff8400;
       }
@@ -218,6 +215,10 @@ export default {
           > p:nth-child(1) {
             color: #999;
             cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             > b {
               font-weight: 400;
               color: #ff8400;
@@ -282,6 +283,49 @@ export default {
       > div:last-child {
         margin-right: 0;
       }
+      // > span {
+      //   display: inline-block;
+      //   position: absolute;
+      //   right: 16.5rem;
+      //   bottom: -1rem;
+      //   width: 0;
+      //   height: 0;
+      //   border-left: 0.5rem solid transparent;
+      //   border-right: 0.5rem solid transparent;
+      //   border-top: 1rem solid #ff8400;
+      // }
+    }
+    .imgbox:before {
+      box-sizing: content-box;
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      bottom: -16px;
+      right: 16.55rem;
+      padding: 0;
+      border-top: 8px solid #ffffff;
+      border-bottom: 8px solid transparent;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      display: block;
+      content: "";
+      z-index: 12;
+    }
+    .imgbox:after {
+      box-sizing: content-box;
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      bottom: -18px;
+      right: 16.5rem;
+      padding: 0;
+      border-top: 9px solid #ff8400;
+      border-bottom: 9px solid transparent;
+      border-left: 9px solid transparent;
+      border-right: 9px solid transparent;
+      display: block;
+      content: "";
+      z-index: 10;
     }
   }
 }

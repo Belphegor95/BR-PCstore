@@ -56,6 +56,9 @@ export default {
   data() {
     return {};
   },
+  mounted() {
+    this.$store.commit("show_personid", 2);
+  },
   methods: {
     // 详情页
     ordetails: function () {

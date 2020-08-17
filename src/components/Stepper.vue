@@ -50,6 +50,10 @@ export default {
     cursor: pointer;
     align-items: center;
     justify-content: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
   .stepper- {
     border-right: 1px solid #dcdee2;

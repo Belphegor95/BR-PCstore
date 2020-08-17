@@ -65,7 +65,9 @@ export default {
   data() {
     return {};
   },
-  mounted() {},
+  mounted() {
+    this.$store.commit("show_personid", 0);
+  },
   methods: {},
 };
 </script>

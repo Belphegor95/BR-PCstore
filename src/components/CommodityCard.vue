@@ -35,8 +35,7 @@ export default {
   border: 1px solid #e9e9e9;
   cursor: pointer;
   > img {
-    // width: 15rem;
-    // height: 14.5rem;
+    width: 100%;
   }
   .contentbox {
     padding: 0 1rem;
@@ -64,5 +63,8 @@ export default {
       }
     }
   }
+}
+.commodityCard:hover {
+  border: 1px solid #ff8900;
 }
 </style>

@@ -24,8 +24,8 @@
         <div>
           <span>价格:</span>
           <div>
-            <button>0-199</button>
-            <button>199-299</button>
+            <button :class="id3 == 0? 'active':''" @click="id3click(0)">0-199</button>
+            <button :class="id3 == 1? 'active':''" @click="id3click(1)">199-299</button>
           </div>
         </div>
       </div>
@@ -75,6 +75,7 @@ export default {
     return {
       id1: 0,
       id2: 0,
+      id3: 0,
       value1: null,
       pricetype: 0,
     };
@@ -87,6 +88,10 @@ export default {
     id2click: function (id) {
       if (id == this.id2) return (this.id2 = -1);
       this.id2 = id;
+    },
+    id3click: function (id) {
+      if (id == this.id3) return (this.id3 = -1);
+      this.id3 = id;
     },
     pricetypeClick: function () {
       if (this.pricetype == 0) {
@@ -143,13 +148,17 @@ export default {
         width: 4rem;
         cursor: pointer;
         padding: 0.5rem;
+        margin-left: 0.3rem;
         align-items: center;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
         > img {
           margin-left: 0.2rem;
         }
       }
       > div:nth-child(2) {
-        //   height: 100%;
         display: flex;
         position: relative;
         > div:nth-child(1) {
@@ -186,6 +195,10 @@ export default {
       .price_active {
         background-color: #fff;
         color: #666666;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
       }
     }
     .listbox {

@@ -34,6 +34,9 @@ export default {
       value: "",
     };
   },
+  mounted() {
+    this.$store.commit("show_personid", 4);
+  },
 };
 </script>
 

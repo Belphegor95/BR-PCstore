@@ -9,30 +9,30 @@
         当前地址
         <span>中国大陆</span>
       </p>
-      <p>切换 ></p>
+      <!-- <p>切换 ></p> -->
     </div>
     <div class="formbox">
       <div>
         <span>
           <b>*</b>地址信息:
         </span>
-        <Input v-model="value" placeholder="Enter something..." />
+        <Input v-model="value" placeholder="请输入地址信息" />
       </div>
       <div>
         <span>
           <b>*</b>详细地址:
         </span>
-        <Input v-model="value" placeholder="Enter something..." />
+        <Input v-model="value" placeholder="请输入详细地址信息,如道路,门牌号、小区、楼栋号、单元等信息" />
       </div>
       <div>
         <span>邮政编码:</span>
-        <Input v-model="value" placeholder="Enter something..." />
+        <Input v-model="value" placeholder="请填写邮编" />
       </div>
       <div>
         <span>
           <b>*</b>收货人姓名:
         </span>
-        <Input v-model="value" placeholder="Enter something..." />
+        <Input v-model="value" placeholder="请填写收货人姓名" />
       </div>
       <div>
         <span>
@@ -42,27 +42,33 @@
           <Select v-model="model1" style="width:140px">
             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
-          <Input v-model="value" placeholder="Enter something..." style="width: 200px" />
+          <Input v-model="value" style="width: 200px" />
         </div>
       </div>
       <span>
         <div>
+          <!-- <div>
+            <span>
+              <b>*</b>地区：
+            </span>
+            <Input v-model="value" placeholder="请输入地区" style="width: 300px" />
+          </div>-->
           <label>
+            <b>*</b>
             地区：
             <Input v-model="location" placeholder="请输入地区" style="width: 300px" />
           </label>
           <label>
+            <b>*</b>
             关键词：
             <Input v-model="keyword" placeholder="请输入位置关键词" style="width: 300px" />
           </label>
-
-          <label>
-            位置：
-            <span>{{ site ? site: '未选择' }}</span>
-          </label>
+          <div :style="{display:'flex',margin:'0.5rem 0 0 1rem'}">
+            <span>名称：</span>
+            <p>{{ site ? site: '未选择' }}</p>
+          </div>
         </div>
         <baidu-map ak="FMxNKCVYPKKweAKH5b5Drv31Kz6pOGAg" class="map">
-          <!-- <bm-view class="map"></bm-view> -->
           <bm-local-search class="search" :keyword="keyword" :auto-viewport="true" @infohtmlset="ok" :location="location"></bm-local-search>
         </baidu-map>
       </span>
@@ -112,13 +118,10 @@
 
 <script>
 import BaiduMap from "vue-baidu-map/components/map/Map.vue";
-// import BmView from "vue-baidu-map/components/map/MapView.vue";
 import BmLocalSearch from "vue-baidu-map/components/search/LocalSearch.vue";
-// import { BmLocalSearch } from "vue-baidu-map";
 export default {
   components: {
     BaiduMap,
-    // BmView,
     BmLocalSearch,
   },
   data() {
@@ -129,26 +132,6 @@ export default {
           value: 0,
           label: "中国大陆 +86",
         },
-        {
-          value: "London",
-          label: "London",
-        },
-        {
-          value: "Sydney",
-          label: "Sydney",
-        },
-        {
-          value: "Ottawa",
-          label: "Ottawa",
-        },
-        {
-          value: "Paris",
-          label: "Paris",
-        },
-        {
-          value: "Canberra",
-          label: "Canberra",
-        },
       ],
       model1: 0,
       single: false,
@@ -156,6 +139,9 @@ export default {
       keyword: "",
       site: "",
     };
+  },
+  mounted() {
+    this.$store.commit("show_personid", 3);
   },
   methods: {
     ok(a) {
@@ -238,7 +224,7 @@ export default {
           width: 25%;
           height: 43rem;
           position: absolute;
-          top: 3rem;
+          top: 4.8rem;
           left: 0;
           overflow-y: auto;
           // overflow: hidden;
@@ -246,6 +232,10 @@ export default {
             height: 43rem;
           }
         }
+      }
+      b {
+        margin-left: 1rem;
+        color: #ff8400;
       }
     }
   }

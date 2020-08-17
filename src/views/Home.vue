@@ -108,6 +108,9 @@ export default {
             width: 33.3%;
             cursor: pointer;
           }
+          > li:hover {
+            border: 1px dashed #ff8900;
+          }
         }
       }
       .Carouselbox {

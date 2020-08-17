@@ -25,6 +25,9 @@ export default {
       isticket: true,
     };
   },
+  mounted() {
+    this.$store.commit("show_personid", 6);
+  },
 };
 </script>
 

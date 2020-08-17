@@ -68,6 +68,9 @@ export default {
       personid: 0,
     };
   },
+  mounted() {
+    this.personid = this.$store.state.personid;
+  },
   methods: {
     rut: function (id, name) {
       if (this.personid == id) return;
@@ -88,7 +91,7 @@ export default {
     > div {
       display: flex;
       > ul {
-        flex:1;
+        flex: 1;
         // width: 18rem;
         padding-top: 2rem;
         text-indent: 2rem;

@@ -48,6 +48,7 @@ export default {
       this.$router.push(name);
     },
     rut: function (name, name1) {
+      if (this.$route.path == `/${name}/${name1}`) return
       if (name1) return this.$router.push(`/${name}/${name1}`);
       this.$router.push(`/${name}`);
     },

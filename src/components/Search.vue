@@ -8,7 +8,7 @@
       </div>
       <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
-          <input type="text" v-model="search" />
+          <input type="text" v-model="search" @keyup.enter="rut" />
           <button @click="rut">搜索</button>
         </div>
         <div class="btnbox">
@@ -46,6 +46,7 @@ export default {
       if (this.$route.path != "/") this.$router.push("/");
     },
     rut: function () {
+      if (this.$route.path == "/classify") return;
       this.$router.push("/classify");
     },
   },
