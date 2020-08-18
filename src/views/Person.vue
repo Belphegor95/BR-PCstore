@@ -82,6 +82,11 @@ export default {
       }
     },
   },
+  watch: {
+    "$store.state.personid"(id) {
+      this.personid = id;
+    }
+  }
 };
 </script>
 

@@ -10,11 +10,10 @@
     <div class="content">
       <div>
         <div class="imgbox">
-          <pic-zoom url="https://img.yzcdn.cn/vant/apple-2.jpg" :scale="3"></pic-zoom>
+          <pic-zoom class="picbox" url="https://img.yzcdn.cn/vant/apple-2.jpg" :scale="3"></pic-zoom>
           <!-- <div>
-            <img src="../../assets/img/sundry/zt.png" alt />
-            
-          </div>-->
+            <img src="https://img.yzcdn.cn/vant/apple-2.jpg" alt />
+          </div> -->
           <div>
             <img src="../../assets/img/sundry/zh.png" @click="leftClick" alt />
             <div>
@@ -24,6 +23,7 @@
             </div>
             <img src="../../assets/img/sundry/y.png" @click="rightClick" alt />
           </div>
+          
         </div>
         <div class="sizebox">
           <h6>打印机打印机打印机打印机打印机打印机打印机打印机打印机打印机</h6>
@@ -139,6 +139,7 @@ export default {
       border-top: 1px solid #e5e5e5;
       padding-top: 2rem;
       .imgbox {
+        // position: relative;
         // 顶部大图
         > div:nth-child(1) {
           width: 30rem;
@@ -282,5 +283,9 @@ export default {
 <style>
 .details .ivu-input-number-handler-wrap {
   opacity: 1;
+}
+.mouse-cover-canvas {
+  width: 35.5rem;
+  height: 35.5rem;
 }
 </style>

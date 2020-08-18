@@ -138,25 +138,25 @@ export default {
 .topbtn {
   width: 3rem !important;
 }
-@media screen and (max-width: 1350px) {
-  .home {
-    > div {
-      width: 100%;
-      > div {
-        width: 65rem;
-        margin: auto;
-      }
-    }
-    .classifybox {
-      .w {
-        // .classify {
-        //   width: 20rem;
-        // }
-        .Carouselbox {
-          width: 44rem;
-        }
-      }
-    }
-  }
-}
+// @media screen and (max-width: 1350px) {
+//   .home {
+//     > div {
+//       width: 100%;
+//       > div {
+//         width: 65rem;
+//         margin: auto;
+//       }
+//     }
+//     .classifybox {
+//       .w {
+//         // .classify {
+//         //   width: 20rem;
+//         // }
+//         .Carouselbox {
+//           width: 44rem;
+//         }
+//       }
+//     }
+//   }
+// }
 </style>

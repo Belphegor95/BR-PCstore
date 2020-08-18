@@ -67,6 +67,11 @@ const routes = [
     ]
   },
   {
+    path: '/maintain',
+    name: 'Maintain',
+    component: () => import('../views/sundry/Maintain.vue'),
+  },
+  {
     path: '/cart',
     name: 'Cart',
     component: () => import('../views/sundry/Cart.vue'),

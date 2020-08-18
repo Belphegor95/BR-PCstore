@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="visitbox" v-show="isSearch">
-        <button>
+        <button @click="serve">
           <img src="../assets/img/home/sm.png" alt />
           <p>上门服务</p>
         </button>
@@ -49,6 +49,9 @@ export default {
       if (this.$route.path == "/classify") return;
       this.$router.push("/classify");
     },
+    serve: function () {
+      this.$router.push("/maintain");
+    }
   },
 };
 </script>
@@ -85,7 +88,6 @@ export default {
           border: 0.1rem solid #ff8900;
         }
         > button {
-          // cursor: pointer;
           color: #fff;
           padding: 0 1.2rem;
           background-color: #ff8900;

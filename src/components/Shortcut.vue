@@ -24,9 +24,9 @@
           <DropdownItem name="/person/userinfo">个人中心</DropdownItem>
           <DropdownItem name="/person/orderForm">我的订单</DropdownItem>
           <DropdownItem name="/person/deliveryAddress">收货地址</DropdownItem>
-          <DropdownItem name="/person/userinfo">修改登录密码</DropdownItem>
-          <DropdownItem name="/person/userinfo">手机绑定</DropdownItem>
-          <DropdownItem name="/person/userinfo">我的优惠券</DropdownItem>
+          <DropdownItem name="/person/password">修改登录密码</DropdownItem>
+          <DropdownItem name="/person/phone">手机绑定</DropdownItem>
+          <DropdownItem name="/person/coupon">我的优惠券</DropdownItem>
         </DropdownMenu>
       </Dropdown>|
       <span>联系客服</span>
