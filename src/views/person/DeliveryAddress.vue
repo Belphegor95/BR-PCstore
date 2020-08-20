@@ -276,3 +276,9 @@ export default {
   }
 }
 </style>
+
+<style>
+.deliveryAddress .ivu-select-selection {
+  border-radius: 0;
+}
+</style>

@@ -50,7 +50,7 @@ export default {
       this.$router.push("/classify");
     },
     serve: function () {
-      this.$router.push("/maintain");
+      this.$router.push("/maintain/chooseType");
     }
   },
 };

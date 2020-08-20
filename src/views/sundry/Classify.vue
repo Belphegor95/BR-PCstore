@@ -41,7 +41,7 @@
             <InputNumber :max="10" :min="1" v-model="value1" />
           </div>
           <div>
-            <button>清除</button>
+            <button @click="eliminate">清除</button>
             <Button>确定</Button>
           </div>
         </div>
@@ -101,6 +101,10 @@ export default {
       } else if (this.pricetype == 2) {
         this.pricetype = 0;
       }
+    },
+    // 价格清除
+    eliminate: function () {
+      this.value1 = "";
     },
   },
 };

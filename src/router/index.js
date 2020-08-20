@@ -69,7 +69,13 @@ const routes = [
   {
     path: '/maintain',
     name: 'Maintain',
-    component: () => import('../views/sundry/Maintain.vue'),
+    component: () => import('../views/Maintain.vue'),
+    children: [
+      {
+        path: '/maintain/chooseType',
+        component: () => import('../views/maintain/ChooseType.vue'),
+      },
+    ]
   },
   {
     path: '/cart',
@@ -85,6 +91,11 @@ const routes = [
     path: '/payment',
     name: 'Payment',
     component: () => import('../views/sundry/Payment.vue'),
+  },
+  {
+    path: '/classify',
+    name: 'Classify',
+    component: () => import('../views/sundry/Classify.vue'),
   },
   {
     path: '/classify',
