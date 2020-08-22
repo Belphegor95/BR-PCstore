@@ -15,27 +15,31 @@
           </li>
           <li>
             <div>
-              <img src="../assets/img/maintain/wx.png" alt />
+              <img v-if="maintainid == 0" src="../assets/img/maintain/wx_.png" alt />
+              <img v-else src="../assets/img/maintain/wx.png" alt />
             </div>
-            <div>待修类型</div>
+            <div :class="maintainid == 0?  'active':''">待修类型</div>
           </li>
           <li>
             <div>
-              <img src="../assets/img/maintain/sp.png" alt />
+              <img v-if="maintainid == 1" src="../assets/img/maintain/sp_.png" alt />
+              <img v-else src="../assets/img/maintain/sp.png" alt />
             </div>
-            <div>添加商品</div>
+            <div :class="maintainid == 1?  'active':''">添加商品</div>
           </li>
           <li>
             <div>
-              <img src="../assets/img/maintain/khxx.png" alt />
+              <img v-if="maintainid == 2" src="../assets/img/maintain/khxx_.png" alt />
+              <img v-else src="../assets/img/maintain/khxx.png" alt />
             </div>
-            <div>客户信息</div>
+            <div :class="maintainid == 2?  'active':''">客户信息</div>
           </li>
           <li>
             <div>
-              <img src="../assets/img/maintain/xd.png" alt />
+              <img v-if="maintainid == 3" src="../assets/img/maintain/xd_.png" alt />
+              <img v-else src="../assets/img/maintain/xd.png" alt />
             </div>
-            <div>下单</div>
+            <div :class="maintainid == 3?  'active':''">下单</div>
           </li>
         </ul>
         <router-view class="rightbox" />
@@ -53,7 +57,17 @@ export default {
     search,
   },
   data() {
-    return {};
+    return {
+      maintainid: 0,
+    };
+  },
+  mounted() {
+    this.maintainid = this.$store.state.maintainid;
+  },
+  watch: {
+    "$store.state.maintainid"(id) {
+      this.maintainid = id;
+    },
   },
 };
 </script>
@@ -67,6 +81,7 @@ export default {
         flex: 1;
         margin-top: 2rem;
         position: relative;
+        height: 36rem;
         > li {
           padding: 0.5rem;
           font-size: 1rem;
@@ -120,8 +135,31 @@ export default {
       }
       .rightbox {
         flex: 4;
+        h4 {
+          font-size: 1.4rem;
+          font-weight: 400;
+          padding-bottom: 0.8rem;
+          border-bottom: 1px solid #e5e5e5;
+        }
       }
     }
   }
+}
+</style>
+<style>
+.maintain .rightbox h4 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+.maintain .rightbox .nextStep {
+  width: 20rem;
+  height: 2.5rem;
+  color: #fff;
+  line-height: 2.5rem;
+  text-align: center;
+  border-radius: 0.2rem;
+  background-color: #ff8400;
 }
 </style>

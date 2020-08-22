@@ -75,6 +75,18 @@ const routes = [
         path: '/maintain/chooseType',
         component: () => import('../views/maintain/ChooseType.vue'),
       },
+      {
+        path: '/maintain/addGoods',
+        component: () => import('../views/maintain/AddGoods.vue'),
+      },
+      {
+        path: '/maintain/promise',
+        component: () => import('../views/maintain/Promise.vue'),
+      },
+      {
+        path: '/maintain/maintainOrders',
+        component: () => import('../views/maintain/MaintainOrders.vue'),
+      },
     ]
   },
   {

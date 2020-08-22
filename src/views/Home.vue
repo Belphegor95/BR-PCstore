@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="recommendbox">
-      <tab />
+      <tab name="精品推荐" />
       <div class="recommend">
         <commodityCard v-for="(item,index) in 20" :key="index" />
       </div>

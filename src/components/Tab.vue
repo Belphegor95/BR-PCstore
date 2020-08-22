@@ -2,12 +2,15 @@
 <template>
   <div class="tab">
     <span></span>
-    <p>精品推荐</p>
+    <p>{{ name }}</p>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    name: String,
+  },
   data() {
     return {};
   },
@@ -26,7 +29,7 @@ export default {
   }
   > p {
     text-indent: 0.8rem;
-    font-weight: 700;
+    // font-weight: 700;
     font-size: 1.1rem;
   }
 }
