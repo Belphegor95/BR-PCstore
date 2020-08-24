@@ -38,6 +38,15 @@ export default {
       }
     },
   },
+  watch: {
+    priceNum(priceNum) {
+      if (typeof priceNum == "string") {
+        this.str(priceNum);
+      } else if (typeof priceNum == "number") {
+        this.str(priceNum.toString());
+      }
+    },
+  },
   filters: {
     decimalsNum: function (value) {
       if (value == 0) return "00";

@@ -10,33 +10,35 @@
     <div class="content">
       <div>
         <div class="imgbox">
-          <pic-zoom class="picbox" url="https://img.yzcdn.cn/vant/apple-2.jpg" :scale="3"></pic-zoom>
-          <!-- <div>
-            <img src="https://img.yzcdn.cn/vant/apple-2.jpg" alt />
-          </div> -->
+          <pic-zoom class="picbox" :url="detailsdata.plist_img_url[this.imgindex]" :scale="3"></pic-zoom>
           <div>
             <img src="../../assets/img/sundry/zh.png" @click="leftClick" alt />
             <div>
               <div :style="{width: spec_width + 'rem',left: spec_list +'rem'}">
-                <img src="../../assets/img/sundry/zt.png" v-for="(item,index) in 6" :key="index" />
+                <img
+                  :src="item"
+                  :class="imgindex == index ?'img_active':''"
+                  v-for="(item,index) in detailsdata.plist_img_url"
+                  :key="index"
+                  @mouseenter="enter(index)"
+                />
               </div>
             </div>
             <img src="../../assets/img/sundry/y.png" @click="rightClick" alt />
           </div>
-          
         </div>
         <div class="sizebox">
-          <h6>打印机打印机打印机打印机打印机打印机打印机打印机打印机打印机</h6>
+          <h6>{{ detailsdata.plist_name }}</h6>
           <div>
             <div>
               <span>
                 <span>价</span> 格 :
               </span>
-              <p>90.00</p>
+              <p>{{ detailsdata.price_lv.unitList[this.unitid].marketPrice }}</p>
             </div>
             <div>
               <span>卷 后 价 :</span>
-              <price :priceNum="27.00" :size="1.6" />
+              <price :priceNum="detailsdata.price_lv.unitList[this.unitid].orderPrice" :size="1.6" />
             </div>
             <div>
               <span>
@@ -50,26 +52,38 @@
               <span>
                 <span>单</span> 位 :
               </span>
-              <div></div>
+              <div v-if="detailsdata.price_lv">
+                <button
+                  :class="unitid == index? 'active':''"
+                  v-for="(item,index) in detailsdata.price_lv.unitList"
+                  :key="index"
+                  @click="colourClick(true,index)"
+                >{{ item.unitName }}</button>
+              </div>
             </div>
             <div>
               <span>
                 <span>颜</span> 色 :
               </span>
-              <div>
-                <button :class="colourid == index? 'active':''" v-for="(item,index) in 4" :key="index" @click="colourClick(index)">白色</button>
+              <div v-if="detailsdata.price_lv">
+                <button
+                  :class="colourid == index? 'active':''"
+                  v-for="(item,index) in detailsdata.price_lv.cate"
+                  :key="index"
+                  @click="colourClick(false,index)"
+                >{{ item.cateName }}</button>
               </div>
             </div>
             <div>
               <span>购买数量:</span>
               <div>
-                <InputNumber :max="10" :min="1" v-model="value1" />
+                <InputNumber :max="100" :min="1" v-model="buyNum" />
                 <p>库存数量 : 100</p>
               </div>
             </div>
           </div>
           <div class="btnbox">
-            <button>
+            <button @click="addShopping">
               <img src="../../assets/img/sundry/gwc.png" alt />
               加入购物车
             </button>
@@ -81,7 +95,7 @@
         <span>产品详情</span>
       </div>
       <div class="detailsimgbox">
-        <img src="../../assets/img/sundry/zt.png" alt />
+        <img :src="item" v-for="(item,index) in detailsdata.plist_detail_img_url" :key="index" />
       </div>
     </div>
     <div class="bottombox">
@@ -109,23 +123,64 @@ export default {
   },
   data() {
     return {
+      detailsdata: this.$store.state.detailsdata,
       spec_width: 6 * 6,
       spec_list: 0,
-      value1: 0,
+      buyNum: 0,
       colourid: 0,
+      unitid: 0,
+      imgindex: 0,
     };
   },
+  mounted() {
+    console.info(this.detailsdata);
+  },
   methods: {
+    // 添加商品
+    addShopping: function () {
+      let arr = [];
+      let item = this.detailsdata.price_lv;
+      let obj = {};
+      obj.plistId = this.detailsdata.id;
+      obj.priceId = item.unitList[this.unitid].priceId;
+      obj.cateId = item.cate[this.colourid].cateId;
+      obj.buyNum = this.buyNum;
+      if (this.buyNum != 0) {
+        arr.push(obj);
+      }
+      if (arr.length == 0) return;
+      this.axios
+        .post(this.$api.addToShoppingCart, {
+          plist: JSON.stringify(arr),
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.$toast("添加成功!");
+            // this.$store.commit("show_count", data.data.count);
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          //   this.$toast.fail(this.$api.monmsg);
+        });
+    },
+    // 左滚
     leftClick: function () {
       if (this.spec_list == 0) return;
       this.spec_list = 0;
     },
+    // 右滚
     rightClick: function () {
+      if (this.spec_list < 4) return;
       this.spec_list = -12;
       // 6 - this.spec_list
     },
-    colourClick: function (id) {
-      this.colourid = id;
+    enter: function (index) {
+      this.imgindex = index;
+    },
+    colourClick: function (is, id) {
+      is ? (this.unitid = id) : (this.colourid = id);
     },
   },
 };
@@ -176,7 +231,7 @@ export default {
                 width: 5rem;
                 height: 5rem;
               }
-              > img:hover {
+              > .img_active {
                 border: 1px solid #ff8400;
               }
             }
@@ -271,9 +326,11 @@ export default {
     }
     .detailsimgbox {
       padding: 1rem;
+      font-size : 0;
       padding-bottom: 10rem;
       > img {
         width: 100%;
+        
       }
     }
   }

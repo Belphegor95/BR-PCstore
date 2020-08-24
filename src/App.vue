@@ -39,4 +39,8 @@ li {
 input {
   outline: none;
 }
+
+.vl-notify.vl-notify-msg {
+  height: 44px;
+}
 </style>

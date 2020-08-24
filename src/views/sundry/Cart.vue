@@ -99,7 +99,38 @@ export default {
       is_imgbox: false,
     };
   },
+  mounted() {
+    this.getShoppingCart()
+  },
   methods: {
+    // 获取购物车商品
+    getShoppingCart: function () {
+      this.axios
+        .post(this.$api.getShoppingCart)
+        .then((data) => {
+          if (data.code == 200) {
+            console.info(data)
+            // this.shoppings = data.data;
+            // this.freeSend = data.freeSend;
+            // let num = 0;
+            // for (let i = 0; i < data.data.length; i++) {
+            //   let item = data.data[i].unit;
+            //   num = num + item.length;
+            // }
+            // this.$store.commit("show_count", num);
+            // // 选中全部
+            // this.$nextTick(() => {
+            //   this.checkedClick(true);
+            //   this.calctotalPrice();
+            // });
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast.fail(this.$api.monmsg);
+        });
+    },
     getstepperObj: function (obj) {
       this.arr[obj.index] = obj.num;
       this.$forceUpdate();

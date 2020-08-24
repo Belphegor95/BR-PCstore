@@ -4,7 +4,8 @@
     <div class="leftbox">
       <p @click="gohome">欢迎来到开心兔</p>
       <p>
-        <span @click="rut('guide','login')">请登录</span> |
+        <span v-if="user.companyName">{{ user.companyName }}</span>
+        <span v-else @click="rut('guide','login')">请登录</span> |
         <span @click="rut('guide','register')">注册</span>
       </p>
     </div>
@@ -13,7 +14,7 @@
       <span class="gwcbox" @click="rut('cart')">
         <img src="../assets/img/home/gwc.png" alt />
         购物车
-        <b>0</b>
+        <b>{{ count }}</b>
       </span>|
       <Dropdown style="margin-left: 20px" @on-click="ok">
         <a href="javascript:void(0)">
@@ -37,7 +38,13 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      count: 0,
+      user: this.$store.state.user,
+    };
+  },
+  mounted() {
+    this.getShoppingCartPlistCount();
   },
   methods: {
     gohome: function () {
@@ -48,9 +55,27 @@ export default {
       this.$router.push(name);
     },
     rut: function (name, name1) {
-      if (this.$route.path == `/${name}/${name1}`) return
+      if (this.$route.path == `/${name}/${name1}`) return;
       if (name1) return this.$router.push(`/${name}/${name1}`);
       this.$router.push(`/${name}`);
+    },
+    // 获取购物车里商品数量
+    getShoppingCartPlistCount: function () {
+      this.axios
+        .post(this.$api.getShoppingCartPlistCount)
+        .then((data) => {
+          if (data.code == 200) {
+            if (data.data.count) {
+              this.count = data.data.count;
+            }
+            // this.$store.commit("show_count", data.data.count);
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
     },
   },
 };

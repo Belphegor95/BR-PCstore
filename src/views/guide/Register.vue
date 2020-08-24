@@ -2,13 +2,16 @@
 <!-- 注册 -->
 <template>
   <div class="register">
-    <input type="text" placeholder="请输入手机号" class="username" />
-    <input type="password" placeholder="4-20个字符,区分大小写" class="password" />
+    <input type="text" placeholder="请输入手机号" class="username" v-model="phoneNum" />
+    <div class="msgbox" v-show="msg_phoneNum !=''">{{ msg_phoneNum }}</div>
+    <input type="password" placeholder="4-20个字符,区分大小写" class="password" v-model="pwd" />
+    <div class="msgbox" v-show="msg_pwd !=''">{{ msg_pwd }}</div>
     <div class="captchabox">
-      <input type="text" placeholder="请输入验证码" class="captcha" />
-      <Button type="primary" shape="circle" size="default">获取验证码</Button>
+      <input type="text" placeholder="请输入验证码" class="captcha" v-model="yzm" />
+      <Button type="primary" shape="circle" :loading="isloading" size="default" @click="getYzm">{{ !isloading? "获取验证码": btnload }}</Button>
     </div>
-    <button class="btn" @click="rut('registerOK')">免费注册</button>
+    <div class="msgbox" v-show="msg_yzm !=''">{{ msg_yzm }}</div>
+    <button class="btn" @click="saveUser('registerOK')">免费注册</button>
     <p class="account">
       已有账号?
       <b @click="rut('login')">立即登录</b>
@@ -19,11 +22,93 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      phoneNum: "",
+      pwd: "",
+      yzm: "",
+      msg_phoneNum: "",
+      msg_pwd: "",
+      msg_yzm: "",
+      btnload: 60,
+      isloading: false,
+    };
   },
   methods: {
     rut: function (name) {
       this.$router.push(`/guide/${name}`);
+    },
+    // 注册账号
+    saveUser: function () {
+      this.msg_phoneNum = "";
+      this.msg_yzm = "";
+      this.msg_pwd = "";
+      if (!/^1[3456789]\d{9}$/.test(this.phoneNum)) {
+        this.msg_phoneNum = "手机号输入有误";
+        return;
+      } else if (!/[0-9]{6}/.test(this.yzm)) {
+        this.msg_yzm = "验证码输入有误";
+        return;
+      } else if (
+        !this.pwd ||
+        this.pwd.trim().length < 6 ||
+        this.pwd.trim().length > 16
+      ) {
+        this.msg_pwd = "密码输入有误";
+        return;
+      }
+      this.axios
+        .post(this.$api.regist, {
+          phoneNum: this.phoneNum,
+          yzm: this.yzm,
+          pwd: this.pwd,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.$router.push("/guide/registerOK");
+            // this.$store.commit("show_user", data.data);
+          } else {
+            // this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          // this.$toast(this.$api.monmsg);
+        });
+    },
+    // 获取验证码
+    getYzm: function () {
+      if (!/^1[3456789]\d{9}$/.test(this.phoneNum)) {
+        this.msg_phoneNum = "手机号输入有误";
+        return;
+      }
+      this.axios
+        .post(this.$api.getYzm, {
+          phoneNum: this.phoneNum,
+        })
+        .then((data) => {
+          if (data.result == "OK") {
+            this.isloading = true;
+            // this.$toast("验证码已发送");
+            this.setloadingNum();
+          } else {
+            // this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          // this.$toast(this.$api.monmsg);
+        });
+    },
+    // 验证码倒计时
+    setloadingNum: function () {
+      // 倒计时
+      if (this.isloading && this.btnload != -1) {
+        setTimeout(() => {
+          this.btnload--;
+          this.setloadingNum();
+        }, 1000);
+      } else {
+        this.btnload = 60;
+        this.isloading = false;
+      }
     },
   },
 };
@@ -38,11 +123,11 @@ input {
   text-indent: 3.3rem;
 }
 .username {
-  margin-top: 1.5rem;
+  margin-top: 0.7rem;
   background: #fff url("../../assets/img/guide/zh.png") 1rem 0.8rem no-repeat;
 }
 .password {
-  margin-top: 1.5rem;
+  margin-top: 0.7rem;
   background: #fff url("../../assets/img/guide/mm.png") 1rem 0.8rem no-repeat;
 }
 .captcha {
@@ -59,6 +144,13 @@ input {
   flex-direction: column;
   background-color: #fff;
   //   justify-content: space-around;
+  .msgbox {
+    width: 25rem;
+    // height: 3rem;
+    color: #ff9911;
+    // border: 1px solid ;
+    padding: 0.1rem 1rem;
+  }
   .captchabox {
     width: 25rem;
     display: flex;

@@ -1,13 +1,13 @@
 <!-- 商品卡 -->
 <template>
   <div class="commodityCard" @click="rut">
-    <img src="../assets/img/home/a.png" alt />
+    <img :src="data.plist_img_url[0]" alt />
     <div class="contentbox">
-      <p>打印机</p>
+      <p>{{ data.plist_name }}</p>
       <p>会员价: 90.00￥</p>
       <p>
-        <price :priceNum="27.12" :size="1" />
-        <span>原价 ￥90.00</span>
+        <price :priceNum="data.price_lv.unitList[0].orderPrice" :size="1" />
+        <span>原价 ￥{{ data.price_lv.unitList[0].marketPrice }}</span>
       </p>
     </div>
   </div>
@@ -19,19 +19,27 @@ export default {
   components: {
     price,
   },
+  props: {
+    data: Object,
+  },
   data() {
     return {};
   },
+  mounted() {
+    // console.info(this.data)
+  },
   methods: {
     rut: function () {
-      this.$router.push("/details")
-    }
-  }
+      this.$store.commit("show_detailsdata", this.data);
+      this.$router.push("/details");
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
 .commodityCard {
+  width: 19%;
   border: 1px solid #e9e9e9;
   cursor: pointer;
   > img {
@@ -42,6 +50,7 @@ export default {
     padding-top: 0.3rem;
     padding-bottom: 0.25rem;
     > p:nth-child(1) {
+      word-wrap:break-word;
       //   font-weight: 700;
       font-size: 1.05rem;
     }

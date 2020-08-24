@@ -11,25 +11,12 @@
         <div class="classify">
           <div>商品分类</div>
           <ul>
-            <li v-for="(item,index) in 11" :key="index">文件管理</li>
+            <li v-for="(item,index) in navigations" :key="index">{{ item.name }}</li>
           </ul>
         </div>
         <Carousel class="Carouselbox" v-model="value" autoplay :autoplay-speed="5000" arrow="never">
-          <CarouselItem>
-            <img src="../assets/img/home/banner.png" alt />
-            <!-- <div class="demo-carousel">1</div> -->
-          </CarouselItem>
-          <CarouselItem>
-            <img src="../assets/img/home/banner.png" alt />
-            <!-- <div class="demo-carousel">2</div> -->
-          </CarouselItem>
-          <CarouselItem>
-            <img src="../assets/img/home/banner.png" alt />
-            <!-- <div class="demo-carousel">3</div> -->
-          </CarouselItem>
-          <CarouselItem>
-            <img src="../assets/img/home/banner.png" alt />
-            <!-- <div class="demo-carousel">4</div> -->
+          <CarouselItem v-for="(item,index) in picUrls" :key="index">
+            <img :src="item.picUrl" alt />
           </CarouselItem>
         </Carousel>
       </div>
@@ -37,7 +24,7 @@
     <div class="recommendbox">
       <tab name="精品推荐" />
       <div class="recommend">
-        <commodityCard v-for="(item,index) in 20" :key="index" />
+        <commodityCard v-for="(item,index) in recommend" :key="index" :data="item" />
       </div>
     </div>
     <!-- 回到顶部 -->
@@ -71,9 +58,63 @@ export default {
   data() {
     return {
       value: 0,
+      picUrls: [],
+      navigations: [],
+      recommend: [],
     };
   },
-  
+  mounted() {
+    this.getswipeImg();
+    this.getHomeCate();
+    this.gethomeRecommend()
+  },
+  methods: {
+    // 轮播图
+    getswipeImg: function () {
+      this.axios
+        .get(this.$api.slideshow)
+        .then((data) => {
+          if (data.code == 200) {
+            this.picUrls = data.data;
+          } else {
+            // this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          // this.$toast(this.$api.monmsg);
+        });
+    },
+    // 首页分类入口
+    getHomeCate: function () {
+      this.axios
+        .post(this.$api.getHomeCate)
+        .then((data) => {
+          if (data.code == 200) {
+            this.navigations = data.data;
+          } else {
+            // this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 精品推荐
+    gethomeRecommend: function () {
+      this.axios
+        .get(this.$api.homeRecommend)
+        .then((data) => {
+          if (data.code == 200) {
+            this.recommend = data.data;
+          } else {
+            // this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          // this.$toast(this.$api.monmsg);
+        });
+    },
+  },
 };
 </script>
 
