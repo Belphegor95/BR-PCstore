@@ -5,31 +5,34 @@
       <shortcut />
     </div>
     <div class="search_box">
-      <search :isSearch="true" />
+      <search :isSearch="true" :searchname="searchKey" @searchClick="searchClick" />
     </div>
     <div class="content">
       <div class="sortbox">
         <div>
           <span>全部分类:</span>
           <div>
-            <button :class="id1 == index? 'active':''" v-for="(item,index) in 4" :key="index" @click="id1click(index)">分类{{ index + 1 }}</button>
+            <button
+              :class="id1 == index? 'active':''"
+              v-for="(item,index) in cateList.cateOneList"
+              :key="index"
+              @click="id1click(index)"
+            >{{ item.title }}</button>
           </div>
         </div>
         <div>
           <span>类型:</span>
           <div>
-            <button :class="id2 == index? 'active':''" v-for="(item,index) in 4" :key="index" @click="id2click(index)">分类{{ index + 1 }}</button>
-          </div>
-        </div>
-        <div>
-          <span>价格:</span>
-          <div>
-            <button :class="id3 == 0? 'active':''" @click="id3click(0)">0-199</button>
-            <button :class="id3 == 1? 'active':''" @click="id3click(1)">199-299</button>
+            <button
+              :class="id2 == index? 'active':''"
+              v-for="(item,index) in twoList"
+              :key="index"
+              @click="id2click(index)"
+            >{{ item.title }}</button>
           </div>
         </div>
       </div>
-      <div>
+      <div v-show="false">
         <div :class="pricetype != 0 ?'price_active':''" @click="pricetypeClick">
           <p>价格</p>
           <img v-if="pricetype== 1" src="../../assets/img/sundry/s.png" alt />
@@ -47,7 +50,7 @@
         </div>
       </div>
       <div class="listbox">
-        <commodityCard v-for="(item,index) in 20" :key="index" />
+        <commodityCard v-for="(item,index) in searchs" :key="index" :data="item" />
       </div>
     </div>
     <div class="bottombox">
@@ -75,24 +78,117 @@ export default {
     return {
       id1: 0,
       id2: 0,
-      id3: 0,
       value1: null,
       pricetype: 0,
+      cateList: [],
+      twoList: [],
+      searchKey: "",
+      searchs: [], // 搜索
     };
   },
+  mounted() {
+    this.getcate();
+  },
   methods: {
+    getcate: function () {
+      this.axios
+        .get(this.$api.cate)
+        .then((data) => {
+          if (data.code == 200) {
+            let data_ = data.data;
+            for (let i = 0; i < data_.cateOneList.length; i++) {
+              let cateoneid = data_.cateOneList[i].id;
+              for (let key in data_.cateTwoList) {
+                if (cateoneid == key) {
+                  data_.cateOneList[i].twolist = data_.cateTwoList[key];
+                }
+              }
+            }
+            // 默认打开第一个
+            this.cateList = data_;
+            this.twoList = this.cateList.cateOneList[0].twolist;
+            // 判断 路由是否有值  有值先赋值
+            Object.keys(this.$route.query).length != 0 ? this.getquery() : "";
+            this.getcatePlist();
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {});
+    },
+    // 点击搜索
+    searchClick: function (searchKey) {
+      this.searchKey = searchKey;
+      // 判断是否存在
+      if (!this.searchKey) {
+        this.getcatePlist();
+        return;
+      }
+      // 取消选中
+      this.id1 = -1;
+      this.id2 = -1;
+      this.axios
+        .post(this.$api.search, {
+          searchKey: this.searchKey.trim(),
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.searchs = data.data;
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {});
+    },
+    // 获取分类商品
+    getcatePlist: function () {
+      this.axios
+        .post(this.$api.getCatePlist, {
+          cateone: this.cateList.cateOneList[this.id1].id,
+          catetwo: this.twoList[this.id2].id,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.searchs = data.data;
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    //  获取搜索条件对应的id
+    getquery: function () {
+      let query = this.$route.query;
+      for (let i = 0; i < this.cateList.cateOneList.length; i++) {
+        let item = this.cateList.cateOneList[i].id;
+        if (item == query.cate_one) {
+          this.id1 = i;
+        }
+      }
+      for (let i = 0; i < this.twoList.length; i++) {
+        let item = this.cateList.cateOneList[i].id;
+        if (item == query.cate_two) {
+          this.id2 = i;
+        }
+      }
+    },
+    // 一级分类
     id1click: function (id) {
-      if (id == this.id1) return (this.id1 = -1);
+      this.searchKey = "";
       this.id1 = id;
+      this.twoList = this.cateList.cateOneList[id].twolist;
+      this.id2 = 0;
+      this.getcatePlist();
     },
+    // 二级分类
     id2click: function (id) {
-      if (id == this.id2) return (this.id2 = -1);
+      this.searchKey = "";
       this.id2 = id;
+      this.getcatePlist();
     },
-    id3click: function (id) {
-      if (id == this.id3) return (this.id3 = -1);
-      this.id3 = id;
-    },
+    // 时间排序方法
     pricetypeClick: function () {
       if (this.pricetype == 0) {
         this.pricetype = 1;
@@ -120,17 +216,21 @@ export default {
       > div {
         display: flex;
         align-items: center;
+        min-height: 3.18rem;
         padding: 0.5rem 2rem;
         border-bottom: 1px dashed #eeeeee;
         > span {
           width: 4rem;
+          white-space: nowrap;
+          display: inline-block;
           text-align: right;
         }
         > div {
+          flex: auto;
           margin-left: 1rem;
           > button {
             padding: 0.1rem 1rem;
-            margin: 0 1rem;
+            margin: 0 1rem 0.5rem 1rem;
             color: #666666;
           }
           .active {
@@ -208,10 +308,10 @@ export default {
     .listbox {
       display: flex;
       flex-wrap: wrap;
-      padding-top: 1rem;
-      justify-content: space-around;
+      padding-top: 0.5rem;
+      // justify-content: space-around;
       > div {
-        margin-bottom: 1rem;
+        margin: 0.5rem 0.35rem;
       }
     }
   }

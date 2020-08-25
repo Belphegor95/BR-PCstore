@@ -7,7 +7,7 @@
         <div>
           <span class="tximg"></span>
           <div class="usernamebox">
-            <p>张三</p>
+            <p>{{ user.companyName ? user.companyName: '暂无' }}</p>
             <p>(taobaoxiaonao)</p>
           </div>
         </div>
@@ -63,9 +63,12 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      user: this.$store.state.user
+    };
   },
   mounted() {
+    console.info(this.user)
     this.$store.commit("show_personid", 0);
   },
   methods: {},

@@ -32,17 +32,17 @@ api.editAddress = "/api/editAddress"  // 设置为默认地址
 
 api.delAddress = "/api/delAddress"  // 删除收货地址
 
-api.search = "/api/search"  // 搜索商品
+api.search = "/api/search"  // 搜索商品 1
 
 api.addToShoppingCart = "/api/addToShoppingCart"  // 添加购物车 1
 
-api.getShoppingCart = "/api/getShoppingCart"  // 购物车商品
+api.getShoppingCart = "/api/getShoppingCart"  // 购物车商品 1
 
-api.getShoppingCartPlistCount = "/api/getShoppingCartPlistCount"  // 购物车物品个数
+api.getShoppingCartPlistCount = "/api/getShoppingCartPlistCount"  // 购物车物品个数 1
 
-api.editShoppingCarCount = "/api/editShoppingCarCount"  // 修改购物车商品的数量
+api.editShoppingCarCount = "/api/editShoppingCarCount"  // 修改购物车商品的数量 1
 
-api.delSelectShoppingCart = "/api/delSelectShoppingCart"  // 删除购物车商品
+api.delSelectShoppingCart = "/api/delSelectShoppingCart"  // 删除购物车商品 1
 
 api.downOrder = "/api/downOrder"  // 购物车下单
 

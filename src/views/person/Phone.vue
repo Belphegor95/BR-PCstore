@@ -44,7 +44,7 @@
               <span>验证码:</span>
               <div>
                 <Input v-model="value" placeholder="Enter something..." style="width: 200px" />
-                <button>获取验证码</button>
+                <captcha />
               </div>
             </div>
             <Button type="warning" size="large" @click="ok">确定</Button>
@@ -81,7 +81,11 @@
 </template>
 
 <script>
+import captcha from "../../components/Captcha";
 export default {
+  components: {
+    captcha
+  },
   data() {
     return {
       pitchon: -1,

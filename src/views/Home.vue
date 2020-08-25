@@ -11,7 +11,7 @@
         <div class="classify">
           <div>商品分类</div>
           <ul>
-            <li v-for="(item,index) in navigations" :key="index">{{ item.name }}</li>
+            <li v-for="(item,index) in navigations" :key="index" @click="classifyClick(item)">{{ item.name }}</li>
           </ul>
         </div>
         <Carousel class="Carouselbox" v-model="value" autoplay :autoplay-speed="5000" arrow="never">
@@ -66,7 +66,7 @@ export default {
   mounted() {
     this.getswipeImg();
     this.getHomeCate();
-    this.gethomeRecommend()
+    this.gethomeRecommend();
   },
   methods: {
     // 轮播图
@@ -113,6 +113,12 @@ export default {
         .catch(() => {
           // this.$toast(this.$api.monmsg);
         });
+    },
+    classifyClick: function (data) {
+      this.$router.push({
+        path: "/classify",
+        query: data,
+      });
     },
   },
 };
@@ -167,7 +173,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     padding-top: 1rem;
-    justify-content: space-around;
+    // justify-content: space-around;
     > div {
       margin-bottom: 1rem;
     }

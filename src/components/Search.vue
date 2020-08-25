@@ -8,8 +8,8 @@
       </div>
       <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
-          <input type="text" v-model="search" @keyup.enter="rut" />
-          <button @click="rut">搜索</button>
+          <input type="text" v-model="search" @keyup.enter="onSearch" />
+          <button @click="onSearch">搜索</button>
         </div>
         <div class="btnbox">
           <span>打印机</span>|
@@ -35,6 +35,7 @@
 export default {
   props: {
     isSearch: Boolean,
+    searchname: String,
   },
   data() {
     return {
@@ -45,13 +46,21 @@ export default {
     gohome: function () {
       if (this.$route.path != "/") this.$router.push("/");
     },
-    rut: function () {
-      if (this.$route.path == "/classify") return;
-      this.$router.push("/classify");
+    onSearch: function () {
+      if (this.$route.path == "/classify") {
+        this.$emit("searchClick", this.search);
+      } else {
+        this.$router.push("/classify");
+      }
     },
     serve: function () {
       this.$router.push("/maintain/chooseType");
-    }
+    },
+  },
+  watch: {
+    searchname(name) {
+      this.search = name;
+    },
   },
 };
 </script>

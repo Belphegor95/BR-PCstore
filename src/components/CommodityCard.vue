@@ -1,11 +1,11 @@
 <!-- 商品卡 -->
 <template>
   <div class="commodityCard" @click="rut">
-    <img :src="data.plist_img_url[0]" alt />
+    <img v-if="data.plist_img_url" :src="data.plist_img_url[0]" alt />
     <div class="contentbox">
       <p>{{ data.plist_name }}</p>
       <p>会员价: 90.00￥</p>
-      <p>
+      <p v-if="data.price_lv.unitList">
         <price :priceNum="data.price_lv.unitList[0].orderPrice" :size="1" />
         <span>原价 ￥{{ data.price_lv.unitList[0].marketPrice }}</span>
       </p>
@@ -40,6 +40,7 @@ export default {
 <style lang="less" scoped>
 .commodityCard {
   width: 19%;
+  margin: 0.5rem 0.35rem;
   border: 1px solid #e9e9e9;
   cursor: pointer;
   > img {
@@ -50,7 +51,7 @@ export default {
     padding-top: 0.3rem;
     padding-bottom: 0.25rem;
     > p:nth-child(1) {
-      word-wrap:break-word;
+      word-wrap: break-word;
       //   font-weight: 700;
       font-size: 1.05rem;
     }

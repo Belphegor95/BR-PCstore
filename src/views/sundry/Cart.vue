@@ -16,26 +16,26 @@
           </div>
           <div class="namebox">商品信息</div>
           <div>单价</div>
-          <div>数量</div>
           <div>金额</div>
+          <div>数量</div>
           <div>操作</div>
         </span>
         <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
-          <span v-for="(item,index) in arr" :key="index">
+          <span v-for="(item,index) in shoppings" :key="index">
             <div>
               <Checkbox :label="index" />
             </div>
             <div class="namebox">
-              <img src="../../assets/img/home/a.png" alt />
-              <p>这里是商品名称这里是商品名称这里是商品名称</p>
+              <img :src="item.picUrl" alt />
+              <p>{{ item.plistName }}</p>
             </div>
-            <div>颜色分类: 白色</div>
-            <div>￥ 30.00</div>
+            <div>颜色分类: {{ item.priceName[1] ? item.priceName[1]: "暂无" }}</div>
+            <div>￥ {{ item.orderPrice }}</div>
             <div>
-              <stepper :stepperObj="{num:item,index:index}" @getstepperObj="getstepperObj" />
+              <stepper :stepperObj="{num:item.buyNum,index:index}" @getstepperObj="getstepperObj" />
             </div>
             <div>
-              <span>删除</span>
+              <span @click="delShopping(item,index)">删除</span>
             </div>
           </span>
         </CheckboxGroup>
@@ -61,13 +61,13 @@
             </div>
           </div>
           <div>
-            <Button type="warning" @click="$router.push('/payment')">去结算</Button>
+            <Button type="warning" @click="downOrder">去结算</Button>
           </div>
         </div>
         <div class="imgbox" v-show="is_imgbox">
           <div v-for="(item,index) in checkAllGroup" :key="index">
-            <img src="../../assets/img/home/a.png" alt />
-            <p>取消选择</p>
+            <img :src="shoppings[item].picUrl" alt />
+            <p @click="delPitch(index)">取消选择</p>
           </div>
           <span></span>
         </div>
@@ -97,10 +97,11 @@ export default {
       arr: [1, 2, 3, 4, 5, 6],
       value1: 0,
       is_imgbox: false,
+      shoppings: [], // 购物车商品
     };
   },
   mounted() {
-    this.getShoppingCart()
+    this.getShoppingCart();
   },
   methods: {
     // 获取购物车商品
@@ -109,20 +110,102 @@ export default {
         .post(this.$api.getShoppingCart)
         .then((data) => {
           if (data.code == 200) {
-            console.info(data)
-            // this.shoppings = data.data;
-            // this.freeSend = data.freeSend;
-            // let num = 0;
-            // for (let i = 0; i < data.data.length; i++) {
-            //   let item = data.data[i].unit;
-            //   num = num + item.length;
-            // }
-            // this.$store.commit("show_count", num);
-            // // 选中全部
-            // this.$nextTick(() => {
-            //   this.checkedClick(true);
-            //   this.calctotalPrice();
-            // });
+            this.shoppings = [];
+            for (let i = 0; i < data.data.length; i++) {
+              let item = data.data[i];
+              for (let j = 0; j < item.unit.length; j++) {
+                let itemj = item.unit[j];
+                let obj = new Object();
+                obj.picUrl = item.picUrl;
+                obj.plistId = item.plistId;
+                obj.plistName = item.plistName;
+                obj.buyNum = itemj.buyNum;
+                obj.cateId = itemj.cateId;
+                obj.orderPrice = itemj.orderPrice;
+                obj.plistId = itemj.plistId;
+                obj.priceId = itemj.priceId;
+                obj.priceName = itemj.priceName.split("  ");
+                this.shoppings.push(obj);
+              }
+            }
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 修改购物车商品数量
+    shoppingCarCount: function (item) {
+      this.axios
+        .post(this.$api.editShoppingCarCount, {
+          plistId: item.plistId,
+          priceId: item.priceId,
+          cateId: item.cateId,
+          buyNum: item.buyNum,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            console.info(data);
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 删除商品
+    delShopping: function (item, index_) {
+      // 处理数据
+      let arr = [];
+      let obj = {};
+      obj.unit = [];
+      obj.plistId = item.plistId;
+      let obj_ = {};
+      obj_.cateId = item.cateId;
+      obj_.priceId = item.priceId;
+      obj.unit.push(obj_);
+      arr.push(obj);
+      this.$layer.confirm(
+        "你确定要删除吗?",
+        {
+          btn: ["确定", "取消"], //按钮
+        },
+        (index) => {
+          this.axios
+            .post(this.$api.delSelectShoppingCart, {
+              plistIds: JSON.stringify(arr),
+            })
+            .then((data) => {
+              if (data.code == 200) {
+                this.checkAllGroup.splice(index_, "1");
+                this.getShoppingCart();
+              } else {
+                this.$toast(this.ErrCode(data.msg));
+              }
+            })
+            .catch(() => {
+              this.$toast(this.$api.monmsg);
+            });
+          this.$layer.close(index);
+        },
+        (index) => {
+          this.$layer.close(index);
+        }
+      );
+    },
+    // 下单
+    downOrder: function () {
+      this.axios
+        .post(this.$api.downOrder, {
+          plistIds: JSON.stringify(this.getdownOrderArr()),
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.$store.commit("show_order", data.data);
+            this.$router.push("/payment");
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -131,13 +214,54 @@ export default {
           this.$toast.fail(this.$api.monmsg);
         });
     },
+    getdownOrderArr: function () {
+      let arr = [];
+      for (let i = 0; i < this.checkAllGroup.length; i++) {
+        let index = this.checkAllGroup[i];
+        let item = this.shoppings[index];
+        let obj = {};
+        obj.plistId = item.plistId;
+        obj.unit = [];
+        let obj_ = {};
+        obj_.cateId = item.cateId;
+        obj_.priceId = item.priceId;
+        for (let j = 0; j < arr.length; j++) {
+          let itemj = arr[j];
+          if (itemj.plistId == item.plistId) {
+            itemj.unit.push(obj_);
+            break;
+          } else {
+            obj.unit.push(obj_);
+            arr.push(obj);
+            break;
+          }
+        }
+        if (arr.length == 0) {
+          obj.unit.push(obj_);
+          arr.push(obj);
+        }
+      }
+      return arr;
+    },
+    // 数量改变
     getstepperObj: function (obj) {
-      this.arr[obj.index] = obj.num;
+      this.shoppings[obj.index].buyNum = obj.num;
+      this.shoppingCarCount(this.shoppings[obj.index]);
       this.$forceUpdate();
     },
     getimgbox: function () {
       this.is_imgbox = !this.is_imgbox;
     },
+    delPitch: function (index) {
+      this.checkAllGroup.splice(index, "1");
+      if (this.checkAllGroup.length == 0) {
+        this.indeterminate = false;
+      } else {
+        this.indeterminate = true;
+      }
+      this.checkAll = false;
+    },
+    // 全选
     handleCheckAll() {
       if (this.indeterminate) {
         this.checkAll = false;
@@ -145,15 +269,19 @@ export default {
         this.checkAll = !this.checkAll;
       }
       this.indeterminate = false;
-
+      //  全选  储存所有索引
       if (this.checkAll) {
-        this.checkAllGroup = [0, 1, 2, 3, 4, 5];
+        this.checkAllGroup = [];
+        for (let i = 0; i < this.shoppings.length; i++) {
+          this.checkAllGroup.push(i);
+        }
       } else {
         this.checkAllGroup = [];
       }
     },
+    // 单选
     checkAllGroupChange(data) {
-      if (data.length === 6) {
+      if (data.length === this.shoppings.length) {
         this.indeterminate = false;
         this.checkAll = true;
       } else if (data.length > 0) {
@@ -197,6 +325,7 @@ export default {
           height: 6rem;
         }
         > p {
+          width: 10rem;
           padding-left: 0.5rem;
           margin-top: 0.5rem;
         }
@@ -279,9 +408,11 @@ export default {
     .imgbox {
       position: absolute;
       width: 100%;
-      height: 8rem;
+      // height: 8rem;
       display: flex;
-      top: -8rem;
+      flex-wrap: wrap;
+      // top: -8rem;
+      bottom: 5.5rem;
       padding: 1rem;
       background: #fff;
       border: 1px solid #ff8400;

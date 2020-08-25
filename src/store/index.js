@@ -5,10 +5,11 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: {},
+    user: null,
     personid: 0,
     maintainid: 0,
-    detailsdata: {}
+    detailsdata: {},
+    order: {},
   },
   mutations: {
     show_user(state, payload) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     show_detailsdata(state, payload) {
       state.detailsdata = payload;
     },
+    show_order(state, payload) {
+      state.order = payload;
+    }
   },
   actions: {
   },

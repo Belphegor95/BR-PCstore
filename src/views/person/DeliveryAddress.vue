@@ -32,7 +32,7 @@
         <span>
           <b>*</b>收货人姓名:
         </span>
-        <Input v-model="value" placeholder="请填写收货人姓名" />
+        <Input v-model="linkman" placeholder="请填写收货人姓名" />
       </div>
       <div>
         <span>
@@ -75,7 +75,7 @@
       <div>
         <span></span>
         <div class="default">
-          <Checkbox v-model="single" />
+          <Checkbox v-model="isDefault" />
           <p>设置默认地址</p>
         </div>
       </div>
@@ -100,7 +100,7 @@
         <div>操作</div>
         <div></div>
       </div>
-      <div v-for="(item,index) in 2" :key="index">
+      <div v-for="(item,index) in address" :key="index">
         <div>张三</div>
         <div>河南郑州市中原区建设路街道</div>
         <div>中原广告产业园2816</div>
@@ -134,19 +134,69 @@ export default {
         },
       ],
       model1: 0,
-      single: false,
+      
       location: "",
       keyword: "",
       site: "",
+      address: [], //地址
+      linkman: "", // 收货人姓名
+      phone: "", // 收货人电话
+      isDefault: false, // 是否是默认地址
     };
   },
   mounted() {
+    this.getAllAddress();
     this.$store.commit("show_personid", 3);
   },
   methods: {
     ok(a) {
       this.site = a.title;
-      console.info(a);
+    },
+    // 获取用户所有地址
+    getAllAddress: function () {
+      this.axios
+        .post(this.$api.getAllAddress)
+        .then((data) => {
+          if (data.code == 200) {
+            this.address = data.data;
+            for (let i = 0; i < this.address.length; i++) {
+              let item = this.address[i];
+              // 默认地址展示
+              if (item.address_default == 1) {
+                // this.default_ = i;
+                // 排序 把默认地址第一个
+                let obj = item;
+                this.address.splice(i, 1);
+                this.address.unshift(obj);
+                break;
+              }
+            }
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 添加收货地址
+    addAddress() {
+      this.axios
+        .post(this.$api.addAddress, {
+          // linkman: this.name,
+          // phone: this.tel,
+          // address: `${this.province}/${this.city}/${this.county}`,
+          // address_detail: this.addressDetail,
+          // address_default: this.isDefault ? 1 : 0,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.$toast("地址保存成功!");
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
     },
   },
 };
