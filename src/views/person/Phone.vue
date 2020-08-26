@@ -43,8 +43,8 @@
             <div>
               <span>验证码:</span>
               <div>
-                <Input v-model="value" placeholder="Enter something..." style="width: 200px" />
-                <captcha />
+                <Input v-model="value" style="width: 200px" />
+                <captcha :phoneNum="phoneNum" />
               </div>
             </div>
             <Button type="warning" size="large" @click="ok">确定</Button>
@@ -55,13 +55,14 @@
           <div>
             <div>
               <span>新手机号:</span>
-              <Input v-model="value" placeholder="Enter something..." style="width: 200px" />
+              <Input v-model="value"  style="width: 200px" />
             </div>
             <div>
               <span>验证码:</span>
               <div>
-                <Input v-model="value" placeholder="Enter something..." style="width: 200px" />
-                <button>获取验证码</button>
+                <Input v-model="value"  style="width: 200px" />
+                <captcha :phoneNum="phoneNum" />
+                <!-- <button>获取验证码</button> -->
               </div>
             </div>
             <Button type="warning" size="large" @click="ok">确定</Button>
@@ -90,6 +91,7 @@ export default {
     return {
       pitchon: -1,
       value: "",
+      phoneNum: "",
     };
   },
   

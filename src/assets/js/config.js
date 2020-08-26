@@ -16,7 +16,7 @@ api.slideshow = "/api/slideshow"  // 轮播图 1
 
 api.homeRecommend = "/api/homeRecommend"  // 推荐商品 1
 
-api.cate = "/api/cate"  // 分类  
+api.cate = "/api/cate"  // 分类  1
 
 api.getCatePlist = "/api/getCatePlist"  // 获取分类商品 1
 
@@ -24,13 +24,13 @@ api.getHomeCate = "/api/getHomeCate"  // 首页分类入口 1
 
 api.getYzm = "/api/getYzm"  // 获取验证码 1
 
-api.addAddress = "/api/addAddress"  // 保存收货地址
+api.addAddress = "/api/addAddress"  // 保存收货地址 1
 
-api.getAllAddress = "/api/getAllAddress"  // 获取所有收货地址
+api.getAllAddress = "/api/getAllAddress"  // 获取所有收货地址 1
 
-api.editAddress = "/api/editAddress"  // 设置为默认地址
+api.editAddress = "/api/editAddress"  // 设置为默认地址 1
 
-api.delAddress = "/api/delAddress"  // 删除收货地址
+api.delAddress = "/api/delAddress"  // 删除收货地址 1
 
 api.search = "/api/search"  // 搜索商品 1
 
@@ -44,13 +44,13 @@ api.editShoppingCarCount = "/api/editShoppingCarCount"  // 修改购物车商品
 
 api.delSelectShoppingCart = "/api/delSelectShoppingCart"  // 删除购物车商品 1
 
-api.downOrder = "/api/downOrder"  // 购物车下单
+api.downOrder = "/api/downOrder"  // 购物车下单 1
 
 api.submitOrder = "/api/submitOrder"  // 提交订单
 
-api.getOrderList = "/api/getOrderList"  // 获取订单
+api.getOrderList = "/api/getOrderList"  // 获取订单 1
 
-api.getTicket = "/api/getTicket"  // 获取优惠券
+api.getTicket = "/api/getTicket"  // 获取优惠券 1
 
 api.submitSuggest = "/api/submitSuggest"  // 提交意见建议
 
@@ -60,6 +60,6 @@ api.applyChangePhone = "/api/applyChangePhone"  // 申请更换手机号
 
 api.changePhone = "/api/changePhone"  // 换绑手机号
 
-api.logout = "/api/logout"  // 退出登录
+api.logout = "/api/logout"  // 退出登录 1
 
 export { api };

@@ -35,16 +35,16 @@
         <span>管理收货地址</span>
       </div>
       <div>
-        <RadioGroup v-model="phone" class="radiobox">
-          <div v-for="(item,index) in 4" :key="index" :class="phone == index? 'radio_active':''">
+        <RadioGroup v-model="addressindex" class="radiobox">
+          <div v-for="(item,index) in orderdata.address" :key="index" :class="addressindex == index? 'radio_active':''">
             <div style="opacity: 0;">
               <img src="../../assets/img/sundry/dw.png" alt />
               <p>寄送到</p>
             </div>
             <Radio :label="index">
               <div>
-                <p>北京北京确定北京北京确定北京北京确定北京北京确定北京北京确定北京北京确定</p>
-                <span v-show="phone == index">修改本地址</span>
+                <p>{{ item.address + item.address_detail | site }}</p>
+                <span v-show="addressindex == index" @click="rut(item)">修改本地址</span>
               </div>
             </Radio>
           </div>
@@ -59,16 +59,16 @@
             <div>数量</div>
             <div>金额</div>
           </div>
-          <div v-for="(item,index) in 3" :key="index">
+          <div v-for="(item,index) in orderdata.plistDetail" :key="index">
             <div>
-              <img src="../../assets/img/sundry/zt.png" alt />
-              <p>商品名称商品名称商品名称商品名称商品名称</p>
+              <img :src="item.picUrl" alt />
+              <p>{{ item.plistName }}</p>
             </div>
             <div>
               <span>颜色:</span>
               <p>白色</p>
             </div>
-            <div>30.00</div>
+            <div>{{ item.priceName }}</div>
             <div>3</div>
             <div>30.00</div>
           </div>
@@ -77,11 +77,11 @@
           <div>
             <div>
               <span>给卖家留言</span>
-              <Input v-model="value" maxlength="100" show-word-limit type="textarea" placeholder="Enter something..." style="width: 200px" />
+              <Input v-model="notes" maxlength="100" show-word-limit type="textarea" style="width: 15rem" />
             </div>
             <div>
               <span>发票</span>
-              <Select v-model="model1" style="width:100px">
+              <Select v-model="billState" style="width:100px">
                 <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
               </Select>
             </div>
@@ -120,9 +120,9 @@
             </p>
             <div>
               <span>寄送至:</span>
-              <p>北京北京确定北京北京确定北京北京确定北京北京确定北京北京确定北京北京确定</p>
+              <p>{{ orderdata.address[addressindex].address + orderdata.address[addressindex].address_detail | site }}</p>
             </div>
-            <span>收货人: 张三 18612346578</span>
+            <span>收货人: {{ orderdata.address[addressindex].linkman }} {{ orderdata.address[addressindex].phone }}</span>
           </div>
           <Button>提交订单</Button>
         </div>
@@ -131,6 +131,7 @@
     <div class="bottombox">
       <statement />
     </div>
+    <div class="msgbox">满50包邮</div>
   </div>
 </template>
 
@@ -145,40 +146,39 @@ export default {
   data() {
     return {
       pitchon: 0,
-      phone: 0,
-      value: "",
+      addressindex: 0,
+      notes: "",
       cityList: [
         {
-          value: "New York",
-          label: "New York",
+          value: 0,
+          label: "不要发票",
         },
         {
-          value: "London",
-          label: "London",
-        },
-        {
-          value: "Sydney",
-          label: "Sydney",
-        },
-        {
-          value: "Ottawa",
-          label: "Ottawa",
-        },
-        {
-          value: "Paris",
-          label: "Paris",
-        },
-        {
-          value: "Canberra",
-          label: "Canberra",
+          value: 1,
+          label: "电子发票",
         },
       ],
-      model1: "",
+      billState: 0,
+      orderdata: this.$store.state.order,
     };
   },
   methods: {
     gohome: function () {
       this.$router.push("/");
+    },
+    rut: function (item) {
+      this.$router.push({
+        path: "/person/deliveryAddress",
+        query: {
+          id: item.id,
+        },
+      });
+    },
+  },
+  filters: {
+    site: function (value) {
+      // 替换地址 /
+      return value.replace(/\//g, "");
     },
   },
 };
@@ -202,7 +202,6 @@ export default {
       //   步骤条
       .stepsbox {
         display: flex;
-        // align-items: center;
         justify-content: center;
         > div:nth-child(odd) {
           margin: 0 1rem;
@@ -275,6 +274,7 @@ export default {
         > div {
           display: flex;
           overflow: hidden;
+          padding: 0.2rem 0;
           > div {
             display: flex;
             width: 6rem;
@@ -292,6 +292,7 @@ export default {
             > div {
               display: flex;
               width: 100%;
+              align-items: center;
               justify-content: space-between;
               > p {
                 word-wrap: break-word;
@@ -387,6 +388,7 @@ export default {
         display: flex;
         flex-direction: column;
         > div {
+          flex: 1;
           display: flex;
           padding: 1rem;
           color: #000;
@@ -450,7 +452,7 @@ export default {
         > span {
           text-align: right;
         }
-        >p {
+        > p {
           color: #ff8400;
           font-size: 1.6rem;
           font-weight: 700;
@@ -464,7 +466,7 @@ export default {
           display: flex;
           margin: 0.5rem 0;
           > span {
-            width: 5rem;
+            width: 4rem;
           }
         }
       }
@@ -477,6 +479,14 @@ export default {
         color: #fff;
       }
     }
+  }
+  .msgbox {
+    width: 5rem !important;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding:  0.5rem;
+    border: 1px solid #999;
   }
 }
 </style>

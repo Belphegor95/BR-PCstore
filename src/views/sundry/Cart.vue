@@ -56,7 +56,7 @@
               </p>
               <div>
                 ￥
-                <p>1688.00</p>
+                <p>{{ totalPrice.toFixed(2) }}</p>
               </div>
             </div>
           </div>
@@ -94,10 +94,10 @@ export default {
       indeterminate: false,
       checkAll: false,
       checkAllGroup: [],
-      arr: [1, 2, 3, 4, 5, 6],
       value1: 0,
       is_imgbox: false,
       shoppings: [], // 购物车商品
+      totalPrice: 0, // 总价
     };
   },
   mounted() {
@@ -147,7 +147,7 @@ export default {
         })
         .then((data) => {
           if (data.code == 200) {
-            console.info(data);
+            this.gettotalPrice();
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -214,6 +214,7 @@ export default {
           this.$toast.fail(this.$api.monmsg);
         });
     },
+    // 处理 数据
     getdownOrderArr: function () {
       let arr = [];
       for (let i = 0; i < this.checkAllGroup.length; i++) {
@@ -242,6 +243,16 @@ export default {
         }
       }
       return arr;
+    },
+    // 获取总价
+    gettotalPrice: function () {
+      this.totalPrice = 0;
+      for (let i = 0; i < this.checkAllGroup.length; i++) {
+        let index = this.checkAllGroup[i];
+        let item = this.shoppings[index];
+        let num = item.orderPrice * item.buyNum;
+        this.totalPrice += num;
+      }
     },
     // 数量改变
     getstepperObj: function (obj) {
@@ -278,6 +289,7 @@ export default {
       } else {
         this.checkAllGroup = [];
       }
+      this.gettotalPrice();
     },
     // 单选
     checkAllGroupChange(data) {
@@ -291,6 +303,7 @@ export default {
         this.indeterminate = false;
         this.checkAll = false;
       }
+      this.gettotalPrice();
     },
   },
 };

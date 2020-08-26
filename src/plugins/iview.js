@@ -15,6 +15,7 @@ import { InputNumber } from 'view-design';
 import { Select, Option } from 'view-design';
 import { RadioGroup, Radio  } from 'view-design';
 import { Upload   } from 'view-design';
+import { Cascader   } from 'view-design';
  
 import 'view-design/dist/styles/iview.css';
 
@@ -38,5 +39,6 @@ Vue.component('Option', Option);
 Vue.component('RadioGroup', RadioGroup);
 Vue.component('Radio', Radio);
 Vue.component('Upload', Upload);
+Vue.component('Cascader', Cascader);
 
 

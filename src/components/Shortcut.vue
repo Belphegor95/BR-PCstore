@@ -10,7 +10,7 @@
             <img src="../assets/img/guide/tx.png" alt />
             <div>
               <p>账号管理</p>
-              <p>退出</p>
+              <p @click="quit">退出</p>
             </div>
           </div>
         </span>
@@ -82,6 +82,34 @@ export default {
         .catch(() => {
           this.$toast(this.$api.monmsg);
         });
+    },
+    quit: function () {
+      this.$layer.confirm(
+        "你确定要退出吗?",
+        {
+          btn: ["确定", "取消"], //按钮
+        },
+        (index) => {
+          this.axios
+            .post(this.$api.logout)
+            .then((data) => {
+              if (data.code == 200) {
+                localStorage.removeItem("vuex");
+                this.$store.commit("resetState");
+                this.$router.push("/guide/login");
+              } else {
+                this.$toast(this.ErrCode(data.msg));
+              }
+            })
+            .catch(() => {
+              this.$toast(this.$api.monmsg);
+            });
+          this.$layer.close(index);
+        },
+        (index) => {
+          this.$layer.close(index);
+        }
+      );
     },
   },
 };

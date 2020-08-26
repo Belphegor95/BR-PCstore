@@ -54,15 +54,37 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      formid: 0,
+      orderList: [],
+    };
   },
   mounted() {
     this.$store.commit("show_personid", 2);
+    this.getOrderList();
   },
   methods: {
     // 详情页
     ordetails: function () {
       this.$router.push("/person/orderDetails");
+    },
+    // 获取列表
+    getOrderList: function () {
+      this.orderList = [];
+      this.axios
+        .post(this.$api.getOrderList, {
+          type: this.formid,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.orderList = data.data;
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast.fail(this.$api.monmsg);
+        });
     },
   },
 };

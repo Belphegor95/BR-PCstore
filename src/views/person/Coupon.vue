@@ -23,10 +23,29 @@ export default {
   data() {
     return {
       isticket: true,
+      ticketList: [],
     };
   },
   mounted() {
     this.$store.commit("show_personid", 6);
+    this.getTicket();
+  },
+  methods: {
+    // 获取优惠券
+    getTicket: function () {
+      this.axios
+        .post(this.$api.getTicket)
+        .then((data) => {
+          if (data.code == 200) {
+            this.ticketList = data.data;
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast.fail(this.$api.monmsg);
+        });
+    },
   },
 };
 </script>

@@ -26,6 +26,9 @@ export default new Vuex.Store({
     },
     show_order(state, payload) {
       state.order = payload;
+    },
+    resetState(state) {
+      Object.assign(state, getDefaultState())
     }
   },
   actions: {
@@ -34,3 +37,13 @@ export default new Vuex.Store({
   },
   plugins: [persistedstate()],
 })
+// 设置要重置的参数
+const getDefaultState = () => {
+  return {
+    user: null,
+    personid: 0,
+    maintainid: 0,
+    detailsdata: {},
+    order: {},
+  }
+}
