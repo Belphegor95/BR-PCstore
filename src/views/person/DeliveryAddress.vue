@@ -4,8 +4,9 @@
     <h4>收货地址</h4>
     <div class="mark">收货地址</div>
     <div @click="addClick">新增收货地址</div>
-    <div class="formbox">
-      <div class="dtbox" v-show="isadd == 1">
+    <div class="formbox" ref="formbox">
+      <div class="kongbox"></div>
+      <div class="dtbox">
         <span>
           <div class="gjcbox">
             <div>
@@ -24,12 +25,12 @@
             </div>
             <Button @click="search">搜索</Button>
           </div>
-          <baidu-map ak="FMxNKCVYPKKweAKH5b5Drv31Kz6pOGAg" class="map">
+          <baidu-map ak="FMxNKCVYPKKweAKH5b5Drv31Kz6pOGAg" class="map" @ready="mapReady">
             <bm-local-search class="search" :keyword="keyword" :auto-viewport="true" @infohtmlset="infohtmlset" :location="location"></bm-local-search>
           </baidu-map>
         </span>
       </div>
-      <div class="xxbox" v-show="isadd == 2">
+      <div class="xxbox">
         <div class="mark location">
           <p>
             当前地址
@@ -42,7 +43,7 @@
             <b>*</b>地址信息:
           </span>
           <Input v-model="site" placeholder="请输入地址信息" style="width: 22.5rem" disabled />
-          <Button style="margin-left:1rem" @click="isadd = 1">修改地址</Button>
+          <Button style="margin-left:1rem" @click="$refs.formbox.scrollTop = 480">修改地址</Button>
         </div>
         <div>
           <span>
@@ -92,18 +93,17 @@
       </div>
       <div v-for="(item,index) in address" :key="index">
         <div>{{ item.linkman }}</div>
-        <div>{{ item.address }}</div>
+        <div>{{ item.address | site }}</div>
         <div>{{ item.address_detail }}</div>
         <div>{{ item.phone }}</div>
         <div>
-          <span>修改</span>|
+          <span @click="compile(item)">修改</span>|
           <span @click="deladdress(item)">删除</span>
         </div>
         <div>
           <span v-if="item.address_default" @click="editAddress(item)">设置默认地址</span>
           <span v-else style="color: #000">默认地址</span>
         </div>
-        <!-- <div>{{ item.address_default ? "设置默认地址" :"默认地址" }}</div> -->
       </div>
     </div>
   </div>
@@ -112,7 +112,7 @@
 <script>
 import BaiduMap from "vue-baidu-map/components/map/Map.vue";
 import BmLocalSearch from "vue-baidu-map/components/search/LocalSearch.vue";
-import cityData from "../../assets/js/cityData";
+import dizhi from "../../assets/js/dizhi";
 export default {
   components: {
     BaiduMap,
@@ -128,30 +128,35 @@ export default {
       ], // 电话地址
       address: [], // 地址集合
       model1: 0,
-      detail: "", // 用户输入搜索条件
+      address_: [], // 地区
+      detail: "", // 详细地址
       location: "", // BM 搜索条件
       keyword: "", // BM 搜索条件
       site: "", // 展示用地址信息
-      address_: [], // 省市县地址
       linkman: "", // 收货人姓名
       phone: "", // 收货人电话
       isDefault: false, // 是否是默认地址
       coordinate: {}, // 坐标位置 经纬度
-      addressdata: [], // 默认省市县
-      isadd: 0, // 收货地址添加的状态
+      addressdata: dizhi.location, // 默认省市县
+      istype: true, // 保存还是修改
+      addressId: null, // 要修改的地址id
     };
   },
   mounted() {
-    this.getprovince();
+    // this.getprovince();
     this.getAllAddress();
     this.$store.commit("show_personid", 3);
-    let addressid = this.$route.query.id;
-    if (addressid) this.compile(addressid);
-    // console.info(addressid);
   },
   methods: {
+    // 百度地图实例生成以后
+    mapReady: function () {
+      let address = this.$route.query;
+      if (address.is) return (this.$refs.formbox.scrollTop = 480);
+      if (Object.keys(address).length != 0) return this.compile(address);
+    },
     addClick: function () {
-      this.isadd = 1;
+      this.istype = true;
+      this.$refs.formbox.scrollTop = 480;
       this.detail = "";
       this.location = "";
       this.keyword = "";
@@ -168,38 +173,62 @@ export default {
     },
     // 点击搜索
     search: function () {
+      if (this.detail == "") return this.$toast("请输入详细地址!");
       this.keyword = this.location + this.detail;
     },
     // 百度地图选择地址
     infohtmlset(a) {
-      this.isadd = 2;
+      if (this.detail == "") return this.$toast("请输入详细地址!");
+      this.$refs.formbox.scrollTop = 960;
       this.site = a.title;
-      this.coordinate = a;
+      this.coordinate.lat = a.point.lat;
+      this.coordinate.lng = a.point.lng;
     },
     // 编辑
-    compile: function () {
-      this.isadd = 1;
-      for (let i = 0;i < this.address.length;i++) {
-        console.info(i)
-      }
+    compile: function (a) {
+      this.istype = false;
+      this.$refs.formbox.scrollTop = 960;
+      this.addressId = a.id;
+      let addressdata = a.address.split("/");
+      // 地区
+      this.address_ = addressdata;
+      // 详细地址
+      this.detail = a.address_detail;
+      // 搜寻地区
+      this.location = `${addressdata[1]}${addressdata[2]}`;
+      // 搜寻详细地址
+      this.keyword = this.location + this.detail;
+      // 经纬度
+      this.coordinate.lat = a.lat;
+      this.coordinate.lng = a.lng;
+      // 展示用地址信息
+      this.site = a.address_detail;
+      this.linkman = a.linkman;
+      this.phone = a.phone;
+      this.isDefault = a.address_default ? true : false;
     },
     // 保存地址
     onSave() {
+      // 如果是修改
+      if (!this.istype) return this.editAddress();
       this.axios
         .post(this.$api.addAddress, {
           linkman: this.linkman,
           phone: this.phone,
           address: `${this.address_[0]}/${this.address_[1]}/${this.address_[2]}`,
           address_detail: this.site,
-          lat: this.coordinate.point.lat,
-          lng: this.coordinate.point.lng,
+          lat: this.coordinate.lat,
+          lng: this.coordinate.lng,
           address_default: this.isDefault ? 1 : 0,
         })
         .then((data) => {
           if (data.code == 200) {
-            this.isadd = 0;
+            this.$refs.formbox.scrollTop = 0;
             this.getAllAddress();
             this.$toast("地址保存成功!");
+            // 如果是订单过来的 跳转到  订单
+            let address = this.$route.query;
+            if (Object.keys(address).length != 0) return this.$router.go(-1);
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -229,7 +258,7 @@ export default {
               }
             })
             .catch(() => {
-              this.$toast.fail(this.$api.monmsg);
+              this.$toast(this.$api.monmsg);
             });
           this.$layer.close(index);
         },
@@ -242,22 +271,27 @@ export default {
     editAddress: function (item) {
       this.axios
         .post(this.$api.editAddress, {
-          addressId: item.id,
-          phone: item.phone,
-          linkman: item.linkman,
-          address: item.address,
-          address_detail: item.address_detail,
-          address_default: 1, //1 设置为默认地址
+          addressId: this.addressId,
+          phone: this.phone,
+          linkman: this.linkman,
+          address: `${this.address_[0]}/${this.address_[1]}/${this.address_[2]}`,
+          address_detail: this.site,
+          lat: this.coordinate.lat,
+          lng: this.coordinate.lng,
+          address_default: this.isDefault ? 1 : 0,
         })
         .then((data) => {
           if (data.code == 200) {
+            // 如果是订单过来的 跳转到  订单
+            let address = this.$route.query;
+            if (Object.keys(address).length != 0) return this.$router.go(-1);
             this.getAllAddress();
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
         })
         .catch(() => {
-          this.$toast.fail(this.$api.monmsg);
+          this.$toast(this.$api.monmsg);
         });
     },
     // 获取用户所有地址
@@ -286,51 +320,57 @@ export default {
         });
     },
     // 处理地址数据
-    getprovince: function () {
-      for (let key in cityData.province_list) {
-        let obj = new Object();
-        obj.value = cityData.province_list[key];
-        obj.label = cityData.province_list[key];
-        obj.id = key;
-        obj.children = [];
-        this.addressdata.push(obj);
-      }
-      this.getcity();
-    },
-    getcity: function () {
-      for (let i = 0; i < this.addressdata.length; i++) {
-        let item = this.addressdata[i];
-        for (let key in cityData.city_list) {
-          let obj = new Object();
-          obj.value = cityData.city_list[key];
-          obj.label = cityData.city_list[key];
-          obj.id = key;
-          obj.children = [];
-          if (obj.id.substring(0, 2) == item.id.substring(0, 2)) {
-            item.children.push(obj);
-          }
-        }
-      }
-      this.getcounty();
-    },
-    getcounty: function () {
-      for (let i = 0; i < this.addressdata.length; i++) {
-        let item = this.addressdata[i];
-        for (let j = 0; j < item.children.length; j++) {
-          let itemj = item.children[j];
-          for (let key in cityData.county_list) {
-            let obj = new Object();
-            obj.value = cityData.county_list[key];
-            obj.label = cityData.county_list[key];
-            obj.id = key;
-            if (obj.id.substring(0, 2) == item.id.substring(0, 2)) {
-              if (obj.id.substring(2, 4) == itemj.id.substring(2, 4)) {
-                itemj.children.push(obj);
-              }
-            }
-          }
-        }
-      }
+    // getprovince: function () {
+    //   for (let key in cityData.province_list) {
+    //     let obj = new Object();
+    //     obj.value = cityData.province_list[key];
+    //     obj.label = cityData.province_list[key];
+    //     obj.id = key;
+    //     obj.children = [];
+    //     this.addressdata.push(obj);
+    //   }
+    //   this.getcity();
+    // },
+    // getcity: function () {
+    //   for (let i = 0; i < this.addressdata.length; i++) {
+    //     let item = this.addressdata[i];
+    //     for (let key in cityData.city_list) {
+    //       let obj = new Object();
+    //       obj.value = cityData.city_list[key];
+    //       obj.label = cityData.city_list[key];
+    //       obj.id = key;
+    //       obj.children = [];
+    //       if (obj.id.substring(0, 2) == item.id.substring(0, 2)) {
+    //         item.children.push(obj);
+    //       }
+    //     }
+    //   }
+    //   this.getcounty();
+    // },
+    // getcounty: function () {
+    //   for (let i = 0; i < this.addressdata.length; i++) {
+    //     let item = this.addressdata[i];
+    //     for (let j = 0; j < item.children.length; j++) {
+    //       let itemj = item.children[j];
+    //       for (let key in cityData.county_list) {
+    //         let obj = new Object();
+    //         obj.value = cityData.county_list[key];
+    //         obj.label = cityData.county_list[key];
+    //         obj.id = key;
+    //         if (obj.id.substring(0, 2) == item.id.substring(0, 2)) {
+    //           if (obj.id.substring(2, 4) == itemj.id.substring(2, 4)) {
+    //             itemj.children.push(obj);
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // },
+  },
+  filters: {
+    site: function (value) {
+      // 替换地址 /
+      return value.replace(/\//g, "");
     },
   },
 };
@@ -371,8 +411,14 @@ export default {
   }
   .formbox {
     margin: 0;
-    min-height: 30rem;
+    height: 30rem;
+    overflow-y: auto;
+    overflow: hidden;
+    > .kongbox {
+      height: 30rem;
+    }
     > .xxbox {
+      height: 30rem;
       padding-top: 1rem;
       > div {
         display: flex;
@@ -392,6 +438,7 @@ export default {
       }
     }
     > .dtbox {
+      height: 30rem;
       > span {
         width: 100%;
         height: 30rem;
@@ -419,7 +466,6 @@ export default {
             top: 3rem;
             left: 0;
             overflow-y: auto;
-            // overflow: hidden;
             > div {
               height: 25rem;
             }
@@ -447,6 +493,14 @@ export default {
     > div {
       display: flex;
       border-bottom: 1px solid #e6e6e6;
+      // 所在地址
+      > div:nth-child(2) {
+        flex: 1.5;
+      }
+      // 详细地址
+      > div:nth-child(3) {
+        flex: 2;
+      }
       > div {
         flex: 1;
         display: flex;

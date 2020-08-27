@@ -6,7 +6,7 @@
       <div v-show="pitchon== -1">
         <div>
           <span>已绑定手机号:</span>
-          <p>18612346789</p>
+          <p>{{ user.phone }}</p>
           <button @click="startphone">更换手机号</button>
         </div>
       </div>
@@ -33,21 +33,22 @@
         <div v-if="pitchon == 0">
           <h6>
             账号
-            <span>151******56</span>为确认是你本人操作,请完成以下验证
+            <span>{{ user.phone }}</span>
+            <!-- 为确认是你本人操作,请完成以下验证 -->
           </h6>
           <div>
             <div>
-              <span>我的手机号:</span>
-              <p>151******56</p>
+              <span>换绑手机号:</span>
+              <Input v-model="phoneNum" style="width: 200px" />
             </div>
             <div>
               <span>验证码:</span>
               <div>
-                <Input v-model="value" style="width: 200px" />
-                <captcha :phoneNum="phoneNum" />
+                <Input v-model="yzm" style="width: 200px" />
+                <captcha :phoneNum="phoneNum" :change="true" />
               </div>
             </div>
-            <Button type="warning" size="large" @click="ok">确定</Button>
+            <Button type="warning" size="large" @click="applyChangePhone">确定</Button>
           </div>
         </div>
         <div v-else-if="pitchon == 1">
@@ -55,17 +56,16 @@
           <div>
             <div>
               <span>新手机号:</span>
-              <Input v-model="value"  style="width: 200px" />
+              <Input v-model="phoneNum_" style="width: 200px" />
             </div>
             <div>
               <span>验证码:</span>
               <div>
-                <Input v-model="value"  style="width: 200px" />
+                <Input v-model="yzm_" style="width: 200px" />
                 <captcha :phoneNum="phoneNum" />
-                <!-- <button>获取验证码</button> -->
               </div>
             </div>
-            <Button type="warning" size="large" @click="ok">确定</Button>
+            <Button type="warning" size="large" @click="changePhone">确定</Button>
           </div>
         </div>
         <div v-else-if="pitchon == 2">
@@ -85,16 +85,20 @@
 import captcha from "../../components/Captcha";
 export default {
   components: {
-    captcha
+    captcha,
   },
   data() {
     return {
+      user: this.$store.state.user,
       pitchon: -1,
       value: "",
       phoneNum: "",
+      yzm: "",
+      phoneNum_: "",
+      yzm_: "",
     };
   },
-  
+
   watch: {
     $route(to) {
       if (to.query.pitchon) {
@@ -106,12 +110,54 @@ export default {
   },
   mounted() {
     this.$store.commit("show_personid", 5);
-    if(this.$route.query.pitchon) this.pitchon = this.$route.query.pitchon;
+    if (this.$route.query.pitchon) this.pitchon = this.$route.query.pitchon;
+    if (this.pitchon == 0) {
+      this.phoneNum = this.user.phone;
+    }
   },
   methods: {
+    // 开始换绑手机
+    applyChangePhone: function () {
+      this.axios
+        .post(this.$api.applyChangePhone, {
+          phoneNum: this.phoneNum,
+          yzm: this.yzm,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.pitchon = 1;
+            this.$router.push(`/person/phone?pitchon=${this.pitchon}`);
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 换绑手机号
+    changePhone: function () {
+      this.axios
+        .post(this.$api.changePhone, {
+          phoneNum: this.phoneNum_,
+          pwd: this.pwd_,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.pitchon = 2;
+            this.$router.push(`/person/phone?pitchon=${this.pitchon}`);
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
     //   开始换绑手机
     startphone: function () {
       this.pitchon = 0;
+      this.phoneNum = this.user.phone;
       this.$router.push(`/person/phone?pitchon=${this.pitchon}`);
     },
     ok: function () {
@@ -119,8 +165,9 @@ export default {
       this.$router.push(`/person/phone?pitchon=${this.pitchon}`);
     },
     back: function () {
-      this.pitchon = -1;
-      this.$router.push("/person/phone");
+      this.$router.go(-2);
+      // this.pitchon = -1;
+      // this.$router.push("/person/phone");
     },
   },
 };

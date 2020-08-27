@@ -7,6 +7,7 @@
 export default {
   props: {
     phoneNum: String,
+    change: Boolean,
   },
   data() {
     return {
@@ -22,8 +23,12 @@ export default {
         this.$toast("手机号输入有误");
         return;
       }
+      let url = null;
+      this.change
+        ? (url = this.$api.getYzmForChangePhone)
+        : (url = this.$api.getYzm);
       this.axios
-        .post(this.$api.getYzm, {
+        .post(url, {
           phoneNum: this.phoneNum,
         })
         .then((data) => {

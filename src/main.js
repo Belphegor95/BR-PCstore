@@ -22,7 +22,7 @@ axios.interceptors.response.use(
       // 没登录 跳转登录页面
       if (response.data.msg && response.data.msg == 112) {
         router.push({
-          path: '/',
+          path: '/guide/login',
           query: router.currentRoute.fullPath
         })
       }

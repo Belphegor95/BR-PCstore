@@ -3,10 +3,10 @@
   <div class="orderForm">
     <h4>我的订单</h4>
     <div class="ordertypebox">
-      <span>所有订单</span>
-      <span>待付款</span>
-      <span>待收货</span>
-      <span>已完成</span>
+      <span :class="formid == 0? 'active':''" @click="getOrderList(0)">所有订单</span>
+      <span :class="formid == 1? 'active':''" @click="getOrderList(1)">待付款</span>
+      <span :class="formid == 2? 'active':''" @click="getOrderList(2)">待收货</span>
+      <span :class="formid == 3? 'active':''" @click="getOrderList(3)">已完成</span>
     </div>
     <div class="listtop">
       <span>宝贝</span>
@@ -21,29 +21,32 @@
       <Button size="small">下一页</Button>
     </div>
     <ul>
-      <li v-for="(item,index) in 5" :key="index">
+      <li v-for="(item,index) in orderList" :key="index">
         <div>2020-08-07 订单号: 123456789</div>
         <div class="orderlist">
           <div>
-            <div class="imgbox" v-for="(itemJ,indeJ) in index" :key="indeJ">
-              <img src="../../assets/img/home/a.png" alt @click="ordetails" />
+            <div class="imgbox" v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ">
+              <img :src="itemJ.picUrl" alt @click="ordetails" />
               <div @click="ordetails">
                 <h6>这是商品名称</h6>
-                <span>颜色: 白色</span>
-                <span>单位: 件</span>
+                <span>颜色: {{ itemJ.cateName ? itemJ.cateName: '暂无' }}</span>
+                <span>单位: {{ itemJ.priceName | unit }}</span>
               </div>
             </div>
           </div>
-          <div>￥ 30.00</div>
-          <div>1</div>
-          <div>￥ 30.00</div>
           <div>
-            <p>订单已取消</p>
+            <div v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ">{{ itemJ.priceName }}</div>
+          </div>
+          <div>
+            <div v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ">{{ itemJ.buyNum }}</div>
+          </div>
+          <div>￥ {{ item.money }}</div>
+          <div>
             <p>订单已取消</p>
           </div>
           <div>
-            <Button type="warning">再次购买</Button>
-            <Button>再次购买</Button>
+            <Button type="warning">立即付款</Button>
+            <Button>修改订单</Button>
           </div>
         </div>
       </li>
@@ -61,7 +64,7 @@ export default {
   },
   mounted() {
     this.$store.commit("show_personid", 2);
-    this.getOrderList();
+    this.getOrderList(0);
   },
   methods: {
     // 详情页
@@ -69,22 +72,30 @@ export default {
       this.$router.push("/person/orderDetails");
     },
     // 获取列表
-    getOrderList: function () {
-      this.orderList = [];
+    getOrderList: function (type) {
       this.axios
         .post(this.$api.getOrderList, {
-          type: this.formid,
+          type: type,
         })
         .then((data) => {
           if (data.code == 200) {
+            this.formid = type;
             this.orderList = data.data;
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
         })
         .catch(() => {
-          this.$toast.fail(this.$api.monmsg);
+          this.$toast(this.$api.monmsg);
         });
+    },
+  },
+  filters: {
+    unit: function (value) {
+      // 替换地址 /
+      let arr = value.split("/");
+      if (arr[1]) return arr[1];
+      return value;
     },
   },
 };
@@ -102,12 +113,16 @@ export default {
     padding: 1rem;
     justify-content: center;
     > span {
+      cursor: pointer;
       flex: 1;
       text-align: center;
       border-right: 1px solid #dddddd;
     }
     > span:last-child {
       border-right: none;
+    }
+    .active {
+      color: #ff8400;
     }
   }
   .listtop {
@@ -150,6 +165,11 @@ export default {
           align-items: center;
           flex-direction: column;
           justify-content: center;
+          > div {
+            flex: 1;
+            display: flex;
+            align-items: center;
+          }
           .imgbox {
             display: flex;
             margin-bottom: 3rem;

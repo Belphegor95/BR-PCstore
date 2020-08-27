@@ -40,7 +40,7 @@
           <div>
             <span>验证码:</span>
             <input type="text" />
-            <Button>获取验证码</Button>
+            <captcha />
           </div>
           <Button type="primary" class="okbtn" @click="ok(1)">确定</Button>
           <p>其他方法验证</p>
@@ -70,7 +70,11 @@
 </template>
 
 <script>
+import captcha from "../../components/Captcha";
 export default {
+  components: {
+    captcha,
+  },
   data() {
     return {
       pitchon: 0,

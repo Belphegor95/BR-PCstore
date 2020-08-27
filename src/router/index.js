@@ -109,11 +109,6 @@ const routes = [
     name: 'Classify',
     component: () => import('../views/sundry/Classify.vue'),
   },
-  {
-    path: '/classify',
-    name: 'Classify',
-    component: () => import('../views/sundry/Classify.vue'),
-  },
 ]
 
 const router = new VueRouter({

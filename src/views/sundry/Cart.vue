@@ -211,7 +211,7 @@ export default {
           }
         })
         .catch(() => {
-          this.$toast.fail(this.$api.monmsg);
+          this.$toast(this.$api.monmsg);
         });
     },
     // 处理 数据

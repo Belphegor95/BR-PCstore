@@ -36,7 +36,7 @@
       </div>
       <div>
         <RadioGroup v-model="addressindex" class="radiobox">
-          <div v-for="(item,index) in orderdata.address" :key="index" :class="addressindex == index? 'radio_active':''">
+          <div v-for="(item,index) in address" :key="index" :class="addressindex == index? 'radio_active':''">
             <div style="opacity: 0;">
               <img src="../../assets/img/sundry/dw.png" alt />
               <p>寄送到</p>
@@ -49,7 +49,7 @@
             </Radio>
           </div>
         </RadioGroup>
-        <Button>新增地址</Button>
+        <Button @click="$router.push('/person/deliveryAddress?is=true')">新增地址</Button>
         <p>购物车</p>
         <div class="listbox">
           <div>
@@ -66,11 +66,11 @@
             </div>
             <div>
               <span>颜色:</span>
-              <p>白色</p>
+              <p>{{ item.cateName?item.cateName: '暂无' }}</p>
             </div>
-            <div>{{ item.priceName }}</div>
-            <div>3</div>
-            <div>30.00</div>
+            <div>{{ item.price }}</div>
+            <div>{{ item.buyNum }}</div>
+            <div>{{ item.price*item.buyNum }}</div>
           </div>
         </div>
         <div class="propertybox">
@@ -101,37 +101,41 @@
                   <span>卷</span>
                   <span>50</span>
                 </div>
-                <p>0.00</p>
+                <p style="color: #000;cursor: pointer;">
+                  <Icon type="ios-arrow-forward" />
+                </p>
               </div>
             </div>
             <div>
               <p>
                 <span>合计:</span>
-                137.00
+                {{ orderdata.totalMoney }}
               </p>
             </div>
           </div>
         </div>
+        <div style="text-align: right;padding: 0.5rem 1rem;">满50包邮</div>
         <div class="bttombox">
-          <div>
+          <div v-if="address.length > 0">
             <p>
               <span>实付款:</span>
-              137.83
+              {{ orderdata.totalMoney }}
+              <!-- 137.83 -->
             </p>
             <div>
               <span>寄送至:</span>
-              <p>{{ orderdata.address[addressindex].address + orderdata.address[addressindex].address_detail | site }}</p>
+              <p>{{ address[addressindex].address + address[addressindex].address_detail | site }}</p>
             </div>
-            <span>收货人: {{ orderdata.address[addressindex].linkman }} {{ orderdata.address[addressindex].phone }}</span>
+            <span>收货人: {{ address[addressindex].linkman }} {{ address[addressindex].phone }}</span>
           </div>
-          <Button>提交订单</Button>
+          <Button :loading="btnload" @click="onSubmit">提交订单</Button>
         </div>
       </div>
     </div>
     <div class="bottombox">
       <statement />
     </div>
-    <div class="msgbox">满50包邮</div>
+    <!-- <div class="msgbox">满50包邮</div> -->
   </div>
 </template>
 
@@ -160,19 +164,77 @@ export default {
       ],
       billState: 0,
       orderdata: this.$store.state.order,
+      btnload: false,
+      address: [],
     };
   },
+  mounted() {
+    this.getAllAddress();
+  },
   methods: {
+    // 获取用户所有地址
+    getAllAddress: function () {
+      this.axios
+        .post(this.$api.getAllAddress)
+        .then((data) => {
+          if (data.code == 200) {
+            this.address = data.data;
+            for (let i = 0; i < this.address.length; i++) {
+              let item = this.address[i];
+              // 默认地址展示
+              if (item.address_default == 1) {
+                // this.default_ = i;
+                // 排序 把默认地址第一个
+                let obj = item;
+                this.address.splice(i, 1);
+                this.address.unshift(obj);
+                break;
+              }
+            }
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
     gohome: function () {
       this.$router.push("/");
     },
     rut: function (item) {
       this.$router.push({
         path: "/person/deliveryAddress",
-        query: {
-          id: item.id,
-        },
+        query: item,
       });
+    },
+    // 提交订单
+    onSubmit: function () {
+      if (this.orderdata.address.length == 0) {
+        this.$toast("请添加地址!");
+        return;
+      }
+      this.btnload = true;
+      this.axios
+        .post(this.$api.submitOrder, {
+          addressId: this.address[this.addressindex].id,
+          plistIds: this.orderdata.plistIds,
+          sendType: 0, //配送方式 0:免费配送,1:自提
+          notes: this.notes,
+          billState: this.billState,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.btnload = false;
+            // this.$store.commit("show_order_", data.data);
+            this.$router.push("/person/orderForm");
+          } else {
+            this.btnload = false;
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.btnload = false;
+          this.$toast(this.$api.monmsg);
+        });
     },
   },
   filters: {
@@ -485,7 +547,7 @@ export default {
     position: fixed;
     bottom: 0;
     right: 0;
-    padding:  0.5rem;
+    padding: 0.5rem;
     border: 1px solid #999;
   }
 }

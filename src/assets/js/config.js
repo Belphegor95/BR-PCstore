@@ -46,7 +46,7 @@ api.delSelectShoppingCart = "/api/delSelectShoppingCart"  // 删除购物车商�
 
 api.downOrder = "/api/downOrder"  // 购物车下单 1
 
-api.submitOrder = "/api/submitOrder"  // 提交订单
+api.submitOrder = "/api/submitOrder"  // 提交订单 1
 
 api.getOrderList = "/api/getOrderList"  // 获取订单 1
 
@@ -54,11 +54,11 @@ api.getTicket = "/api/getTicket"  // 获取优惠券 1
 
 api.submitSuggest = "/api/submitSuggest"  // 提交意见建议
 
-api.getYzmForChangePhone = "/api/getYzmForChangePhone"  // 换绑手机号--获取验证码
+api.getYzmForChangePhone = "/api/getYzmForChangePhone"  // 换绑手机号--获取验证码 1
 
-api.applyChangePhone = "/api/applyChangePhone"  // 申请更换手机号
+api.applyChangePhone = "/api/applyChangePhone"  // 申请更换手机号 1
 
-api.changePhone = "/api/changePhone"  // 换绑手机号
+api.changePhone = "/api/changePhone"  // 换绑手机号 1
 
 api.logout = "/api/logout"  // 退出登录 1
 
