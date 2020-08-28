@@ -79,7 +79,7 @@
       </div>
     </div>
     <div class="mark" style="display: flex;align-items: center;">
-      <img style="margin-right:0.5rem" src="../../assets/img/person/xiao.png" alt />
+      <img style="margin-right:0.5rem" src="../../assets/img/person/xiao.png" />
       <p>已保存了{{ address.length }}条地址,还能保存{{ 12 - address.length }}条地址</p>
     </div>
     <div class="listbox">
@@ -101,7 +101,7 @@
           <span @click="deladdress(item)">删除</span>
         </div>
         <div>
-          <span v-if="item.address_default" @click="editAddress(item)">设置默认地址</span>
+          <span v-if="item.address_default == 0" @click="editAddress(item)">设置默认地址</span>
           <span v-else style="color: #000">默认地址</span>
         </div>
       </div>
@@ -269,8 +269,20 @@ export default {
     },
     // 保存修改地址
     editAddress: function (item) {
-      this.axios
-        .post(this.$api.editAddress, {
+      let obj = new Object();
+      if (item) {
+        obj = {
+          addressId: item.id,
+          phone: item.phone,
+          linkman: item.linkman,
+          address: item.address,
+          address_detail: item.address_detail,
+          lat: item.lat,
+          lng: item.lng,
+          address_default: 1, //1 设置为默认地址
+        };
+      } else {
+        obj = {
           addressId: this.addressId,
           phone: this.phone,
           linkman: this.linkman,
@@ -279,9 +291,14 @@ export default {
           lat: this.coordinate.lat,
           lng: this.coordinate.lng,
           address_default: this.isDefault ? 1 : 0,
-        })
+        };
+      }
+
+      this.axios
+        .post(this.$api.editAddress, obj)
         .then((data) => {
           if (data.code == 200) {
+            this.$refs.formbox.scrollTop = 0;
             // 如果是订单过来的 跳转到  订单
             let address = this.$route.query;
             if (Object.keys(address).length != 0) return this.$router.go(-1);

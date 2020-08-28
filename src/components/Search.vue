@@ -21,7 +21,7 @@
       </div>
       <div class="visitbox" v-show="isSearch">
         <button @click="serve">
-          <img src="../assets/img/home/sm.png" alt />
+          <img src="../assets/img/home/sm.png" />
           <p>上门服务</p>
         </button>
         <!-- <Button size="large">上门服务</Button> -->

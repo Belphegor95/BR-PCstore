@@ -35,8 +35,8 @@
       <div v-show="false">
         <div :class="pricetype != 0 ?'price_active':''" @click="pricetypeClick">
           <p>价格</p>
-          <img v-if="pricetype== 1" src="../../assets/img/sundry/s.png" alt />
-          <img v-else-if="pricetype == 2" src="../../assets/img/sundry/x.png" alt />
+          <img v-if="pricetype== 1" src="../../assets/img/sundry/s.png" />
+          <img v-else-if="pricetype == 2" src="../../assets/img/sundry/x.png" />
         </div>
         <div>
           <div>

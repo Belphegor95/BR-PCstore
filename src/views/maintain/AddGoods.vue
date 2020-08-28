@@ -10,7 +10,7 @@
           </Upload>
         </li>
         <li>
-          <img src="../../assets/img/maintain/cp.png" alt />
+          <img src="../../assets/img/maintain/cp.png" />
         </li>
       </ul>
       <div>
@@ -28,7 +28,7 @@
           </span>
           <Input v-model="value" placeholder="Enter something..." style="width: 20rem" />件
           <div>
-            <img src="../../assets/img/maintain/xx.png" alt />
+            <img src="../../assets/img/maintain/xx.png" />
             <p>多件不同商品请分开填写,如因件数不符合产生的额外费用需本人承担</p>
           </div>
         </div>
@@ -42,15 +42,15 @@
           <span>示例图</span>
           <ul>
             <li>
-              <img src="../../assets/img/maintain/cp.png" alt />
+              <img src="../../assets/img/maintain/cp.png" />
               <p>维修商品细节图</p>
             </li>
             <li>
-              <img src="../../assets/img/maintain/cp.png" alt />
+              <img src="../../assets/img/maintain/cp.png" />
               <p>维修商品细节图</p>
             </li>
             <li>
-              <img src="../../assets/img/maintain/cp.png" alt />
+              <img src="../../assets/img/maintain/cp.png" />
               <p>维修商品细节图</p>
             </li>
           </ul>

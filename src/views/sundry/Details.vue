@@ -12,7 +12,7 @@
         <div class="imgbox">
           <pic-zoom class="picbox" :url="detailsdata.plist_img_url[this.imgindex]" :scale="3"></pic-zoom>
           <div>
-            <img src="../../assets/img/sundry/zh.png" @click="leftClick" alt />
+            <img src="../../assets/img/sundry/zh.png" @click="leftClick" />
             <div>
               <div :style="{width: spec_width + 'rem',left: spec_list +'rem'}">
                 <img
@@ -24,7 +24,7 @@
                 />
               </div>
             </div>
-            <img src="../../assets/img/sundry/y.png" @click="rightClick" alt />
+            <img src="../../assets/img/sundry/y.png" @click="rightClick" />
           </div>
         </div>
         <div class="sizebox">
@@ -84,7 +84,7 @@
           </div>
           <div class="btnbox">
             <button @click="addShopping">
-              <img src="../../assets/img/sundry/gwc.png" alt />
+              <img src="../../assets/img/sundry/gwc.png" />
               加入购物车
             </button>
             <button>立即购买</button>

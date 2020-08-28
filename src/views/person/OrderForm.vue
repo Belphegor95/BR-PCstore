@@ -26,7 +26,7 @@
         <div class="orderlist">
           <div>
             <div class="imgbox" v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ">
-              <img :src="itemJ.picUrl" alt @click="ordetails" />
+              <img :src="itemJ.picUrl" @click="ordetails" />
               <div @click="ordetails">
                 <h6>这是商品名称</h6>
                 <span>颜色: {{ itemJ.cateName ? itemJ.cateName: '暂无' }}</span>

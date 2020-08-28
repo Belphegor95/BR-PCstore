@@ -6,7 +6,7 @@
     </div>
     <div class="content">
       <h5>
-        <img src="../../assets/img/guide/mm.png" alt />
+        <img src="../../assets/img/guide/mm.png" />
         找回密码
       </h5>
       <div class="stepsbox">
@@ -58,7 +58,7 @@
         </div>
         <div class="accomplishbox" v-else-if="pitchon == 2">
           <div>
-            <img src="../../assets/img/guide/cg.png" alt />
+            <img src="../../assets/img/guide/cg.png" />
             <h6>重置成功,请牢记新的登录密码</h6>
           </div>
           <Button type="primary" class="okbtn btn" @click="ok(3)">去登陆</Button>

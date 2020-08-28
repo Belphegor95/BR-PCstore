@@ -2,28 +2,28 @@
 <template>
   <div class="guarantee">
     <div>
-      <img src="../assets/img/home/zp.png" alt />
+      <img src="../assets/img/home/zp.png" />
       <div>
         <p>正品保障</p>
         <p>Authentic guarantee</p>
       </div>
     </div>
     <div>
-      <img src="../assets/img/home/y.png" alt />
+      <img src="../assets/img/home/y.png" />
       <div>
         <p>全场包邮</p>
         <p>Full package mail</p>
       </div>
     </div>
     <div>
-      <img src="../assets/img/home/jg.png" alt />
+      <img src="../assets/img/home/jg.png" />
       <div>
         <p>价格保证</p>
         <p>Price guarantee</p>
       </div>
     </div>
     <div>
-      <img src="../assets/img/home/sd.png" alt />
+      <img src="../assets/img/home/sd.png" />
       <div>
         <p>闪电发货</p>
         <p>Lightning delivery</p>

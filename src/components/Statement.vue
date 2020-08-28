@@ -26,7 +26,7 @@
       <p>骑手配送</p>
     </div>
     <div class="QRbox">
-      <img src="../assets/img/home/jg.png" alt />
+      <img src="../assets/img/home/jg.png" />
       <p>手机下单更方便</p>
     </div>
   </div>

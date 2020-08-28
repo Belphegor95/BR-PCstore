@@ -16,7 +16,7 @@
         </div>
         <Carousel class="Carouselbox" v-model="value" autoplay :autoplay-speed="5000" arrow="never">
           <CarouselItem v-for="(item,index) in picUrls" :key="index">
-            <img :src="item.picUrl" alt />
+            <img :src="item.picUrl" />
           </CarouselItem>
         </Carousel>
       </div>
@@ -29,7 +29,7 @@
     </div>
     <!-- 回到顶部 -->
     <BackTop class="topbtn">
-      <img src="../assets/img/hg.png" alt />
+      <img src="../assets/img/hg.png" />
     </BackTop>
     <div class="bottombox">
       <guarantee />

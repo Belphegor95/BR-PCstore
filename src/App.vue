@@ -9,7 +9,6 @@
 }
 #app {
   color: #000;
-  /* font-size: 14px; */
   background-color: #fff;
 }
 #app > div {

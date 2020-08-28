@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="usersign">
-      <img src="../../assets/img/person/wl.png" alt />
+      <img src="../../assets/img/person/wl.png" />
       <p>我的物流</p>
     </div>
     <div class="userorder">

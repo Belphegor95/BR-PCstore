@@ -38,7 +38,7 @@
         <RadioGroup v-model="addressindex" class="radiobox">
           <div v-for="(item,index) in address" :key="index" :class="addressindex == index? 'radio_active':''">
             <div style="opacity: 0;">
-              <img src="../../assets/img/sundry/dw.png" alt />
+              <img src="../../assets/img/sundry/dw.png" />
               <p>寄送到</p>
             </div>
             <Radio :label="index">
@@ -61,7 +61,7 @@
           </div>
           <div v-for="(item,index) in orderdata.plistDetail" :key="index">
             <div>
-              <img :src="item.picUrl" alt />
+              <img :src="item.picUrl" />
               <p>{{ item.plistName }}</p>
             </div>
             <div>

@@ -15,29 +15,29 @@
           </li>
           <li>
             <div>
-              <img v-if="maintainid == 0" src="../assets/img/maintain/wx_.png" alt />
-              <img v-else src="../assets/img/maintain/wx.png" alt />
+              <img v-if="maintainid == 0" src="../assets/img/maintain/wx_.png" />
+              <img v-else src="../assets/img/maintain/wx.png" />
             </div>
             <div :class="maintainid == 0?  'active':''">待修类型</div>
           </li>
           <li>
             <div>
-              <img v-if="maintainid == 1" src="../assets/img/maintain/sp_.png" alt />
-              <img v-else src="../assets/img/maintain/sp.png" alt />
+              <img v-if="maintainid == 1" src="../assets/img/maintain/sp_.png" />
+              <img v-else src="../assets/img/maintain/sp.png" />
             </div>
             <div :class="maintainid == 1?  'active':''">添加商品</div>
           </li>
           <li>
             <div>
-              <img v-if="maintainid == 2" src="../assets/img/maintain/khxx_.png" alt />
-              <img v-else src="../assets/img/maintain/khxx.png" alt />
+              <img v-if="maintainid == 2" src="../assets/img/maintain/khxx_.png" />
+              <img v-else src="../assets/img/maintain/khxx.png" />
             </div>
             <div :class="maintainid == 2?  'active':''">客户信息</div>
           </li>
           <li>
             <div>
-              <img v-if="maintainid == 3" src="../assets/img/maintain/xd_.png" alt />
-              <img v-else src="../assets/img/maintain/xd.png" alt />
+              <img v-if="maintainid == 3" src="../assets/img/maintain/xd_.png" />
+              <img v-else src="../assets/img/maintain/xd.png" />
             </div>
             <div :class="maintainid == 3?  'active':''">下单</div>
           </li>

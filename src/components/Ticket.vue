@@ -2,8 +2,8 @@
 <template>
   <div class="ticket">
     <div class="tickettop">
-      <img v-if="isticket" src="../assets/img/person/cg.png" alt />
-      <img v-else src="../assets/img/person/gq.png" alt />
+      <img v-if="isticket" src="../assets/img/person/cg.png" />
+      <img v-else src="../assets/img/person/gq.png" />
       <div>
         <p>
           <i>¥</i>

@@ -8,7 +8,7 @@
         <span :class="!isticket?'active':'' " @click="isticket = false">已过期</span>
       </div>
       <div>
-        <ticket :isticket="isticket" v-for="(item,index) in 10" :key="index" class="ticket_" />
+        <ticket :isticket="isticket" v-for="(item,index) in ticketList" :key="index" class="ticket_" />
       </div>
     </div>
   </div>

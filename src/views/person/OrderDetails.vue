@@ -44,7 +44,7 @@
         </div>
         <div>
           <div>
-            <img src="../../assets/img/person/！.png" alt />
+            <img src="../../assets/img/person/！.png" />
             <p>订单状态: 商品已拍下,等待买家付款</p>
           </div>
           <p>您还有17小时46分3秒来付款,超时订单自动关闭</p>
@@ -65,7 +65,7 @@
         </div>
         <div v-for="(item,index) in 3" :key="index">
           <div class="imgbox">
-            <img src="../../assets/img/home/a.png" alt />
+            <img src="../../assets/img/home/a.png" />
             <div>
               <h6>这是商品名称</h6>
               <span>颜色: 白色</span>

@@ -1,7 +1,7 @@
 <!-- 商品卡 -->
 <template>
   <div class="commodityCard" @click="rut">
-    <img v-if="data.plist_img_url" :src="data.plist_img_url[0]" alt />
+    <img v-if="data.plist_img_url" :src="data.plist_img_url[0]" />
     <div class="contentbox">
       <p>{{ data.plist_name }}</p>
       <p>会员价: 90.00￥</p>

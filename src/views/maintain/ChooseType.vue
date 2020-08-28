@@ -6,7 +6,7 @@
       <ul>
         <li v-for="(item,index) in list" :key="index">
           <div>
-            <img :src="item.img" alt />
+            <img :src="item.img" />
             <p>{{ item.name }}</p>
           </div>
         </li>

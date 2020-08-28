@@ -1,7 +1,7 @@
 <!-- 登录 -->
 <template>
   <div class="login">
-    <img src="../../assets/img/guide/bj.png" alt />
+    <img src="../../assets/img/guide/bj.png" />
     <div class="loginbox">
       <Tabs value="name1" size="default" class="tab" v-if="users.length == 0">
         <TabPane label="密码登录" name="name1">
@@ -10,7 +10,7 @@
           <input type="password" placeholder="密码" class="password" :class="is_pwd?'false_input':''" v-model="pwd" />
           <div class="prompt">
             <p>
-              <img src="../../assets/img/guide/i.png" alt />
+              <img src="../../assets/img/guide/i.png" />
               由6~20个字母,数字和符号组成
             </p>
             <b @click="rut('find')">忘记密码?</b>
@@ -29,7 +29,7 @@
           </div>
           <div class="prompt">
             <p>
-              <img src="../../assets/img/guide/i.png" alt />
+              <img src="../../assets/img/guide/i.png" />
               由6~20个字母,数字和符号组成
             </p>
             <b v-show="false" @click="rut('find')">忘记密码?</b>
@@ -71,7 +71,9 @@ export default {
       users: [],
     };
   },
-  mounted() {},
+  mounted() {
+    this.users = this.$store.state.user.loginData || [];
+  },
   methods: {
     rut: function (name) {
       this.$router.push(`/guide/${name}`);
@@ -103,10 +105,10 @@ export default {
           if (data.code == 200) {
             // 删除重新赋值
             localStorage.removeItem("vuex");
-            // this.$store.commit("resetState");
+            this.$store.commit("resetState");
             this.$store.commit("show_user", data.data);
             if (data.data.type) {
-              this.users = data.data.loginData
+              this.users = data.data.loginData;
             } else {
               Object.keys(this.$route.query).length == 0
                 ? this.$router.push("/")
@@ -121,6 +123,7 @@ export default {
           this.msg = this.$api.monmsg;
         });
     },
+    // 选择用户
     userClick: function (item) {
       this.axios
         .post(this.$api.selectAcc, {
@@ -129,6 +132,7 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.$store.commit("show_user", data.data);
+            this.$router.push("/")
             Object.keys(this.$route.query).length == 0
               ? this.$router.push("/")
               : this.$router.go(-2);
@@ -137,8 +141,7 @@ export default {
           }
         })
         .catch(() => {
-          // this.$toast(this.$api.monmsg);
-            this.$toast(this.$api.monmsg);
+          this.$toast(this.$api.monmsg);
         });
     },
   },

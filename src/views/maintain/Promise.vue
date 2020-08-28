@@ -52,7 +52,7 @@
         <RadioGroup v-model="phone" class="radiobox">
           <div v-for="(item,index) in 4" :key="index" :class="phone == index? 'radio_active':''">
             <div style="opacity: 0;">
-              <img src="../../assets/img/sundry/dw.png" alt />
+              <img src="../../assets/img/sundry/dw.png" />
               <p>寄送到</p>
             </div>
             <Radio :label="index">

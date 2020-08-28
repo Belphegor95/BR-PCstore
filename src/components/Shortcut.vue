@@ -7,9 +7,9 @@
         <span class="userbox" v-if="user && user.companyName">
           {{ user.companyName }}
           <div>
-            <img src="../assets/img/guide/tx.png" alt />
+            <img src="../assets/img/guide/tx.png" />
             <div>
-              <p>账号管理</p>
+              <p @click="rut('guide','login')">切换角色</p>
               <p @click="quit">退出</p>
             </div>
           </div>
@@ -21,7 +21,7 @@
     <div class="rightbox">
       <span @click="rut('person','orderForm')">我的订单</span>|
       <span class="gwcbox" @click="ok('/cart')">
-        <img src="../assets/img/home/gwc.png" alt />
+        <img src="../assets/img/home/gwc.png" />
         购物车
         <b>{{ count }}</b>
       </span>|

@@ -26,7 +26,7 @@
               <Checkbox :label="index" />
             </div>
             <div class="namebox">
-              <img :src="item.picUrl" alt />
+              <img :src="item.picUrl" />
               <p>{{ item.plistName }}</p>
             </div>
             <div>颜色分类: {{ item.priceName[1] ? item.priceName[1]: "暂无" }}</div>
@@ -66,7 +66,7 @@
         </div>
         <div class="imgbox" v-show="is_imgbox">
           <div v-for="(item,index) in checkAllGroup" :key="index">
-            <img :src="shoppings[item].picUrl" alt />
+            <img :src="shoppings[item].picUrl" />
             <p @click="delPitch(index)">取消选择</p>
           </div>
           <span></span>

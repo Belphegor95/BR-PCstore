@@ -3,7 +3,7 @@
 <template>
   <div class="registerOk">
     <div class="cg">
-      <img src="../../assets/img/guide/cg.png" alt />
+      <img src="../../assets/img/guide/cg.png" />
       <p>恭喜你账号注册成功</p>
     </div>
     <Button type="primary" size="default" @click="$router.push('/')">进入商城</Button>

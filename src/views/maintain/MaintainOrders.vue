@@ -20,12 +20,12 @@
       "
         />
         <div>
-          <img src="../../assets/img/maintain/i.png" alt />
+          <img src="../../assets/img/maintain/i.png" />
           <p>温馨提示: 请勿在备注信息中填写与订单必填产品信息不符的内容, 如: 除了订单产品还要安装***、需要师傅帮忙维修***等等额外服务信息, 以免因为师傅忽略而导致交易纠纷, 一旦因此发生纠纷, 平台仲裁将以订单必填信息为准</p>
         </div>
       </div>
       <div>
-        <img src="../../assets/img/maintain/xx.png" alt />
+        <img src="../../assets/img/maintain/xx.png" />
         <p>将订单推送给所有师傅</p>
       </div>
       <button class="nextStep">确定下单</button>
