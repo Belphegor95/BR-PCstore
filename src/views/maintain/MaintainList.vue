@@ -13,9 +13,10 @@
         <div>
           <span :class="id == 0?'active':''" @click="idclick(0)">维修中</span>
           <span :class="id == 1?'active':''" @click="idclick(1)">维修完成</span>
+          <Button @click="visitClick">申请上门</Button>
         </div>
         <ul v-if="id == 0">
-          <li>
+          <li v-for="(item,index) in 4" :key="index" @click="detailsClick(index)">
             <div>
               <p>订单编号:3423432897</p>
               <p>下单时间:2020-8-18</p>
@@ -26,7 +27,7 @@
               <p>最新动态: 未接单</p>
             </div>
             <div>
-              <p>接单状态:为节点</p>
+              <p>接单状态: 未接单</p>
             </div>
           </li>
           <li>
@@ -40,7 +41,7 @@
               <p>最新动态: 未接单</p>
             </div>
             <div>
-              <p>接单状态:为节点</p>
+              <p>接单状态: 未接单</p>
             </div>
           </li>
           <li>
@@ -54,7 +55,7 @@
               <p>最新动态: 未接单</p>
             </div>
             <div>
-              <p>接单状态:为节点</p>
+              <p>接单状态: 未接单</p>
             </div>
           </li>
         </ul>
@@ -95,6 +96,13 @@ export default {
     idclick: function (id) {
       this.id = id;
     },
+    visitClick: function () {
+      this.$router.push("/maintain/chooseType");
+    },
+    // 查看详情
+    detailsClick: function () {
+      this.$router.push("/maintain/maintainDetails");
+    }
   },
 };
 </script>
@@ -121,10 +129,14 @@ export default {
         .active {
           color: #ff8400;
         }
+        > button {
+          float: right;
+        }
       }
       > ul {
         border: 1px solid #dddddd;
         > li {
+          cursor: pointer;
           display: flex;
           padding: 1rem 0;
           border-bottom: 1px solid #dddddd;

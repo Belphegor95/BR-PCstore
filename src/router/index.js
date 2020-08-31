@@ -90,6 +90,16 @@ const routes = [
     ]
   },
   {
+    path: '/maintain/maintainList',
+    name: 'maintainList',
+    component: () => import('../views/maintain/MaintainList.vue'),
+  },
+  {
+    path: '/maintain/maintainDetails',
+    name: 'maintainDetails',
+    component: () => import('../views/maintain/MaintainDetails.vue'),
+  },
+  {
     path: '/cart',
     name: 'Cart',
     component: () => import('../views/sundry/Cart.vue'),

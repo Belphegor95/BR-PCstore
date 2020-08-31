@@ -53,8 +53,9 @@ export default {
         this.$router.push("/classify");
       }
     },
+    // 上门列表
     serve: function () {
-      this.$router.push("/maintain/chooseType");
+      this.$router.push("/maintain/maintainList");
     },
   },
   watch: {
