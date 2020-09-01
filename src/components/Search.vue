@@ -27,7 +27,6 @@
         <!-- <Button size="large">上门服务</Button> -->
       </div>
     </div>
-    <div v-show="false">123</div>
   </div>
 </template>
 

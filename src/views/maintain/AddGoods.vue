@@ -5,12 +5,23 @@
     <div class="content">
       <ul>
         <li>
-          <Upload :show-upload-list="false" action="//jsonplaceholder.typicode.com/posts/">
-            <Button icon="ios-cloud-upload-outline">Upload files</Button>
+          <Upload
+            multiple
+            ref="upload"
+            :max-size="1024"
+            :on-success="upsuccess"
+            :show-upload-list="false"
+            :format="['jpg','jpeg','png']"
+            :on-exceeded-size="handleMaxSize"
+            :before-upload="handleBeforeUpload"
+            :on-format-error="handleFormatError"
+            :action="$api.baseUrl + $api.uploadFixImg"
+          >
+            <Button icon="ios-cloud-upload-outline">上传商品图片</Button>
           </Upload>
         </li>
-        <li>
-          <img src="../../assets/img/maintain/cp.png" />
+        <li v-for="(item,index) in defaultList" :key="index">
+          <img :src="item.path" />
         </li>
       </ul>
       <div>
@@ -24,7 +35,7 @@
         </div>
         <div>
           <span>
-            <b>*</b>商品数量
+            <b>*</b> 商品数量
           </span>
           <Input v-model="value" placeholder="Enter something..." style="width: 20rem" />件
           <div>
@@ -34,7 +45,7 @@
         </div>
         <div>
           <span>
-            <b>*</b>故障描述
+            <b>*</b> 故障描述
           </span>
           <Input v-model="value" type="textarea" placeholder="Enter something..." style="width: 20rem" />
         </div>
@@ -93,14 +104,40 @@ export default {
         },
       ],
       model1: "",
+      defaultList: [], // 上传列表
+      uploadList: [],
     };
   },
   mounted() {
     this.$store.commit("show_maintainid", 1);
+    this.uploadList = this.$refs.upload.fileList;
   },
   methods: {
     advance: function () {
       this.$router.push("/maintain/promise");
+    },
+    // 保存成功
+    upsuccess: function (data) {
+      if (data.code == 200) {
+        data.data.path = data.data.path.replace(new RegExp("\\\\", "g"), "/");
+        this.defaultList.push(data.data);
+      }
+    },
+    // 上传之前
+    handleBeforeUpload() {
+      let check = this.uploadList.length + this.defaultList.length < 9;
+      if (!check) {
+        this.$toast("最多9个!");
+      }
+      return check;
+    },
+    // 上传不符合条件
+    handleMaxSize(file) {
+      this.$toast("文件大小超过1M!");
+    },
+    // 上传格式有误
+    handleFormatError(file) {
+      this.$toast("请上传图片格式文件!");
     },
   },
 };
@@ -118,11 +155,16 @@ export default {
       flex-wrap: wrap;
       border-bottom: 1px solid #ededed;
       > li {
-        width: 20%;
+        width: 19%;
         display: flex;
         height: 12rem;
         align-items: center;
         justify-content: center;
+        margin-right: 1%;
+        > img {
+          max-width: 100%;
+          max-height: 100%;
+        }
       }
     }
     > div {

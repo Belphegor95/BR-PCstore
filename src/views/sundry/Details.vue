@@ -34,7 +34,7 @@
               <span>
                 <span>价</span> 格 :
               </span>
-              <p>{{ detailsdata.price_lv.unitList[this.unitid].marketPrice }}</p>
+              <p>{{ detailsdata.price_lv.unitList[this.unitid].marketPrice  }}</p>
             </div>
             <div>
               <span>卷 后 价 :</span>
@@ -58,7 +58,7 @@
                   v-for="(item,index) in detailsdata.price_lv.unitList"
                   :key="index"
                   @click="colourClick(true,index)"
-                >{{ item.unitName }}</button>
+                >{{ item.unitName ? item.unitName : "暂无"  }}</button>
               </div>
             </div>
             <div>
@@ -71,14 +71,14 @@
                   v-for="(item,index) in detailsdata.price_lv.cate"
                   :key="index"
                   @click="colourClick(false,index)"
-                >{{ item.cateName }}</button>
+                >{{ item.cateName ? item.cateName : "暂无" }}</button>
               </div>
             </div>
             <div>
               <span>购买数量:</span>
               <div>
-                <InputNumber :max="100" :min="1" v-model="buyNum" />
-                <p>库存数量 : 100</p>
+                <InputNumber :min="1" v-model="buyNum" />
+                <p>库存数量 : 库存充足</p>
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@
               <img src="../../assets/img/sundry/gwc.png" />
               加入购物车
             </button>
-            <button>立即购买</button>
+            <!-- <button>立即购买</button> -->
           </div>
         </div>
       </div>

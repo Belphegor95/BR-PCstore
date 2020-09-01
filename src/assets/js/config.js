@@ -62,4 +62,8 @@ api.changePhone = "/api/changePhone"  // 换绑手机号 1
 
 api.logout = "/api/logout"  // 退出登录 1
 
+api.uploadFixImg = "/api/uploadFixImg"  // 上传图片
+
+api.getAccOrders = "/api/getAccOrders"  // 获取订货账号
+
 export { api };

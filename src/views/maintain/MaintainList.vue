@@ -16,35 +16,7 @@
           <Button @click="visitClick">申请上门</Button>
         </div>
         <ul v-if="id == 0">
-          <li v-for="(item,index) in 4" :key="index" @click="detailsClick(index)">
-            <div>
-              <p>订单编号:3423432897</p>
-              <p>下单时间:2020-8-18</p>
-              <p>维修物品名:打印机</p>
-              <p>联系人:刘经理</p>
-            </div>
-            <div>
-              <p>最新动态: 未接单</p>
-            </div>
-            <div>
-              <p>接单状态: 未接单</p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <p>订单编号:3423432897</p>
-              <p>下单时间:2020-8-18</p>
-              <p>维修物品名:打印机</p>
-              <p>联系人:刘经理</p>
-            </div>
-            <div>
-              <p>最新动态: 未接单</p>
-            </div>
-            <div>
-              <p>接单状态: 未接单</p>
-            </div>
-          </li>
-          <li>
+          <li v-for="(item,index) in 5" :key="index" @click="detailsClick(index)">
             <div>
               <p>订单编号:3423432897</p>
               <p>下单时间:2020-8-18</p>
@@ -102,7 +74,7 @@ export default {
     // 查看详情
     detailsClick: function () {
       this.$router.push("/maintain/maintainDetails");
-    }
+    },
   },
 };
 </script>
@@ -110,6 +82,7 @@ export default {
 <style lang='less' scoped>
 .service {
   .content {
+    margin-bottom: 5rem;
     > div {
       padding: 0 2rem;
       > h4 {

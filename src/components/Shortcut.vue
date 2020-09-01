@@ -9,7 +9,7 @@
           <div>
             <img src="../assets/img/guide/tx.png" />
             <div>
-              <p @click="rut('guide','login')">切换角色</p>
+              <p @click="rut('guide','login?is=true')">切换角色</p>
               <p @click="quit">退出</p>
             </div>
           </div>

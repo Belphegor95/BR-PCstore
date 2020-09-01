@@ -72,7 +72,9 @@ export default {
     };
   },
   mounted() {
-    this.users = this.$store.state.user.loginData || [];
+    // this.users = this.$store.state.user.loginData || [];
+    let is = this.$route.query.is;
+    if (is) this.getAccOrders();
   },
   methods: {
     rut: function (name) {
@@ -132,13 +134,24 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.$store.commit("show_user", data.data);
-            this.$router.push("/")
             Object.keys(this.$route.query).length == 0
               ? this.$router.push("/")
-              : this.$router.go(-2);
+              : this.$router.go(-1);
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 获取角色
+    getAccOrders: function () {
+      this.axios
+        .post(this.$api.getAccOrders)
+        .then((data) => {
+          this.users = data.data.loginData;
+          // console.info(data);
         })
         .catch(() => {
           this.$toast(this.$api.monmsg);
