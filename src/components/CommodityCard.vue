@@ -26,7 +26,6 @@ export default {
     return {};
   },
   mounted() {
-    // console.info(this.data)
   },
   methods: {
     rut: function () {

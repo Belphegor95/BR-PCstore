@@ -151,7 +151,6 @@ export default {
         .post(this.$api.getAccOrders)
         .then((data) => {
           this.users = data.data.loginData;
-          // console.info(data);
         })
         .catch(() => {
           this.$toast(this.$api.monmsg);

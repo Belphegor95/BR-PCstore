@@ -133,7 +133,6 @@ export default {
     };
   },
   mounted() {
-    console.info(this.detailsdata);
   },
   methods: {
     // 添加商品
@@ -156,13 +155,13 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.$toast("添加成功!");
-            // this.$store.commit("show_count", data.data.count);
+            this.$store.commit("show_count", data.data.count);
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
         })
         .catch(() => {
-          //   this.$toast(this.$api.monmsg);
+            this.$toast(this.$api.monmsg);
         });
     },
     // 左滚

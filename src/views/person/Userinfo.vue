@@ -68,7 +68,6 @@ export default {
     };
   },
   mounted() {
-    console.info(this.user)
     this.$store.commit("show_personid", 0);
   },
   methods: {},

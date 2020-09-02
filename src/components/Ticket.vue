@@ -51,7 +51,6 @@ export default {
 
 <style lang='less' scoped>
 .ticket {
-  //   display: inline-block;
   height: 18rem;
   background-color: #fafafa;
   .tickettop {

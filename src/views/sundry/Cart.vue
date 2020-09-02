@@ -48,7 +48,7 @@
           <div>
             <P>总价:</P>
             <div>
-              <p @click="getimgbox">
+              <p @click="is_imgbox = !is_imgbox">
                 已选中
                 <b>{{ checkAllGroup.length }}</b> 件商品
                 <Icon type="ios-arrow-down" v-if="!is_imgbox" />
@@ -132,9 +132,7 @@ export default {
             this.$toast(this.ErrCode(data.msg));
           }
         })
-        .catch(() => {
-          this.$toast(this.$api.monmsg);
-        });
+        .catch(() => this.$toast(this.$api.monmsg));
     },
     // 修改购物车商品数量
     shoppingCarCount: function (item) {
@@ -152,9 +150,7 @@ export default {
             this.$toast(this.ErrCode(data.msg));
           }
         })
-        .catch(() => {
-          this.$toast(this.$api.monmsg);
-        });
+        .catch(() => this.$toast(this.$api.monmsg));
     },
     // 删除商品
     delShopping: function (item, index_) {
@@ -180,7 +176,9 @@ export default {
             })
             .then((data) => {
               if (data.code == 200) {
-                this.checkAllGroup.splice(index_, "1");
+                this.checkAllGroup = this.checkAllGroup.filter(
+                  (x, index, self) => x != index_
+                );
                 this.getShoppingCart();
               } else {
                 this.$toast(this.ErrCode(data.msg));
@@ -191,9 +189,7 @@ export default {
             });
           this.$layer.close(index);
         },
-        (index) => {
-          this.$layer.close(index);
-        }
+        (index) => this.$layer.close(index)
       );
     },
     // 下单
@@ -210,9 +206,7 @@ export default {
             this.$toast(this.ErrCode(data.msg));
           }
         })
-        .catch(() => {
-          this.$toast(this.$api.monmsg);
-        });
+        .catch(() => this.$toast(this.$api.monmsg));
     },
     // 处理 数据
     getdownOrderArr: function () {
@@ -260,9 +254,7 @@ export default {
       this.shoppingCarCount(this.shoppings[obj.index]);
       this.$forceUpdate();
     },
-    getimgbox: function () {
-      this.is_imgbox = !this.is_imgbox;
-    },
+    // 取消选中
     delPitch: function (index) {
       this.checkAllGroup.splice(index, "1");
       if (this.checkAllGroup.length == 0) {

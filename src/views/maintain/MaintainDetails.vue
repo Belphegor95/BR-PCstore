@@ -32,13 +32,13 @@
             <tab name="待修商品信息" />
             <div class="msg">
               <div>
-                <Upload action="//jsonplaceholder.typicode.com/posts/">
+                <!-- <Upload action="//jsonplaceholder.typicode.com/posts/">
                   <div class="upbox">
                     <img src="../../assets/img/maintain/tj.png" alt />
                     <span>上传更多</span>
                     <p>其他角度的图片</p>
                   </div>
-                </Upload>
+                </Upload> -->
                 <div></div>
               </div>
               <div>
@@ -47,7 +47,9 @@
                     <b>*</b>
                     商品类别
                   </span>
-                  <Input v-model="value" style="width: 15rem" />
+                  <Select v-model="model1" style="width:15rem">
+                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                  </Select>
                 </div>
                 <div>
                   <span>
@@ -88,6 +90,7 @@
         <div>
           <tab name="请填写订单备注" />
           <Input
+            class="textarea"
             v-model="value"
             type="textarea"
             :rows="8"
@@ -152,6 +155,33 @@ export default {
     return {
       value: "",
       date: "12:00",
+      cityList: [
+        {
+          value: "New York",
+          label: "New York",
+        },
+        {
+          value: "London",
+          label: "London",
+        },
+        {
+          value: "Sydney",
+          label: "Sydney",
+        },
+        {
+          value: "Ottawa",
+          label: "Ottawa",
+        },
+        {
+          value: "Paris",
+          label: "Paris",
+        },
+        {
+          value: "Canberra",
+          label: "Canberra",
+        },
+      ],
+      model1: "",
     };
   },
 };
@@ -310,7 +340,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-.maintainDetails .ivu-input-wrapper {
-    padding: 0.5rem;
+.maintainDetails .textarea {
+  padding: 0.5rem;
 }
 </style>

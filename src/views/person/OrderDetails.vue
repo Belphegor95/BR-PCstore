@@ -34,20 +34,20 @@
           <div>
             <div>
               <span>收货地址:</span>
-              <p>张三 186390252358, 河南省郑州市中原区建设路街道建设西路92号</p>
+              <p>{{ data.address.linkman }} {{ data.address.phone }}, {{ data.address.address + data.address.address_detail | site }}</p>
             </div>
             <div>
               <span>订单编号:</span>
-              <p>1234456789</p>
+              <p>{{ data.tradeNo }}</p>
             </div>
           </div>
         </div>
         <div>
           <div>
             <img src="../../assets/img/person/！.png" />
-            <p>订单状态: 商品已拍下,等待买家付款</p>
+            <p>订单状态: {{ data.sendProgress[0].content }}</p>
           </div>
-          <p>您还有17小时46分3秒来付款,超时订单自动关闭</p>
+          <!-- <p v-show="false">您还有17小时46分3秒来付款,超时订单自动关闭</p> -->
           <div>
             <span>您可以</span>
             <Button>立即支付</Button>
@@ -63,17 +63,17 @@
           <div>优惠</div>
           <div>状态</div>
         </div>
-        <div v-for="(item,index) in 3" :key="index">
+        <div v-for="(item,index) in data.plistDetail" :key="index">
           <div class="imgbox">
-            <img src="../../assets/img/home/a.png" />
+            <img :src="item.picUrl" />
             <div>
-              <h6>这是商品名称</h6>
-              <span>颜色: 白色</span>
-              <span>单位: 件</span>
+              <h6>{{ item.plistName }}</h6>
+              <span>颜色: {{ item.cateName ?item.cateName : "暂无" }}</span>
+              <span>单位: {{ item.priceName | unit }}</span>
             </div>
           </div>
-          <div>￥ 30.00</div>
-          <div>1</div>
+          <div>{{ item.priceName | price }}</div>
+          <div>{{ item.buyNum }}</div>
           <div></div>
           <div>
             <p>未支付</p>
@@ -90,7 +90,24 @@ export default {
   data() {
     return {
       pitchon: 0,
+      data: this.$store.state.orderDetails,
     };
+  },
+  filters: {
+    site: function (value) {
+      // 替换地址 /
+      return value.replace(/\//g, "");
+    },
+    unit: function (value) {
+      // 单位
+      let arr = value.split("/");
+      if (arr.length == 2) return arr[1];
+    },
+    price: function (value) {
+      // 价格
+      let arr = value.split("/");
+      if (arr.length == 2) return arr[0];
+    },
   },
 };
 </script>
@@ -201,12 +218,13 @@ export default {
             text-indent: 1.5rem;
           }
         }
-        > p {
-          font-size: 1.1rem;
-          color: #a9a9a9;
-          margin: 2rem 0;
-        }
-        > div:nth-child(3) {
+        // > p {
+        //   font-size: 1.1rem;
+        //   color: #a9a9a9;
+        //   margin: 2rem 0;
+        // }
+        > div:nth-child(2) {
+          margin-top: 4rem;
           font-size: 1.1rem;
           color: #000;
           display: flex;
@@ -257,7 +275,7 @@ export default {
         background-color: #f5f5f5;
       }
       > div:last-child {
-          border: none;
+        border: none;
       }
     }
   }

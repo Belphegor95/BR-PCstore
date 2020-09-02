@@ -25,9 +25,9 @@
         <div>2020-08-07 订单号: 123456789</div>
         <div class="orderlist">
           <div>
-            <div class="imgbox" v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ">
-              <img :src="itemJ.picUrl" @click="ordetails" />
-              <div @click="ordetails">
+            <div class="imgbox" v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ" @click="ordetails(item)">
+              <img :src="itemJ.picUrl" />
+              <div >
                 <h6>这是商品名称</h6>
                 <span>颜色: {{ itemJ.cateName ? itemJ.cateName: '暂无' }}</span>
                 <span>单位: {{ itemJ.priceName | unit }}</span>
@@ -68,7 +68,8 @@ export default {
   },
   methods: {
     // 详情页
-    ordetails: function () {
+    ordetails: function (item) {
+      this.$store.commit("show_orderDetails", item);
       this.$router.push("/person/orderDetails");
     },
     // 获取列表

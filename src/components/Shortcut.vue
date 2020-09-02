@@ -53,6 +53,7 @@ export default {
     };
   },
   mounted() {
+    this.count = this.$store.state.count || 0;
     this.getShoppingCartPlistCount();
   },
   methods: {
@@ -74,7 +75,7 @@ export default {
             if (data.data.count) {
               this.count = data.data.count;
             }
-            // this.$store.commit("show_count", data.data.count);
+            this.$store.commit("show_count", data.data.count);
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -112,6 +113,12 @@ export default {
       );
     },
   },
+  // 因为购物车个数是会改变的所以要监听改变
+  watch: {
+    "$store.state.count" (num) {
+      this.count = num
+    }
+  }
 };
 </script>
 
