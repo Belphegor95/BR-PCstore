@@ -45,7 +45,7 @@
               <span>验证码:</span>
               <div>
                 <Input v-model="yzm" style="width: 200px" />
-                <captcha :phoneNum="phoneNum" :change="true" />
+                <captcha :phoneNum="phoneNum" apiurl="getYzmForChangePhone" />
               </div>
             </div>
             <Button type="warning" size="large" @click="applyChangePhone">确定</Button>
@@ -62,7 +62,7 @@
               <span>验证码:</span>
               <div>
                 <Input v-model="yzm_" style="width: 200px" />
-                <captcha :phoneNum="phoneNum" />
+                <captcha :phoneNum="phoneNum" apiurl="getYzm" />
               </div>
             </div>
             <Button type="warning" size="large" @click="changePhone">确定</Button>

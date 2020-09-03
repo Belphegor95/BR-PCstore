@@ -12,11 +12,11 @@
           <button @click="onSearch">搜索</button>
         </div>
         <div class="btnbox">
-          <span>打印机</span>|
-          <span>打印机</span>|
-          <span>A4纸</span>|
-          <span>办公桌</span>|
-          <span>办公产品</span>
+          <span @click="onHistory">打印机</span>|
+          <span @click="onHistory">打印机</span>|
+          <span @click="onHistory">A4纸</span>|
+          <span @click="onHistory">办公桌</span>|
+          <span @click="onHistory">办公产品</span>
         </div>
       </div>
       <div class="visitbox" v-show="isSearch">
@@ -41,6 +41,9 @@ export default {
       search: "",
     };
   },
+  mounted() {
+    // console.info(this.search)
+  },
   methods: {
     gohome: function () {
       if (this.$route.path != "/") this.$router.push("/");
@@ -51,6 +54,14 @@ export default {
       } else {
         this.$router.push("/classify");
       }
+    },
+    // 点击历史记录
+    onHistory: function () {
+      // if (this.$route.path == "/classify") {
+      //   this.$emit("searchClick", this.search);
+      // } else {
+      //   this.$router.push("/classify");
+      // }
     },
     // 上门列表
     serve: function () {

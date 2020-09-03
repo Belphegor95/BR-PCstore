@@ -35,33 +35,34 @@
         <div class="verifybox" v-if="pitchon == 0">
           <div>
             <span>我的手机号:</span>
-            <input type="text" />
+            <!-- <Input v-model="phoneNum" placeholder="Enter something..." style="width: 300px" /> -->
+            <input type="text" v-model="phoneNum" />
           </div>
           <div>
             <span>验证码:</span>
-            <input type="text" />
-            <captcha />
+            <input type="text" v-model="yzm" />
+            <captcha :phoneNum="phoneNum" apiurl="getYzmForFindPwd" />
           </div>
-          <Button type="primary" class="okbtn" @click="ok(1)">确定</Button>
+          <Button type="primary" class="okbtn" @click="phoneNumOk(1)">确定</Button>
           <p>其他方法验证</p>
         </div>
         <div class="setbox" v-else-if="pitchon == 1">
           <div>
             <span>新密码:</span>
-            <input type="text" />
+            <input type="password" v-model="pwd" />
           </div>
           <div>
             <span>再次输入新密码:</span>
-            <input type="text" />
+            <input type="password" v-model="pwd_" />
           </div>
-          <Button type="primary" class="okbtn" @click="ok(2)">确定</Button>
+          <Button type="primary" class="okbtn" @click="pwdOk(2)">确定</Button>
         </div>
         <div class="accomplishbox" v-else-if="pitchon == 2">
           <div>
             <img src="../../assets/img/guide/cg.png" />
             <h6>重置成功,请牢记新的登录密码</h6>
           </div>
-          <Button type="primary" class="okbtn btn" @click="ok(3)">去登陆</Button>
+          <Button type="primary" class="okbtn btn" @click="$router.push('/guide/login')">去登陆</Button>
           <p @click="$router.push('/')">进入商城</p>
         </div>
       </div>
@@ -78,6 +79,10 @@ export default {
   data() {
     return {
       pitchon: 0,
+      phoneNum: "",
+      yzm: "",
+      pwd: "",
+      pwd_: "",
     };
   },
   watch: {
@@ -97,13 +102,45 @@ export default {
     rut: function () {
       this.$router.push("/guide/register");
     },
-    ok: function (id) {
-      if (id != 3) {
-        this.pitchon = id;
-        this.$router.push(`/guide/find?pitchon=${this.pitchon}`);
-      } else {
-        this.$router.push("/guide/login");
+    phoneNumOk: function (id) {
+      if (!/^1[3456789]\d{9}$/.test(this.phoneNum)) {
+        this.$toast("手机号输入有误");
+        return;
+      } else if (this.yzm.trim().length != 6) {
+        this.$toast("验证码输入有误");
+        return;
       }
+      this.pitchon = id;
+      this.$router.push(`/guide/find?pitchon=${this.pitchon}`);
+    },
+    pwdOk: function (id) {
+      if (this.pwd != this.pwd_) {
+        this.$toast("两次输入不一致!");
+        return;
+      } else if (this.pwd.trim() == "" || this.pwd_.trim() == "") {
+        this.$toast("密码不能为空!");
+        return;
+      } else if (this.pwd.trim().length < 6 || this.pwd_.trim().length < 6) {
+        this.$toast("密码不能小于6位!");
+        return;
+      }
+      this.axios
+        .post(this.$api.resetPwd, {
+          phoneNum: this.phoneNum,
+          yzm: this.yzm,
+          pwd: this.pwd,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.pitchon = id;
+            this.$router.push(`/guide/find?pitchon=${this.pitchon}`);
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
     },
   },
 };

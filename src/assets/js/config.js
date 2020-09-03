@@ -66,4 +66,8 @@ api.uploadFixImg = "/api/uploadFixImg"  // 上传图片
 
 api.getAccOrders = "/api/getAccOrders"  // 获取订货账号
 
+api.getYzmForFindPwd = "/api/getYzmForFindPwd"  // 忘记密码 验证码
+
+api.resetPwd  = "/api/resetPwd"  //  重置密码
+
 export { api };

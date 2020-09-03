@@ -7,7 +7,7 @@
 export default {
   props: {
     phoneNum: String,
-    change: Boolean,
+    apiurl: String,
   },
   data() {
     return {
@@ -24,9 +24,13 @@ export default {
         return;
       }
       let url = null;
-      this.change
-        ? (url = this.$api.getYzmForChangePhone)
-        : (url = this.$api.getYzm);
+      if (this.apiurl == "getYzmForChangePhone") {
+        url = this.$api.getYzmForChangePhone;
+      } else if (this.apiurl == "getYzm") {
+        url = this.$api.getYzm;
+      } else if (this.apiurl == "getYzmForFindPwd") {
+        url = this.$api.getYzmForFindPwd;
+      }
       this.axios
         .post(url, {
           phoneNum: this.phoneNum,

@@ -59,6 +59,7 @@ export default {
   methods: {
     ok(name) {
       if (this.$route.path == name) return;
+      if (!this.user) return this.$router.push("/guide/login");
       this.$router.push(name);
     },
     rut: function (name, name1) {
@@ -115,10 +116,10 @@ export default {
   },
   // 因为购物车个数是会改变的所以要监听改变
   watch: {
-    "$store.state.count" (num) {
-      this.count = num
-    }
-  }
+    "$store.state.count"(num) {
+      this.count = num;
+    },
+  },
 };
 </script>
 

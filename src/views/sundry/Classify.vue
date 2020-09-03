@@ -90,6 +90,30 @@ export default {
     this.getcate();
   },
   methods: {
+    // 点击搜索
+    searchClick: function (searchKey) {
+      this.searchKey = searchKey;
+      // 判断是否存在
+      if (!this.searchKey) {
+        this.getcatePlist();
+        return;
+      }
+      // 取消选中
+      this.id1 = -1;
+      this.id2 = -1;
+      this.axios
+        .post(this.$api.search, {
+          searchKey: this.searchKey.trim(),
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.searchs = data.data;
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {});
+    },
     getcate: function () {
       this.axios
         .get(this.$api.cate)
@@ -110,30 +134,6 @@ export default {
             // 判断 路由是否有值  有值先赋值
             Object.keys(this.$route.query).length != 0 ? this.getquery() : "";
             this.getcatePlist();
-          } else {
-            this.$toast(this.ErrCode(data.msg));
-          }
-        })
-        .catch(() => {});
-    },
-    // 点击搜索
-    searchClick: function (searchKey) {
-      this.searchKey = searchKey;
-      // 判断是否存在
-      if (!this.searchKey) {
-        this.getcatePlist();
-        return;
-      }
-      // 取消选中
-      this.id1 = -1;
-      this.id2 = -1;
-      this.axios
-        .post(this.$api.search, {
-          searchKey: this.searchKey.trim(),
-        })
-        .then((data) => {
-          if (data.code == 200) {
-            this.searchs = data.data;
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
