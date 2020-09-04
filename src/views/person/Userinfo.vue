@@ -7,7 +7,23 @@
         <div>
           <span class="tximg"></span>
           <div class="usernamebox">
-            <p>{{ user.companyName ? user.companyName: '暂无' }}</p>
+            <div>
+              {{ user.companyName ? user.companyName: '暂无' }}
+              <div :style="is ? 'background-color:#fff':''" class="xgbox">
+                <b @click="is= !is">修改</b>
+                <div v-if="is">
+                  <div>
+                    <Input v-model="name" style="width:11rem" placeholder="用户名" />
+                    <Button>确定</Button>
+                    <Button @click="is = false">取消</Button>
+                  </div>
+                  <div>
+                    <img src="../../assets/img/guide/i.png" />
+                    <p>建议输入公司名称</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             <p>(taobaoxiaonao)</p>
           </div>
         </div>
@@ -64,7 +80,9 @@
 export default {
   data() {
     return {
-      user: this.$store.state.user
+      user: this.$store.state.user,
+      name: "",
+      is: false,
     };
   },
   mounted() {
@@ -87,7 +105,6 @@ export default {
     > div:nth-child(1) {
       display: flex;
       padding: 0.5rem;
-      // flex-direction: column;
       background-color: #f5f5f5;
       > div {
         flex: 1;
@@ -106,6 +123,48 @@ export default {
           display: flex;
           text-indent: 1.3rem;
           flex-direction: column;
+          > div {
+            display: flex;
+          }
+          .xgbox {
+            width: 5rem;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            text-indent: 0;
+            > b {
+              cursor: pointer;
+              font-weight: 400;
+              color: #ff8400;
+              border-bottom: none;
+            }
+            > div {
+              padding: 1rem;
+              width: 22rem;
+              height: 5.5rem;
+              background: #fff;
+              display: flex;
+              border: 1px solid #eee;
+              flex-direction: column;
+              justify-content: space-between;
+              position: absolute;
+              top: 1.3rem;
+              left: 0;
+              > div:nth-child(1) {
+                > button {
+                  margin-left: 0.5rem;
+                }
+              }
+              > div:nth-child(2) {
+                display: flex;
+                align-items: center;
+                color: #515a6e;
+                > img {
+                  margin-right: 0.3rem;
+                }
+              }
+            }
+          }
         }
       }
     }

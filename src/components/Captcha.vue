@@ -30,6 +30,8 @@ export default {
         url = this.$api.getYzm;
       } else if (this.apiurl == "getYzmForFindPwd") {
         url = this.$api.getYzmForFindPwd;
+      } else if (this.apiurl == "getYzmForLogin") {
+        url = this.$api.getYzmForLogin;
       }
       this.axios
         .post(url, {
@@ -71,6 +73,6 @@ button {
 }
 .active {
   border: 1px solid #999 !important;
-  color: #999 !important;
+  // color: #999 !important;
 }
 </style>

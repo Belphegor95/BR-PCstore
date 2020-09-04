@@ -86,6 +86,11 @@ export default {
       searchs: [], // 搜索
     };
   },
+  watch: {
+    "$route"(to) {
+      this.getcate()
+    }
+  },
   mounted() {
     this.getcate();
   },
@@ -165,12 +170,15 @@ export default {
         let item = this.cateList.cateOneList[i].id;
         if (item == query.cate_one) {
           this.id1 = i;
+          this.twoList = this.cateList.cateOneList[i].twolist;
+          break;
         }
       }
       for (let i = 0; i < this.twoList.length; i++) {
         let item = this.cateList.cateOneList[i].id;
         if (item == query.cate_two) {
           this.id2 = i;
+          break;
         }
       }
     },
@@ -309,7 +317,7 @@ export default {
       display: flex;
       flex-wrap: wrap;
       padding-top: 0.5rem;
-      // justify-content: space-around;
+      min-height: 23rem;
       > div {
         margin: 0.5rem 0.35rem;
       }

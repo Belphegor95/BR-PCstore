@@ -6,7 +6,8 @@
       <div v-show="pitchon== -1">
         <div>
           <span>已绑定手机号:</span>
-          <p>{{ user.phone }}</p>
+          <p v-if="user.phone" >{{ user.phone  }}</p>
+          <p v-else >{{ user.phoneNum  }}</p>
           <button @click="startphone">更换手机号</button>
         </div>
       </div>
@@ -33,7 +34,8 @@
         <div v-if="pitchon == 0">
           <h6>
             账号
-            <span>{{ user.phone }}</span>
+            <span v-if="user.phone">{{ user.phone }}</span>
+            <span v-else >{{ user.phoneNum }}</span>
             <!-- 为确认是你本人操作,请完成以下验证 -->
           </h6>
           <div>
@@ -160,14 +162,8 @@ export default {
       this.phoneNum = this.user.phone;
       this.$router.push(`/person/phone?pitchon=${this.pitchon}`);
     },
-    ok: function () {
-      this.pitchon++;
-      this.$router.push(`/person/phone?pitchon=${this.pitchon}`);
-    },
     back: function () {
       this.$router.go(-2);
-      // this.pitchon = -1;
-      // this.$router.push("/person/phone");
     },
   },
 };

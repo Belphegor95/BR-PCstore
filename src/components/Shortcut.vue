@@ -96,7 +96,8 @@ export default {
             .post(this.$api.logout)
             .then((data) => {
               if (data.code == 200) {
-                localStorage.removeItem("vuex");
+                sessionStorage.removeItem("user");
+                sessionStorage.removeItem("vuex");
                 this.$store.commit("resetState");
                 this.$router.push("/guide/login");
               } else {

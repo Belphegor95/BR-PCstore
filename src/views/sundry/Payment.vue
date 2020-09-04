@@ -120,7 +120,6 @@
             <p>
               <span>实付款:</span>
               {{ orderdata.totalMoney }}
-              <!-- 137.83 -->
             </p>
             <div>
               <span>寄送至:</span>

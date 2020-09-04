@@ -194,7 +194,7 @@ export default {
     },
     // 下单
     downOrder: function () {
-      if (this.checkAllGroup.length == 0) return;
+      if (this.checkAllGroup.length == 0) return;  
       this.axios
         .post(this.$api.downOrder, {
           plistIds: JSON.stringify(this.getdownOrderArr()),

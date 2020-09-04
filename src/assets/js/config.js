@@ -68,6 +68,10 @@ api.getAccOrders = "/api/getAccOrders"  // 获取订货账号
 
 api.getYzmForFindPwd = "/api/getYzmForFindPwd"  // 忘记密码 验证码
 
-api.resetPwd  = "/api/resetPwd"  //  重置密码
+api.resetPwd = "/api/resetPwd"  //  重置密码
+
+api.getYzmForLogin = "/api/getYzmForLogin"  // 登录验证码 
+
+api.loginByYzm = "/api/loginByYzm"  // 验证码登录
 
 export { api };

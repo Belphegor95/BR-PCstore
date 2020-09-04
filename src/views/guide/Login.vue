@@ -7,7 +7,7 @@
         <TabPane label="密码登录" name="name1">
           <div class="msgbox" v-show="msg !=''">{{ msg }}</div>
           <input type="text" placeholder="账号/手机号" class="username" :class="is_phone?'false_input':''" v-model="phoneNum" />
-          <input type="password" placeholder="密码" class="password" :class="is_pwd?'false_input':''" v-model="pwd" />
+          <input type="password" placeholder="密码" class="password" :class="is_pwd?'false_input':''" v-model="pwd" @keyup.enter="loginClick" />
           <div class="prompt">
             <p>
               <img src="../../assets/img/guide/i.png" />
@@ -22,10 +22,12 @@
           </p>
         </TabPane>
         <TabPane label="短信登录" name="name2">
-          <input type="text" placeholder="请输入手机号" class="phone" />
+          <div class="msgbox" v-show="msg !=''">{{ msg }}</div>
+          <input type="text" placeholder="请输入手机号" :class="is_phone?'false_input':''" class="phone" v-model="phoneNum_" />
           <div class="captchabox">
-            <input type="text" placeholder="请输入验证码" class="captcha" />
-            <Button type="primary" shape="circle" size="default">获取验证码</Button>
+            <input type="text" placeholder="请输入验证码" :class="is_pwd?'false_input':''" class="captcha" v-model="yzm" @keyup.enter="loginByYzm" />
+            <captcha :phoneNum="phoneNum_" apiurl="getYzmForLogin" />
+            <!-- <Button type="primary" shape="circle" size="default">获取验证码</Button> -->
           </div>
           <div class="prompt">
             <p>
@@ -34,7 +36,7 @@
             </p>
             <b v-show="false" @click="rut('find')">忘记密码?</b>
           </div>
-          <button class="btn">登录</button>
+          <button class="btn" @click="loginByYzm">登录</button>
           <p class="account">
             还没有账号?
             <b @click="rut('register')">立即注册</b>
@@ -58,28 +60,41 @@
 </template>
 
 <script>
+import captcha from "../../components/Captcha";
 export default {
+  components: {
+    captcha,
+  },
   data() {
     return {
       value: "",
       phoneNum: "",
+      phoneNum_: "",
+      yzm: "",
       pwd: "",
       btnload: false,
       is_phone: false,
       is_pwd: false,
       msg: "",
       users: [],
+      user: null,
     };
   },
   mounted() {
     // this.users = this.$store.state.user.loginData || [];
     let is = this.$route.query.is;
     if (is) this.getAccOrders();
+    this.user = JSON.parse(sessionStorage.getItem("user"));
+    if (this.user) {
+      this.users = this.user.loginData;
+    }
+    // if (!isloading) sessionStorage.setItem("isloading", "true");
   },
   methods: {
     rut: function (name) {
       this.$router.push(`/guide/${name}`);
     },
+    // 密码登录
     loginClick: function () {
       this.is_phone = false;
       this.is_pwd = false;
@@ -105,8 +120,54 @@ export default {
         .then((data) => {
           this.btnload = false;
           if (data.code == 200) {
+            //  保存在页面
+            sessionStorage.setItem("user", JSON.stringify(data.data));
+            this.user = data.data;
             // 删除重新赋值
-            localStorage.removeItem("vuex");
+            sessionStorage.removeItem("vuex");
+            this.$store.commit("resetState");
+            this.$store.commit("show_user", data.data);
+            if (data.data.type) {
+              this.users = data.data.loginData;
+            } else {
+              Object.keys(this.$route.query).length == 0
+                ? this.$router.push("/")
+                : this.$router.go(-1);
+            }
+          } else {
+            this.msg = this.ErrCode(data.msg);
+          }
+        })
+        .catch(() => {
+          this.btnload = false;
+          this.msg = this.$api.monmsg;
+        });
+    },
+    loginByYzm: function () {
+      this.is_phone = false;
+      this.is_pwd = false;
+      if (!/^1[3456789]\d{9}$/.test(this.phoneNum_)) {
+        this.is_phone = true;
+        this.msg = "手机号输入有误";
+        return;
+      } else if (this.yzm.trim().length != 6) {
+        this.msg = "验证码输入有误";
+        return;
+      }
+      this.btnload = true;
+      this.axios
+        .post(this.$api.loginByYzm, {
+          phoneNum: this.phoneNum_,
+          yzm: this.yzm,
+        })
+        .then((data) => {
+          this.btnload = false;
+          if (data.code == 200) {
+            //  保存在页面
+            sessionStorage.setItem("user", JSON.stringify(data.data));
+            this.user = data.data;
+            // 删除重新赋值
+            sessionStorage.removeItem("vuex");
             this.$store.commit("resetState");
             this.$store.commit("show_user", data.data);
             if (data.data.type) {
@@ -130,6 +191,8 @@ export default {
       this.axios
         .post(this.$api.selectAcc, {
           accOrderId: item.id,
+          token: this.user.token,
+          accId: this.user.accId,
         })
         .then((data) => {
           if (data.code == 200) {
@@ -241,9 +304,11 @@ export default {
         margin-top: 2rem;
         justify-content: space-between;
         > button {
+          color: #fff;
           height: 3rem;
           padding: 0 2rem;
           border: none;
+          border-radius: 5rem;
           background-color: #ff8400;
         }
       }

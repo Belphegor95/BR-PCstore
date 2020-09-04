@@ -43,7 +43,7 @@ export default new Vuex.Store({
   },
   modules: {
   },
-  plugins: [persistedstate()],
+  plugins: [persistedstate({ storage: window.sessionStorage })],
 })
 // 设置要重置的参数
 const getDefaultState = () => {
