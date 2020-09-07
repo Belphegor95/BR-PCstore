@@ -47,27 +47,28 @@
                     <b>*</b>
                     商品类别
                   </span>
-                  <Select v-model="model1" style="width:15rem">
+                  <Input v-model="value" style="width: 15rem" readonly />
+                  <!-- <Select v-model="model1" style="width:15rem">
                     <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                  </Select>
+                  </Select> -->
                 </div>
-                <div>
+                <!-- <div>
                   <span>
                     <b>*</b>
                     商品类别
                   </span>
-                  <Input v-model="value" style="width: 15rem" />件
+                  <Input v-model="value" style="width: 15rem" readonly />件
                   <div class="smbox">
                     <img src="../../assets/img/maintain/xx.png" alt />
                     多件不同商品请分开填写,如因件数不符合产生的额外费用需本人承担
                   </div>
-                </div>
+                </div> -->
                 <div>
                   <span>
                     <b>*</b>
-                    商品类别
+                    故障描述
                   </span>
-                  <Input v-model="value" style="width: 15rem" />
+                  <Input v-model="value" style="width: 15rem" type="textarea" :autosize="{minRows: 5,maxRows: 5}" readonly />
                 </div>
               </div>
             </div>
@@ -79,15 +80,15 @@
                 <p>8月31日</p>
                 <p>今天/周日</p>
               </span>
-              <span>
+              <!-- <span>
                 <p>8月31日</p>
                 <p>今天/周日</p>
-              </span>
-              <Input v-model="date" readonly placeholder="Enter something..." style="width: 100px" />
+              </span> -->
+              <Input v-model="date" readonly  style="width: 100px" />
             </div>
           </div>
         </div>
-        <div>
+        <!-- <div>
           <tab name="请填写订单备注" />
           <Input
             class="textarea"
@@ -109,7 +110,7 @@
             <img src="../../assets/img/maintain/i.png" />
             <p>温馨提示: 请勿在备注信息中填写与订单必填产品信息不符的内容, 如: 除了订单产品还要安装***、需要师傅帮忙维修***等等额外服务信息, 以免因为师傅忽略而导致交易纠纷, 一旦因此发生纠纷, 平台仲裁将以订单必填信息为准</p>
           </div>
-        </div>
+        </div> -->
         <div class="costbox">
           <div>
             <div>

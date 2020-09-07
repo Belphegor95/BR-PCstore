@@ -34,13 +34,13 @@
             </div>
             <div :class="maintainid == 2?  'active':''">客户信息</div>
           </li>
-          <li>
+          <!-- <li>
             <div>
               <img v-if="maintainid == 3" src="../assets/img/maintain/xd_.png" />
               <img v-else src="../assets/img/maintain/xd.png" />
             </div>
             <div :class="maintainid == 3?  'active':''">下单</div>
-          </li>
+          </li> -->
         </ul>
         <router-view class="rightbox" />
       </div>

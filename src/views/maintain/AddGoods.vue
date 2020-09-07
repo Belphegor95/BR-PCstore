@@ -13,41 +13,55 @@
             :show-upload-list="false"
             :format="['jpg','jpeg','png']"
             :on-exceeded-size="handleMaxSize"
-            :before-upload="handleBeforeUpload"
             :on-format-error="handleFormatError"
             :action="$api.baseUrl + $api.uploadFixImg"
           >
             <Button icon="ios-cloud-upload-outline">上传商品图片</Button>
           </Upload>
         </li>
-        <li v-for="(item,index) in defaultList" :key="index">
+        <li v-for="(item,index) in attachPic" :key="index">
           <img :src="item.path" />
         </li>
       </ul>
       <div>
         <div>
           <span>
-            <b>*</b> 商品类别
+            <b>*</b> 设备型号
           </span>
-          <Select v-model="model1" style="width:20rem">
-            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-          </Select>
+          <Upload
+            v-if="unitType == ''"
+            ref="upload"
+            :max-size="1024"
+            :on-success="upUnitType"
+            :show-upload-list="false"
+            :format="['jpg','jpeg','png']"
+            :on-exceeded-size="handleMaxSize"
+            :before-upload="handleBeforeUpload"
+            :on-format-error="handleFormatError"
+            :action="$api.baseUrl + $api.uploadFixImg"
+          >
+            <Button icon="ios-cloud-upload-outline">设备型号图片</Button>
+          </Upload>
+          <div class="unitTypebox" v-else>
+            <span @click="unitType = ''">x</span>
+            <img class="unitTypeimg" :src="unitType" />
+          </div>
         </div>
         <div>
           <span>
-            <b>*</b> 商品数量
+            <b>*</b> 商品名称
           </span>
-          <Input v-model="value" placeholder="Enter something..." style="width: 20rem" />件
-          <div>
+          <Input v-model="goodsName" style="width: 20rem" />
+          <!-- <div>
             <img src="../../assets/img/maintain/xx.png" />
             <p>多件不同商品请分开填写,如因件数不符合产生的额外费用需本人承担</p>
-          </div>
+          </div>-->
         </div>
         <div>
           <span>
             <b>*</b> 故障描述
           </span>
-          <Input v-model="value" type="textarea" placeholder="Enter something..." style="width: 20rem" />
+          <Input v-model="detail" type="textarea" style="width: 20rem" />
         </div>
         <div>
           <span>示例图</span>
@@ -104,8 +118,11 @@ export default {
         },
       ],
       model1: "",
-      defaultList: [], // 上传列表
-      uploadList: [],
+      attachPic: [], // 上传列表
+      uploadList: [], // 正在上传的图片
+      unitType: "", // 设备型号图片地址
+      goodsName: "", // 商品名称
+      detail: "", // 故障描述
     };
   },
   mounted() {
@@ -114,18 +131,38 @@ export default {
   },
   methods: {
     advance: function () {
-      this.$router.push("/maintain/promise");
+      if (this.attachPic.length == 0) {
+        return this.$toast("商品故障图片未上传!");
+      } else if (this.goodsName.trim().length == "") {
+        return this.$toast("商品名称未输入!");
+      } else if (this.detail.trim().length == "") {
+        return this.$toast("故障描述未输入!");
+      } else {
+        this.$store.commit("show_maintain", {
+          goodsName: this.goodsName,
+          unitType: this.unitType,
+          detail: this.detail,
+          attachPic: JSON.stringify(this.attachPic),
+        });
+        this.$router.push("/maintain/promise");
+      }
     },
     // 保存成功
     upsuccess: function (data) {
       if (data.code == 200) {
         data.data.path = data.data.path.replace(new RegExp("\\\\", "g"), "/");
-        this.defaultList.push(data.data);
+        this.attachPic.push(data.data);
+      }
+    },
+    // 商品型号
+    upUnitType: function (data) {
+      if (data.code == 200) {
+        this.unitType = data.data.path.replace(new RegExp("\\\\", "g"), "/");
       }
     },
     // 上传之前
     handleBeforeUpload() {
-      let check = this.uploadList.length + this.defaultList.length < 9;
+      let check = this.uploadList.length + this.attachPic.length < 9;
       if (!check) {
         this.$toast("最多9个!");
       }
@@ -178,6 +215,23 @@ export default {
         flex-wrap: wrap;
         width: 35rem;
         margin-top: 1rem;
+        .unitTypebox {
+          position: relative;
+          display: flex;
+          > span {
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0 0.5rem;
+            background-color: #fff;
+          }
+          // 商品型号图片
+          .unitTypeimg {
+            max-width: 20rem;
+            max-height: 20rem;
+          }
+        }
         > span {
           display: inline-block;
           width: 5rem;

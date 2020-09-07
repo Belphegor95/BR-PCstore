@@ -74,4 +74,6 @@ api.getYzmForLogin = "/api/getYzmForLogin"  // 登录验证码
 
 api.loginByYzm = "/api/loginByYzm"  // 验证码登录
 
+api.submitFixOrder = "/api/submitFixOrder" // 提交维修订单
+
 export { api };

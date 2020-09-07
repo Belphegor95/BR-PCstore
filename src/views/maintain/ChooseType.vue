@@ -4,7 +4,7 @@
     <h4>申请上门维修 > 客户信息</h4>
     <div class="content">
       <ul>
-        <li v-for="(item,index) in list" :key="index">
+        <li v-for="(item,index) in list" :key="index" :class="fixType == index ? 'active': '' " @click="fixType = index">
           <div>
             <img :src="item.img" />
             <p>{{ item.name }}</p>
@@ -42,6 +42,7 @@ export default {
           img: require("../../assets/img/maintain/qt.png"),
         },
       ],
+      fixType: null,
     };
   },
   mounted() {
@@ -49,7 +50,13 @@ export default {
   },
   methods: {
     advance: function () {
-      this.$router.push("/maintain/addGoods");
+      if (this.fixType != null) {
+        this.$store.commit("default_maintain");
+        this.$store.commit("show_maintain", { fixType: this.fixType });
+        this.$router.push("/maintain/addGoods");
+      } else {
+        this.$toast("待修类型未选择");
+      }
     },
   },
 };
@@ -64,6 +71,7 @@ export default {
     > ul {
       width: 100%;
       display: flex;
+      padding-top: 2rem;
       > li {
         flex: 1;
         padding: 1rem;
@@ -71,6 +79,7 @@ export default {
         align-items: center;
         flex-direction: column;
         justify-content: center;
+        border: 1px solid #fff;
         > div {
           cursor: pointer;
           width: 5rem;
@@ -87,10 +96,13 @@ export default {
         }
         > div:hover {
           color: #ff8400;
-          // border: 1px solid #ff8400;
         }
       }
+      .active {
+        border: 1px solid #ff8400;
+      }
     }
+
     .nextStep {
       margin-top: 10rem;
     }

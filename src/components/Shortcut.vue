@@ -15,7 +15,7 @@
           </div>
         </span>
         <span v-else @click="rut('guide','login')">请登录</span> |
-        <span @click="rut('guide','register')">注册</span>
+        <span  @click="rut('guide','register')">注册</span>
       </p>
     </div>
     <div class="rightbox">

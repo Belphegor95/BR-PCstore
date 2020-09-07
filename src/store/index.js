@@ -12,6 +12,7 @@ export default new Vuex.Store({
     order: {},
     count: 0,
     orderDetails: null, // 订单详情信息
+    maintain: {}, // 维修单参数
   },
   mutations: {
     show_user(state, payload) {
@@ -34,6 +35,12 @@ export default new Vuex.Store({
     },
     show_orderDetails(state, payload) {
       state.orderDetails = payload;
+    },
+    show_maintain(state, payload) {
+      Object.assign(state.maintain, payload);
+    },
+    default_maintain(state) {
+      state.maintain = {};
     },
     resetState(state) {
       Object.assign(state, getDefaultState())

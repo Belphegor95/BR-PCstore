@@ -85,10 +85,7 @@ export default {
     let is = this.$route.query.is;
     if (is) this.getAccOrders();
     this.user = JSON.parse(sessionStorage.getItem("user"));
-    if (this.user) {
-      this.users = this.user.loginData;
-    }
-    // if (!isloading) sessionStorage.setItem("isloading", "true");
+    if (this.user) this.users = this.user.loginData;
   },
   methods: {
     rut: function (name) {
