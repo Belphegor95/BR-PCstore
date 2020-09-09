@@ -59,7 +59,7 @@ export default {
   methods: {
     ok(name) {
       if (this.$route.path == name) return;
-      if (!this.user) return this.$router.push("/guide/login");
+      if (!this.user && name != "/cart") return this.$router.push("/guide/login");
       this.$router.push(name);
     },
     rut: function (name, name1) {
@@ -153,7 +153,6 @@ export default {
       padding: 0.5rem 0;
     }
     > p:nth-child(2) {
-      // padding: 0.5rem 0;
       display: flex;
       align-items: center;
       height: 100%;

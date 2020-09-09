@@ -11,7 +11,14 @@
         <div class="classify">
           <div>商品分类</div>
           <ul>
-            <li v-for="(item,index) in navigations" :key="index" @click="classifyClick(item)">{{ item.name }}</li>
+            <li v-for="(item,index) in navigations" :key="index" @click="classifyClick(item)">
+              <img :src="item.img_url" alt />
+              <p>{{ item.name }}</p>
+            </li>
+            <li @click="$router.push('/maintain/maintainList');">
+              <img src="../assets/img/home/shouhou.png" />
+              <p>售后及维修</p>
+            </li>
           </ul>
         </div>
         <Carousel class="Carouselbox" v-model="value" autoplay :autoplay-speed="5000" arrow="never">
@@ -148,12 +155,17 @@ export default {
           background-color: #fff;
           > li {
             display: flex;
-            padding: 2.48rem 0;
+            height: 6rem;
             align-items: center;
+            flex-direction: column;
             justify-content: center;
             border: 1px dashed #ededed;
             width: 33.3%;
             cursor: pointer;
+            > img {
+              width: 2rem;
+              margin-bottom: 0.5rem;
+            }
           }
           > li:hover {
             border: 1px dashed #ff8900;

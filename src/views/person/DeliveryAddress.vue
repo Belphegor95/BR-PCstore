@@ -40,10 +40,16 @@
         </div>
         <div>
           <span>
-            <b>*</b>地址信息:
+            <b>*</b>地址位置:
           </span>
-          <Input v-model="site" placeholder="请输入地址信息" style="width: 22.5rem" disabled />
+          <Input v-model="site" placeholder="请输入地址位置" style="width: 22.5rem" disabled />
           <Button style="margin-left:1rem" @click="$refs.formbox.scrollTop = 480">修改地址</Button>
+        </div>
+        <div>
+          <span>
+            <b>*</b>详细地址:
+          </span>
+          <Input v-model="address_detail" placeholder="请填写详细地址" style="width: 22.5rem" />
         </div>
         <div>
           <span>
@@ -133,6 +139,7 @@ export default {
       location: "", // BM 搜索条件
       keyword: "", // BM 搜索条件
       site: "", // 展示用地址信息
+      address_detail: "", // 详细地址门牌号
       linkman: "", // 收货人姓名
       phone: "", // 收货人电话
       isDefault: false, // 是否是默认地址
@@ -186,6 +193,7 @@ export default {
     },
     // 编辑
     compile: function (a) {
+      console.info(a)
       this.istype = false;
       this.$refs.formbox.scrollTop = 960;
       this.addressId = a.id;
@@ -202,21 +210,32 @@ export default {
       this.coordinate.lat = a.lat;
       this.coordinate.lng = a.lng;
       // 展示用地址信息
-      this.site = a.address_detail;
+      this.address_detail = a.address_detail
+      this.site = addressdata[3];
       this.linkman = a.linkman;
       this.phone = a.phone;
       this.isDefault = a.address_default ? true : false;
     },
     // 保存地址
     onSave() {
+      if (this.address_detail.trim() == "") {
+        this.$toast("详细地址未输入!");
+        return;
+      } else if (this.linkman.trim() == "") {
+        this.$toast("收货人姓名未输入!");
+        return;
+      } else if (!/^1[3456789]\d{9}$/.test(this.phone)) {
+        this.$toast("手机号输入有误");
+        return;
+      }
       // 如果是修改
       if (!this.istype) return this.editAddress();
       this.axios
         .post(this.$api.addAddress, {
           linkman: this.linkman,
           phone: this.phone,
-          address: `${this.address_[0]}/${this.address_[1]}/${this.address_[2]}`,
-          address_detail: this.site,
+          address: `${this.address_[0]}/${this.address_[1]}/${this.address_[2]}/${this.site}`,
+          address_detail: this.address_detail,
           lat: this.coordinate.lat,
           lng: this.coordinate.lng,
           address_default: this.isDefault ? 1 : 0,

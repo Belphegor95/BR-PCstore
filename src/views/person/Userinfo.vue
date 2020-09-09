@@ -14,7 +14,7 @@
                 <div v-if="is">
                   <div>
                     <Input v-model="name" style="width:11rem" placeholder="用户名" />
-                    <Button>确定</Button>
+                    <Button @click="editAccOrderName">确定</Button>
                     <Button @click="is = false">取消</Button>
                   </div>
                   <div>
@@ -88,7 +88,28 @@ export default {
   mounted() {
     this.$store.commit("show_personid", 0);
   },
-  methods: {},
+  methods: {
+    editAccOrderName: function () {
+      if (this.name.trim().length == 0) return this.$toast("名字输入不符合!");
+      this.axios
+        .post(this.$api.editAccOrderName, {
+          companyName: this.name,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.user.companyName = this.name;
+            this.$store.commit("show_user", this.user);
+            this.is = false;
+            this.name = "";
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+  },
 };
 </script>
 

@@ -11,20 +11,13 @@
       <div>
         <h4>维修详情</h4>
         <div class="serialbox">
-          <p>编号:123456</p>
-          <p>维修中</p>
+          <p>编号:{{ detailsData.tradeNo }}</p>
+          <p>{{ status[detailsData.state + 1] }}</p>
         </div>
         <div class="schedulebox">
           <div>当前进度</div>
           <ul>
-            <li>2020-8-31 11:37:31 维修完成</li>
-            <li>2020-8-31 11:37:31 维修完成</li>
-            <li>2020-8-31 11:37:31 维修完成</li>
-            <li>2020-8-31 11:37:31 维修完成</li>
-            <li>2020-8-31 11:37:31 维修完成</li>
-            <li>2020-8-31 11:37:31 维修完成</li>
-            <li>2020-8-31 11:37:31 维修完成</li>
-            <li>2020-8-31 11:37:31 维修完成</li>
+            <li v-for="(item,index) in detailsData.fixProgress" :key="index">{{ item.time }} {{ item.content }}</li>
           </ul>
         </div>
         <div class="msgbox">
@@ -32,43 +25,36 @@
             <tab name="待修商品信息" />
             <div class="msg">
               <div>
-                <!-- <Upload action="//jsonplaceholder.typicode.com/posts/">
-                  <div class="upbox">
-                    <img src="../../assets/img/maintain/tj.png" alt />
-                    <span>上传更多</span>
-                    <p>其他角度的图片</p>
-                  </div>
-                </Upload> -->
-                <div></div>
+                <img :src="item.path" alt v-for="(item,index) in detailsData.attachPic" :key="index" />
               </div>
               <div>
                 <div>
                   <span>
                     <b>*</b>
-                    商品类别
+                    设备型号
                   </span>
-                  <Input v-model="value" style="width: 15rem" readonly />
-                  <!-- <Select v-model="model1" style="width:15rem">
-                    <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                  </Select> -->
+                  <img style="max-width: 15rem;max-height: 10rem" :src="detailsData.unitType" alt />
                 </div>
-                <!-- <div>
+                <div>
+                  <span>
+                    <b>*</b>
+                    商品名称
+                  </span>
+                  <Input v-model="fixs[detailsData.fixType]" style="width: 15rem" readonly />
+                </div>
+                <div>
                   <span>
                     <b>*</b>
                     商品类别
                   </span>
-                  <Input v-model="value" style="width: 15rem" readonly />件
-                  <div class="smbox">
-                    <img src="../../assets/img/maintain/xx.png" alt />
-                    多件不同商品请分开填写,如因件数不符合产生的额外费用需本人承担
-                  </div>
-                </div> -->
+                  <Input v-model="detailsData.goodsName" style="width: 15rem" readonly />
+                </div>
                 <div>
                   <span>
                     <b>*</b>
                     故障描述
                   </span>
-                  <Input v-model="value" style="width: 15rem" type="textarea" :autosize="{minRows: 5,maxRows: 5}" readonly />
+                  <Input v-model="detailsData.detail" style="width: 15rem" type="textarea" :autosize="{minRows: 5,maxRows: 5}" readonly />
                 </div>
               </div>
             </div>
@@ -77,57 +63,30 @@
             <tab name="上门时间" />
             <div class="sjbox">
               <span>
-                <p>8月31日</p>
-                <p>今天/周日</p>
+                <p>{{ detailsData.doorTime | dateline }}</p>
+                <p>{{ detailsData.doorTime | days }}</p>
               </span>
-              <!-- <span>
-                <p>8月31日</p>
-                <p>今天/周日</p>
-              </span> -->
-              <Input v-model="date" readonly  style="width: 100px" />
+              <Input v-model="hourdate" readonly style="width: 100px" />
             </div>
           </div>
         </div>
-        <!-- <div>
-          <tab name="请填写订单备注" />
-          <Input
-            class="textarea"
-            v-model="value"
-            type="textarea"
-            :rows="8"
-            maxlength="200"
-            placeholder="请在此处填写关于本次服务师傅需要注意的内容(200字以内)
-      示例:
-      1.师傅接单后请及时与客服/我预约时间, 上门前提前三小时再次确认, 避免空跑;
-      2.师傅服务过程中不得随意评价产品, 若发现产品问题请引导客户及时与商家联系解决;
-      3.师傅上门前必须与客服确认清楚施工环境和施工条件在进行操作;
-      4.师傅服务后请提供三张以上清晰完工图片并填写服务确认单;
-      5.请师傅文明服务, 不可与客户发生冲突, 有任何问题请及时反馈平台。
-      "
-            style="width: 100%"
-          />
-          <div style="display: flex;align-items: baseline;margin-top: 2rem;color:#ff8400">
-            <img src="../../assets/img/maintain/i.png" />
-            <p>温馨提示: 请勿在备注信息中填写与订单必填产品信息不符的内容, 如: 除了订单产品还要安装***、需要师傅帮忙维修***等等额外服务信息, 以免因为师傅忽略而导致交易纠纷, 一旦因此发生纠纷, 平台仲裁将以订单必填信息为准</p>
-          </div>
-        </div> -->
         <div class="costbox">
           <div>
             <div>
               <span>费用清单:</span>
-              <span>￥100.00</span>
+              <span>￥0</span>
             </div>
             <div>
               <span>上门服务费:</span>
-              <span>￥50.00</span>
+              <span>￥{{ detailsData.doorMoney }}</span>
             </div>
             <div>
               <span>维修加时:0.5小时</span>
-              <span>￥100.00</span>
+              <span>￥0</span>
             </div>
             <div>
               <span>应付金额</span>
-              <span style="color: #ff8400">￥137.00</span>
+              <span style="color: #ff8400">￥{{ detailsData.doorMoney }}</span>
             </div>
           </div>
           <button>立即付款</button>
@@ -156,34 +115,43 @@ export default {
     return {
       value: "",
       date: "12:00",
-      cityList: [
-        {
-          value: "New York",
-          label: "New York",
-        },
-        {
-          value: "London",
-          label: "London",
-        },
-        {
-          value: "Sydney",
-          label: "Sydney",
-        },
-        {
-          value: "Ottawa",
-          label: "Ottawa",
-        },
-        {
-          value: "Paris",
-          label: "Paris",
-        },
-        {
-          value: "Canberra",
-          label: "Canberra",
-        },
+      fixs: ["电脑", "打印机", "监控", "弱电", "其他"],
+      status: [
+        "已取消",
+        "未支付",
+        "已支付",
+        "仓库已接单",
+        "骑手已接单",
+        "骑手已到达",
+        "开始维修",
+        "骑手维修加时",
+        "维修完成",
       ],
       model1: "",
+      detailsData: this.$store.state.maintainDetails,
+      hourdate: "",
     };
+  },
+  mounted() {
+    this.hourdate = this.detailsData.doorTime.split(" ")[1] + "0";
+  },
+  filters: {
+    dateline: function (value) {
+      let arr = value.split(" ");
+      if (arr.length != 2) return value;
+      let date = new Date(arr[0]);
+      let yue = date.getMonth() + 1;
+      let tian = date.getDate();
+      return `${yue}月${tian}天`;
+    },
+    days: function (value) {
+      let arr = value.split(" ");
+      if (arr.length != 2) return value;
+      let date = new Date(arr[0]);
+      let day = date.getDay();
+      let zhou = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+      return zhou[day];
+    },
   },
 };
 </script>
@@ -223,6 +191,7 @@ export default {
           width: 60rem;
           padding: 0.5rem 1rem;
           border: 1px solid #e6e6e6;
+          min-height: 10rem;
         }
       }
       .msgbox {
@@ -237,13 +206,14 @@ export default {
               flex: 1;
               margin-right: 1rem;
               display: flex;
+              flex-wrap: wrap;
               padding: 0.5rem;
               background-color: #ececec;
-              > div {
-                width: 6rem;
-                height: 6rem;
+              > img {
+                max-width: 5rem;
+                max-height: 5rem;
                 margin-right: 0.5rem;
-                background-color: #fff;
+                margin-bottom: 0.5rem;
               }
               .upbox {
                 cursor: pointer;
@@ -266,9 +236,10 @@ export default {
               flex: 1;
               display: flex;
               justify-content: space-around;
-              //   align-items: center;
               flex-direction: column;
               > div {
+                display: flex;
+                margin-bottom: 0.5rem;
                 > span {
                   display: inline-block;
                   width: 6rem;

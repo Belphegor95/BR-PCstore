@@ -96,7 +96,7 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.$toast("维修下单成功!");
-            this.$router.push("maintain/maintainList");
+            this.$router.push("/maintain/maintainList");
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -134,14 +134,22 @@ export default {
     dayClick: function (index) {
       this.dayid = index;
       let hour = new Date().getHours(); //得到小时
+      let fen = new Date().getMinutes(); // 得到分钟
+
       for (let i = 0; i < this.hours.length; i++) {
         let item = this.hours[i];
+        let itemfen = item.hour.split(":")[1];
         if (index == 0) {
           if (item.hr < hour) {
             item.is = true;
           } else {
-            this.hourClick(item.is, i);
-            break;
+            // 处理 分钟
+            if (item.hr == hour && fen >= itemfen) {
+              item.is = true;
+            } else {
+              this.hourClick(item.is, i);
+              break;
+            }
           }
         } else {
           item.is = false;

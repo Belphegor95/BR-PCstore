@@ -40,7 +40,7 @@
           </h6>
           <div>
             <div>
-              <span>换绑手机号:</span>
+              <span>绑定手机号:</span>
               <Input v-model="phoneNum" style="width: 200px" />
             </div>
             <div>

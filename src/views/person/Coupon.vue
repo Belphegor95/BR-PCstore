@@ -8,7 +8,8 @@
         <span :class="!isticket?'active':'' " @click="isticket = false">已过期</span>
       </div>
       <div>
-        <ticket :isticket="isticket" v-for="(item,index) in ticketList" :key="index" class="ticket_" />
+        <ticket :isticket="isticket" v-for="(item,index) in ticketList" :key="index" class="ticket_" v-show="ticketList.length != 0" />
+        <p v-show="ticketList.length == 0">暂无优惠券记录</p>
       </div>
     </div>
   </div>

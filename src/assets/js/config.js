@@ -1,6 +1,5 @@
 var api = api || {};
 
-
 // api.baseUrl = "http://121.196.123.181:3000"
 api.baseUrl = "http://192.168.1.189:3000"   // 孙飞请求地址
 
@@ -75,5 +74,10 @@ api.getYzmForLogin = "/api/getYzmForLogin"  // 登录验证码
 api.loginByYzm = "/api/loginByYzm"  // 验证码登录
 
 api.submitFixOrder = "/api/submitFixOrder" // 提交维修订单
+
+api.editAccOrderName = "/api/editAccOrderName"  // 修改用户名
+
+api.getFixOrder = "/api/getFixOrder"  //  获取维修单
+
 
 export { api };
