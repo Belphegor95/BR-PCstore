@@ -1,7 +1,10 @@
 var api = api || {};
 
 // api.baseUrl = "http://121.196.123.181:3000"
+
 api.baseUrl = "http://192.168.1.189:3000"   // 孙飞请求地址
+ 
+// api.baseUrl = "http://39.105.230.213:3000"   // 孙飞请求地址
 
 api.monmsg = "网络遇到问题,请重试!";
 
@@ -9,7 +12,7 @@ api.regist = "/api/regist"  // 注册 1
 
 api.login = "/api/login"  // 登录 1
 
-api.selectAcc = "/api/selectAcc"  // 登录角色
+api.selectAcc = "/api/selectAcc"  // 登录角色 1
 
 api.slideshow = "/api/slideshow"  // 轮播图 1
 
@@ -61,23 +64,23 @@ api.changePhone = "/api/changePhone"  // 换绑手机号 1
 
 api.logout = "/api/logout"  // 退出登录 1
 
-api.uploadFixImg = "/api/uploadFixImg"  // 上传图片
+api.uploadFixImg = "/api/uploadFixImg"  // 上传图片 1
 
 api.getAccOrders = "/api/getAccOrders"  // 获取订货账号
 
-api.getYzmForFindPwd = "/api/getYzmForFindPwd"  // 忘记密码 验证码
+api.getYzmForFindPwd = "/api/getYzmForFindPwd"  // 忘记密码 验证码 1
 
-api.resetPwd = "/api/resetPwd"  //  重置密码
+api.resetPwd = "/api/resetPwd"  //  重置密码 1
 
-api.getYzmForLogin = "/api/getYzmForLogin"  // 登录验证码 
+api.getYzmForLogin = "/api/getYzmForLogin"  // 登录验证码  1
 
-api.loginByYzm = "/api/loginByYzm"  // 验证码登录
+api.loginByYzm = "/api/loginByYzm"  // 验证码登录 1
 
-api.submitFixOrder = "/api/submitFixOrder" // 提交维修订单
+api.submitFixOrder = "/api/submitFixOrder" // 提交维修订单 1
 
-api.editAccOrderName = "/api/editAccOrderName"  // 修改用户名
+api.editAccOrderName = "/api/editAccOrderName"  // 修改用户名 1
 
-api.getFixOrder = "/api/getFixOrder"  //  获取维修单
+api.getFixOrder = "/api/getFixOrder"  //  获取维修单 1
 
 
 export { api };

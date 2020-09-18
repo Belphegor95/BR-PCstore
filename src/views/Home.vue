@@ -1,8 +1,6 @@
 <template>
   <div class="home">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="search_box">
       <search :isSearch="true" />
     </div>

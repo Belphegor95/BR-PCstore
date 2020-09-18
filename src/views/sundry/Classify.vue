@@ -1,9 +1,7 @@
 <!-- 搜索 分类 -->
 <template>
   <div class="classify">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="search_box">
       <search :isSearch="true" :searchname="searchKey" @searchClick="searchClick" />
     </div>
@@ -87,9 +85,9 @@ export default {
     };
   },
   watch: {
-    "$route"(to) {
-      this.getcate()
-    }
+    $route(to) {
+      this.getcate();
+    },
   },
   mounted() {
     this.getcate();

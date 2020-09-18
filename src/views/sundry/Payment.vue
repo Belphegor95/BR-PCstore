@@ -1,9 +1,7 @@
 <!-- 结算 -->
 <template>
   <div class="payment">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="content">
       <div class="happyname">
         <h1 @click="gohome">开心兔商城</h1>
@@ -32,7 +30,7 @@
       </div>
       <div>
         <span>确认收货地址</span>
-        <span>管理收货地址</span>
+        <span @click="$router.push('/person/deliveryAddress?is=true')">管理收货地址</span>
       </div>
       <div>
         <RadioGroup v-model="addressindex" class="radiobox">
@@ -77,7 +75,7 @@
           <div>
             <div>
               <span>给卖家留言</span>
-              <Input v-model="notes" maxlength="100" show-word-limit type="textarea" style="width: 15rem" />
+              <Input v-model="notes" maxlength="100" show-word-limit type="textarea" />
             </div>
             <div>
               <span>发票</span>
@@ -127,7 +125,8 @@
             </div>
             <span>收货人: {{ address[addressindex].linkman }} {{ address[addressindex].phone }}</span>
           </div>
-          <Button :loading="btnload" @click="onSubmit">提交订单</Button>
+          <Button class="addbtn" :loading="btnload" @click="onSubmit" v-show="orderdata.totalMoney >= 50">提交订单</Button>
+          <Button class="forbidbtn" disabled v-show="orderdata.totalMoney < 50">未满50元</Button>
         </div>
       </div>
     </div>
@@ -207,7 +206,7 @@ export default {
     },
     // 提交订单
     onSubmit: function () {
-      if (this.orderdata.address.length == 0) {
+      if (this.address.length == 0) {
         this.$toast("请添加地址!");
         return;
       }
@@ -429,10 +428,11 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: column;
-        padding: 2rem 0;
+        justify-content: space-evenly;
+        // padding: 2rem 0;
         border-right: 1px solid #e5e5e5;
         > div {
-          width: 20rem;
+          width: 90%;
           display: flex;
           margin-bottom: 1rem;
           > span {
@@ -441,6 +441,12 @@ export default {
             text-align: right;
             margin-right: 1rem;
             display: inline-block;
+          }
+        }
+        > div:nth-child(1) {
+          > div {
+            width: auto;
+            flex: auto;
           }
         }
       }
@@ -532,12 +538,19 @@ export default {
         }
       }
       > button {
-        border: 1px solid #ff8400;
-        background: #ff8400;
         border-radius: 0;
         width: 12rem;
         height: 3rem;
         color: #fff;
+      }
+      > .addbtn {
+        border: 1px solid #ff8400;
+        background: #ff8400;
+      }
+      > .forbidbtn {
+        border: 1px solid #dcdee2;
+        background: #f7f7f7;
+        color: #c5c8ce;
       }
     }
   }

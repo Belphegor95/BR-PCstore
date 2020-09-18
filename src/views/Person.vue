@@ -1,9 +1,7 @@
 <!-- 个人中心 -->
 <template>
   <div class="person">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="search_box">
       <search :isSearch="false" />
     </div>

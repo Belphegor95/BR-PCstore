@@ -1,9 +1,7 @@
 <!-- 申请服务详情 -->
 <template>
   <div class="maintainDetails">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="search_box">
       <search :isSearch="false" />
     </div>
@@ -113,8 +111,6 @@ export default {
   },
   data() {
     return {
-      value: "",
-      date: "12:00",
       fixs: ["电脑", "打印机", "监控", "弱电", "其他"],
       status: [
         "已取消",
@@ -127,7 +123,6 @@ export default {
         "骑手维修加时",
         "维修完成",
       ],
-      model1: "",
       detailsData: this.$store.state.maintainDetails,
       hourdate: "",
     };

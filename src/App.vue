@@ -19,6 +19,7 @@
   margin: auto;
 }
 .nav {
+  height: 38px;
   background-color: #f1f1f1;
 }
 #app {

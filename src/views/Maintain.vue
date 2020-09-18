@@ -1,9 +1,7 @@
 <!--  -->
 <template>
   <div class="maintain">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="search_box">
       <search :isSearch="false" />
     </div>
@@ -40,7 +38,7 @@
               <img v-else src="../assets/img/maintain/xd.png" />
             </div>
             <div :class="maintainid == 3?  'active':''">下单</div>
-          </li> -->
+          </li>-->
         </ul>
         <router-view class="rightbox" />
       </div>

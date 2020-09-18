@@ -1,9 +1,7 @@
 <!-- 详情页 -->
 <template>
   <div class="details">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="search_box">
       <search :isSearch="true" />
     </div>
@@ -34,7 +32,7 @@
               <span>
                 <span>价</span> 格 :
               </span>
-              <p>{{ detailsdata.price_lv.unitList[this.unitid].marketPrice  }}</p>
+              <p>{{ detailsdata.price_lv.unitList[this.unitid].marketPrice }}</p>
             </div>
             <div>
               <span>卷 后 价 :</span>
@@ -58,7 +56,7 @@
                   v-for="(item,index) in detailsdata.price_lv.unitList"
                   :key="index"
                   @click="colourClick(true,index)"
-                >{{ item.unitName ? item.unitName : "暂无"  }}</button>
+                >{{ item.unitName ? item.unitName : "暂无" }}</button>
               </div>
             </div>
             <div>
@@ -132,8 +130,7 @@ export default {
       imgindex: 0,
     };
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     // 添加商品
     addShopping: function () {
@@ -161,7 +158,7 @@ export default {
           }
         })
         .catch(() => {
-            this.$toast(this.$api.monmsg);
+          this.$toast(this.$api.monmsg);
         });
     },
     // 左滚
@@ -325,11 +322,10 @@ export default {
     }
     .detailsimgbox {
       padding: 1rem;
-      font-size : 0;
+      font-size: 0;
       padding-bottom: 10rem;
       > img {
         width: 100%;
-        
       }
     }
   }

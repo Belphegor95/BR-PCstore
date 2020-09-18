@@ -22,12 +22,12 @@
     </div>
     <ul>
       <li v-for="(item,index) in orderList" :key="index">
-        <div>2020-08-07 订单号: 123456789</div>
+        <div>{{ item.sendProgress ? item.sendProgress[0].time : "暂无" }} 订单号: {{ item.tradeNo }}</div>
         <div class="orderlist">
           <div>
             <div class="imgbox" v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ" @click="ordetails(item)">
               <img :src="itemJ.picUrl" />
-              <div >
+              <div>
                 <h6>这是商品名称</h6>
                 <span>颜色: {{ itemJ.cateName ? itemJ.cateName: '暂无' }}</span>
                 <span>单位: {{ itemJ.priceName | unit }}</span>
@@ -173,7 +173,7 @@ export default {
           }
           .imgbox {
             display: flex;
-            margin-bottom: 3rem;
+            padding: 1.5rem 0;
             > img {
               width: 5rem;
               height: 5rem;

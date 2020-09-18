@@ -4,13 +4,14 @@
   <div class="register">
     <input type="text" placeholder="请输入手机号" class="username" v-model="phoneNum" />
     <div class="msgbox" v-show="msg_phoneNum !=''">{{ msg_phoneNum }}</div>
-    <input type="password" placeholder="4-20个字符,区分大小写" class="password" v-model="pwd" />
-    <div class="msgbox" v-show="msg_pwd !=''">{{ msg_pwd }}</div>
     <div class="captchabox">
       <input type="text" placeholder="请输入验证码" class="captcha" v-model="yzm" />
       <Button type="primary" shape="circle" :loading="isloading" size="default" @click="getYzm">{{ !isloading? "获取验证码": btnload }}</Button>
     </div>
     <div class="msgbox" v-show="msg_yzm !=''">{{ msg_yzm }}</div>
+    <input type="password" placeholder="请输入初始密码" class="password" v-model="pwd" />
+    <div class="msgbox" v-show="msg_pwd !=''">{{ msg_pwd }}</div>
+
     <button class="btn" @click="saveUser('registerOK')">免费注册</button>
     <p class="account">
       已有账号?
@@ -65,13 +66,13 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.$router.push("/guide/registerOK");
-            // this.$store.commit("show_user", data.data);
+            this.$store.commit("show_user", data.data);
           } else {
-            // this.$toast(this.ErrCode(data.msg));
+            this.$toast(this.ErrCode(data.msg));
           }
         })
         .catch(() => {
-          // this.$toast(this.$api.monmsg);
+          this.$toast(this.$api.monmsg);
         });
     },
     // 获取验证码
@@ -87,14 +88,14 @@ export default {
         .then((data) => {
           if (data.result == "OK") {
             this.isloading = true;
-            // this.$toast("验证码已发送");
+            this.$toast("验证码已发送");
             this.setloadingNum();
           } else {
-            // this.$toast(this.ErrCode(data.msg));
+            this.$toast(this.ErrCode(data.msg));
           }
         })
         .catch(() => {
-          // this.$toast(this.$api.monmsg);
+          this.$toast(this.$api.monmsg);
         });
     },
     // 验证码倒计时
@@ -154,7 +155,7 @@ input {
   .captchabox {
     width: 25rem;
     display: flex;
-    margin-top: 1.5rem;
+    margin-top: 0.7rem;
     justify-content: space-between;
     > button {
       height: 3rem;

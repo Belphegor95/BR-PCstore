@@ -45,7 +45,7 @@
         <div>
           <div>
             <img src="../../assets/img/person/！.png" />
-            <p>订单状态: {{ data.sendProgress[0].content }}</p>
+            <p>订单状态: {{ data.sendProgress[pitchon].content }}</p>
           </div>
           <!-- <p v-show="false">您还有17小时46分3秒来付款,超时订单自动关闭</p> -->
           <div>
@@ -92,6 +92,10 @@ export default {
       pitchon: 0,
       data: this.$store.state.orderDetails,
     };
+  },
+  mounted() {
+    console.info(this.data);
+    this.pitchon = this.data.type - 1;
   },
   filters: {
     site: function (value) {

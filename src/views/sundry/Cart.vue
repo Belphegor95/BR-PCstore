@@ -2,12 +2,10 @@
 <!-- 购物车 -->
 <template>
   <div class="cart">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="content">
       <div>
-        <h5>首页 > 购物车</h5>
+        <h5>我的购物车</h5>
       </div>
       <div class="listbox">
         <span>
@@ -194,7 +192,11 @@ export default {
     },
     // 下单
     downOrder: function () {
-      if (this.checkAllGroup.length == 0) return;  
+      if (this.checkAllGroup.length == 0) {
+        return this.$toast("没有需要结算的商品");
+      } else if (this.totalPrice < 50) {
+        return this.$toast("总价 < 50元,无法结算");
+      }
       this.axios
         .post(this.$api.downOrder, {
           plistIds: JSON.stringify(this.getdownOrderArr()),
@@ -306,8 +308,9 @@ export default {
 .content {
   padding-top: 5rem;
   h5 {
+    font-size: 1.2rem;
     font-weight: 400;
-    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
   }
   .listbox {
     font-size: 0.8rem;

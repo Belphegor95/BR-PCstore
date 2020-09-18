@@ -25,7 +25,14 @@
           <div class="msgbox" v-show="msg !=''">{{ msg }}</div>
           <input type="text" placeholder="请输入手机号" :class="is_phone?'false_input':''" class="phone" v-model="phoneNum_" />
           <div class="captchabox">
-            <input type="text" placeholder="请输入验证码" :class="is_pwd?'false_input':''" class="captcha" v-model="yzm" @keyup.enter="loginByYzm" />
+            <input
+              type="text"
+              placeholder="请输入验证码"
+              :class="is_pwd?'false_input':''"
+              class="captcha"
+              v-model="yzm"
+              @keyup.enter="loginByYzm"
+            />
             <captcha :phoneNum="phoneNum_" apiurl="getYzmForLogin" />
             <!-- <Button type="primary" shape="circle" size="default">获取验证码</Button> -->
           </div>
@@ -78,6 +85,7 @@ export default {
       msg: "",
       users: [],
       user: null,
+      token: null,
     };
   },
   mounted() {
@@ -120,6 +128,7 @@ export default {
             //  保存在页面
             sessionStorage.setItem("user", JSON.stringify(data.data));
             this.user = data.data;
+            this.token = data.data.token;
             // 删除重新赋值
             sessionStorage.removeItem("vuex");
             this.$store.commit("resetState");
@@ -163,6 +172,7 @@ export default {
             //  保存在页面
             sessionStorage.setItem("user", JSON.stringify(data.data));
             this.user = data.data;
+            this.token = data.data.token;
             // 删除重新赋值
             sessionStorage.removeItem("vuex");
             this.$store.commit("resetState");
@@ -188,7 +198,7 @@ export default {
       this.axios
         .post(this.$api.selectAcc, {
           accOrderId: item.id,
-          token: this.user.token,
+          token: this.token,
           accId: this.user.accId,
         })
         .then((data) => {
@@ -211,6 +221,7 @@ export default {
         .post(this.$api.getAccOrders)
         .then((data) => {
           this.users = data.data.loginData;
+          this.token = data.data.token;
         })
         .catch(() => {
           this.$toast(this.$api.monmsg);

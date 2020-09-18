@@ -15,8 +15,8 @@
           <span @click="onHistory(3,1)">打印机</span>|
           <span @click="onHistory(3,1)">打印机</span>|
           <span @click="onHistory(1,3)">A4纸</span>|
-          <span @click="onHistory">办公桌</span>|
-          <span @click="onHistory">办公产品</span>
+          <span>办公桌</span>|
+          <span>办公产品</span>
         </div>
       </div>
       <div class="visitbox" v-show="isSearch">

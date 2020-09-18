@@ -1,9 +1,7 @@
 <!-- 维修 -->
 <template>
   <div class="service">
-    <div class="nav">
-      <shortcut />
-    </div>
+    <shortcut />
     <div class="search_box">
       <search :isSearch="false" />
     </div>
@@ -92,8 +90,7 @@ export default {
     },
     // 查看详情
     detailsClick: function (item) {
-      console.info(item)
-      this.$store.commit("show_maintainDetails",item)
+      this.$store.commit("show_maintainDetails", item);
       this.$router.push("/maintain/maintainDetails");
     },
     // 获取维修单列表
