@@ -24,23 +24,29 @@
                 </div>
               </div>
             </div>
-            <p>(taobaoxiaonao)</p>
+            <!-- <p>(taobaoxiaonao)</p> -->
           </div>
         </div>
         <div>
-          <p>我的收货地址</p>
+          <p style="cursor: pointer;" @click="rut('/person/deliveryAddress')">我的收货地址</p>
         </div>
-        <div>我的优惠券</div>
+        <div style="cursor: pointer;" @click="rut('/person/coupon')">我的优惠券</div>
       </div>
       <div>
         <div>
-          <span>待付款</span>
+          <span>
+            <b style="cursor: pointer;" @click="rut('/person/orderForm')">待付款</b>
+          </span>
         </div>
         <div>
-          <span>待收货</span>
+          <span>
+            <b style="cursor: pointer;" @click="rut('/person/orderForm')">待收货</b>
+          </span>
         </div>
         <div>
-          <span>上门维修单</span>
+          <span>
+            <b style="cursor: pointer;" @click="rut('/person/orderForm')">上门维修单</b>
+          </span>
         </div>
       </div>
     </div>
@@ -109,11 +115,20 @@ export default {
           this.$toast(this.$api.monmsg);
         });
     },
+    rut: function (name, name1) {
+      if (this.$route.path == name) return;
+      if (!this.user && name != "/cart")
+        return this.$router.push("/guide/login");
+      this.$router.push(name);
+    },
   },
 };
 </script>
 
 <style lang='less' scoped>
+b {
+  font-weight: 400;
+}
 .userinfo {
   flex: 4;
   > div {
@@ -142,13 +157,15 @@ export default {
         }
         .usernamebox {
           display: flex;
-          text-indent: 1.3rem;
+          padding-left: 1.3rem;
           flex-direction: column;
           > div {
             display: flex;
           }
           .xgbox {
-            width: 5rem;
+            padding-left: 0.5rem;
+            white-space:nowrap;
+            // width: 5rem;
             display: flex;
             justify-content: center;
             position: relative;

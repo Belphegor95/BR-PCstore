@@ -1,6 +1,6 @@
 <!-- 获取验证码 -->
 <template>
-  <Button :loading="isloading" :class="isloading?'active':''" @click="getYzm">{{ !isloading? "获取验证码": btnload }}</Button>
+  <Button :loading="isloading" :class="isloading?'active':''" @click="getYzm">{{ !isloading? "获取验证码": btnload + "秒后重新获取" }}</Button>
 </template>
 
 <script>

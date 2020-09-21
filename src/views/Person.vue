@@ -90,6 +90,7 @@ export default {
 
 <style lang='less' scoped>
 .person {
+  margin-top: 38px;
   .content {
     > div {
       display: flex;

@@ -27,65 +27,57 @@
         </div>
         <div class="sizebox">
           <h6>{{ detailsdata.plist_name }}</h6>
-          <div>
+          <div class="box">
             <div>
-              <span>
-                <span>价</span> 格 :
-              </span>
-              <p>{{ detailsdata.price_lv.unitList[this.unitid].marketPrice }}</p>
-            </div>
-            <div>
-              <span>卷 后 价 :</span>
-              <price :priceNum="detailsdata.price_lv.unitList[this.unitid].orderPrice" :size="1.6" />
-            </div>
-            <div>
-              <span>
-                <span>销</span> 量 :
-              </span>
-              <p>10万+</p>
-            </div>
-          </div>
-          <div>
-            <div>
-              <span>
-                <span>单</span> 位 :
-              </span>
-              <div v-if="detailsdata.price_lv">
-                <button
-                  :class="unitid == index? 'active':''"
-                  v-for="(item,index) in detailsdata.price_lv.unitList"
-                  :key="index"
-                  @click="colourClick(true,index)"
-                >{{ item.unitName ? item.unitName : "暂无" }}</button>
-              </div>
-            </div>
-            <div>
-              <span>
-                <span>颜</span> 色 :
-              </span>
-              <div v-if="detailsdata.price_lv">
-                <button
-                  :class="colourid == index? 'active':''"
-                  v-for="(item,index) in detailsdata.price_lv.cate"
-                  :key="index"
-                  @click="colourClick(false,index)"
-                >{{ item.cateName ? item.cateName : "暂无" }}</button>
-              </div>
-            </div>
-            <div>
-              <span>购买数量:</span>
               <div>
-                <InputNumber :min="1" v-model="buyNum" />
-                <p>库存数量 : 库存充足</p>
+                <span>
+                  <span>价</span> 格 :
+                </span>
+                <price :priceNum="detailsdata.price_lv.unitList[this.unitid].marketPrice" :size="1.6" />
               </div>
             </div>
-          </div>
-          <div class="btnbox">
-            <button @click="addShopping">
-              <img src="../../assets/img/sundry/gwc.png" />
-              加入购物车
-            </button>
-            <!-- <button>立即购买</button> -->
+            <div>
+              <div>
+                <span>
+                  <span>单</span> 位 :
+                </span>
+                <div v-if="detailsdata.price_lv">
+                  <button
+                    :class="unitid == index? 'active':''"
+                    v-for="(item,index) in detailsdata.price_lv.unitList"
+                    :key="index"
+                    @click="colourClick(true,index)"
+                  >{{ item.unitName ? item.unitName : "暂无" }}</button>
+                </div>
+              </div>
+              <div>
+                <span>
+                  <span>颜</span> 色 :
+                </span>
+                <div v-if="detailsdata.price_lv">
+                  <button
+                    :class="colourid == index? 'active':''"
+                    v-for="(item,index) in detailsdata.price_lv.cate"
+                    :key="index"
+                    @click="colourClick(false,index)"
+                  >{{ item.cateName ? item.cateName : "暂无" }}</button>
+                </div>
+              </div>
+              <div>
+                <span>购买数量:</span>
+                <div>
+                  <InputNumber :min="1" v-model="buyNum" />
+                  <p>库存数量 : 库存充足</p>
+                </div>
+              </div>
+            </div>
+            <div class="btnbox">
+              <button @click="addShopping">
+                <img src="../../assets/img/sundry/gwc.png" />
+                加入购物车
+              </button>
+              <!-- <button>立即购买</button> -->
+            </div>
           </div>
         </div>
       </div>
@@ -184,8 +176,12 @@ export default {
 
 <style lang='less' scoped>
 .details {
+  margin-top: 38px;
   .content {
+    background: #f9f9f9;
+    // padding-top: 2rem;
     > div:nth-child(1) {
+      background-color: #fff;
       display: flex;
       border-top: 1px solid #e5e5e5;
       padding-top: 2rem;
@@ -235,6 +231,7 @@ export default {
         }
       }
       .sizebox {
+        width: 100%;
         padding: 4rem;
         padding-top: 2rem;
         > h6 {
@@ -242,74 +239,81 @@ export default {
           margin-bottom: 2rem;
           font-size: 1.4rem;
         }
-        > div {
-          font-size: 1rem;
-          > div {
-            display: flex;
-            margin: 1rem 0;
-            > span:nth-child(1) {
-              display: flex;
-              align-items: center;
-              white-space: pre;
-              width: 5rem;
-              > span {
-                margin-right: 1.2rem;
-              }
-            }
-            > div:nth-child(2) {
-              display: flex;
-              align-items: center;
-
-              > p {
-                text-indent: 1rem;
-              }
-              > button {
-                color: #666666;
-                font-size: 0.8rem;
-                border-radius: 1rem;
-                padding: 0.2rem 1rem;
-                margin-right: 1rem;
-                border: 1px solid #e9e9e9;
-              }
-              .active {
-                color: #ff8900;
-                border: 1px solid #ff8900;
-              }
-            }
-          }
-        }
-        > div:nth-child(2) {
-          border-bottom: 1px solid #e5e5e5;
-          padding-bottom: 1rem;
-        }
-        .btnbox {
+        .box {
           display: flex;
-          align-items: center;
-          > button {
-            height: 3rem;
-            margin-left: 2rem;
-            border-radius: 0.1rem;
-            padding: 0.5rem 2rem;
-            border: 1px solid #ff8900;
+          padding: 1rem;
+          flex-direction: column;
+          background-color: #f9f9f9;
+          > div {
+            font-size: 1rem;
+            > div {
+              display: flex;
+              margin: 1rem 0;
+              > span:nth-child(1) {
+                display: flex;
+                align-items: center;
+                white-space: pre;
+                width: 5rem;
+                > span {
+                  margin-right: 1.2rem;
+                }
+              }
+              > div:nth-child(2) {
+                display: flex;
+                align-items: center;
+
+                > p {
+                  text-indent: 1rem;
+                }
+                > button {
+                  color: #666666;
+                  font-size: 0.8rem;
+                  border-radius: 1rem;
+                  padding: 0.2rem 1rem;
+                  margin-right: 1rem;
+                  border: 1px solid #e9e9e9;
+                }
+                .active {
+                  color: #ff8900;
+                  border: 1px solid #ff8900;
+                }
+              }
+            }
           }
-          > button:nth-child(1) {
-            color: #ff8900;
+          > div:nth-child(1) {
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 1rem;
+          }
+          .btnbox {
             display: flex;
             align-items: center;
-            > img {
-              margin-right: 0.5rem;
+            > button {
+              height: 3rem;
+              margin-left: 2rem;
+              border-radius: 0.1rem;
+              padding: 0.5rem 2rem;
+              border: 1px solid #ff8900;
             }
-          }
-          > button:nth-child(2) {
-            background: #ff8900;
-            color: #fff;
+            > button:nth-child(1) {
+              color: #ff8900;
+              display: flex;
+              align-items: center;
+              > img {
+                margin-right: 0.5rem;
+              }
+            }
+            > button:nth-child(2) {
+              background: #ff8900;
+              color: #fff;
+            }
           }
         }
       }
     }
     .namebox {
-      margin-top: 4rem !important;
+      margin-top: 6rem !important;
       border: 1px solid #eaeaea;
+      background-color: #fff;
       > span {
         border-top: 0.3rem solid #ff8900;
         border-right: 1px solid #eaeaea;
@@ -321,6 +325,7 @@ export default {
       }
     }
     .detailsimgbox {
+      background: #fff;
       padding: 1rem;
       font-size: 0;
       padding-bottom: 10rem;

@@ -2,8 +2,9 @@
 <template>
   <div class="guide">
     <div class="search_box">
-      <div>
-        <span @click="$router.push('/')">开心兔商城</span>
+      <div @click="$router.push('/')">
+        <img src="../assets/img/log.png" alt />
+        <span>开心兔商城</span>
       </div>
       <!-- <search :isSearch="false" /> -->
     </div>
@@ -43,11 +44,16 @@ export default {
   .search_box {
     height: 7rem;
     display: flex;
-    span {
+    > div {
       cursor: pointer;
-      font-weight: 700;
-      color: #ff8400;
-      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      > span {
+        margin-left: 0.5rem;
+        font-weight: 700;
+        color: #ff8400;
+        font-size: 1.6rem;
+      }
     }
   }
   .content {

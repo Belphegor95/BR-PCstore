@@ -1,7 +1,7 @@
 
 <!-- 购物车 -->
 <template>
-  <div class="cart">
+  <div class="cart" @click="is_imgbox = false">
     <shortcut />
     <div class="content">
       <div>
@@ -10,7 +10,7 @@
       <div class="listbox">
         <span>
           <div>
-            <Checkbox :indeterminate="indeterminate" :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
+            <Checkbox  :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
           </div>
           <div class="namebox">商品信息</div>
           <div>单价</div>
@@ -40,13 +40,13 @@
       </div>
       <div class="operationbox">
         <div>
-          <Checkbox :indeterminate="indeterminate" :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
+          <Checkbox  :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
         </div>
         <div class="btnbox">
           <div>
             <P>总价:</P>
             <div>
-              <p @click="is_imgbox = !is_imgbox">
+              <p @click.stop="is_imgbox = !is_imgbox">
                 已选中
                 <b>{{ checkAllGroup.length }}</b> 件商品
                 <Icon type="ios-arrow-down" v-if="!is_imgbox" />
@@ -56,18 +56,18 @@
                 ￥
                 <p>{{ totalPrice.toFixed(2) }}</p>
               </div>
+              <div class="imgbox" v-show="is_imgbox">
+                <div v-for="(item,index) in checkAllGroup" :key="index">
+                  <img :src="shoppings[item].picUrl" />
+                  <p @click.stop="delPitch(index)">取消选择</p>
+                </div>
+                <span></span>
+              </div>
             </div>
           </div>
           <div>
             <Button type="warning" @click="downOrder">去结算</Button>
           </div>
-        </div>
-        <div class="imgbox" v-show="is_imgbox">
-          <div v-for="(item,index) in checkAllGroup" :key="index">
-            <img :src="shoppings[item].picUrl" />
-            <p @click="delPitch(index)">取消选择</p>
-          </div>
-          <span></span>
         </div>
       </div>
     </div>
@@ -305,8 +305,15 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.cart {
+  background-color: #f9f9f9!important;
+}
 .content {
+  margin-top: 38px;
   padding-top: 5rem;
+  > div {
+    background-color: #fff;
+  }
   h5 {
     font-size: 1.2rem;
     font-weight: 400;
@@ -314,6 +321,7 @@ export default {
   }
   .listbox {
     font-size: 0.8rem;
+    border-bottom: 1px solid #eee;
     span {
       display: flex;
       > div {
@@ -348,7 +356,7 @@ export default {
     > div > span {
       font-size: 0.8rem;
       padding: 1rem 0;
-      border-bottom: 1px dashed #f2f2f2;
+      border-bottom: 1px solid #f2f2f2;
       > div:nth-child(3) {
         color: #999;
       }
@@ -366,10 +374,16 @@ export default {
     }
   }
   .operationbox {
+    margin-top: 1rem !important;
     display: flex;
-    padding: 1rem 2rem;
+    padding: 0.5rem 2rem;
     position: relative;
+    border: 1px solid #e6e6e6;
     justify-content: space-between;
+    > div:nth-child(1) {
+      display: flex;
+      align-items: center;
+    }
     .btnbox {
       display: flex;
       > div:nth-child(1) {
@@ -412,98 +426,92 @@ export default {
           padding: 0 2rem;
         }
       }
+      .imgbox {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 5.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 1rem;
+        background: #fff;
+        border: 1px solid #ff8400;
+        > div {
+          position: relative;
+          margin-right: 1rem;
+          height: 6rem;
+          > img {
+            width: 6rem;
+            height: 6rem;
+          }
+
+          > p {
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            position: absolute;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+          > p:hover {
+            opacity: 1;
+            cursor: pointer;
+          }
+        }
+        > div:last-child {
+          margin-right: 0;
+        }
+      }
+      .imgbox:before {
+        box-sizing: content-box;
+        width: 0px;
+        height: 0px;
+        position: absolute;
+        bottom: -16px;
+        right: 14.55rem;
+        padding: 0;
+        border-top: 8px solid #ffffff;
+        border-bottom: 8px solid transparent;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        display: block;
+        content: "";
+        z-index: 12;
+      }
+      .imgbox:after {
+        box-sizing: content-box;
+        width: 0px;
+        height: 0px;
+        position: absolute;
+        bottom: -18px;
+        right: 14.5rem;
+        padding: 0;
+        border-top: 9px solid #ff8400;
+        border-bottom: 9px solid transparent;
+        border-left: 9px solid transparent;
+        border-right: 9px solid transparent;
+        display: block;
+        content: "";
+        z-index: 10;
+      }
     }
     //
-    .imgbox {
-      position: absolute;
-      width: 100%;
-      // height: 8rem;
-      display: flex;
-      flex-wrap: wrap;
-      // top: -8rem;
-      bottom: 5.5rem;
-      padding: 1rem;
-      background: #fff;
-      border: 1px solid #ff8400;
-      > div {
-        position: relative;
-        margin-right: 1rem;
-        height: 6rem;
-        > img {
-          width: 6rem;
-          height: 6rem;
-        }
-
-        > p {
-          top: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          position: absolute;
-          align-items: center;
-          justify-content: center;
-          opacity: 0;
-          color: #fff;
-          background-color: rgba(0, 0, 0, 0.1);
-        }
-        > p:hover {
-          opacity: 1;
-          cursor: pointer;
-        }
-      }
-      > div:last-child {
-        margin-right: 0;
-      }
-      // > span {
-      //   display: inline-block;
-      //   position: absolute;
-      //   right: 16.5rem;
-      //   bottom: -1rem;
-      //   width: 0;
-      //   height: 0;
-      //   border-left: 0.5rem solid transparent;
-      //   border-right: 0.5rem solid transparent;
-      //   border-top: 1rem solid #ff8400;
-      // }
-    }
-    .imgbox:before {
-      box-sizing: content-box;
-      width: 0px;
-      height: 0px;
-      position: absolute;
-      bottom: -16px;
-      right: 16.55rem;
-      padding: 0;
-      border-top: 8px solid #ffffff;
-      border-bottom: 8px solid transparent;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      display: block;
-      content: "";
-      z-index: 12;
-    }
-    .imgbox:after {
-      box-sizing: content-box;
-      width: 0px;
-      height: 0px;
-      position: absolute;
-      bottom: -18px;
-      right: 16.5rem;
-      padding: 0;
-      border-top: 9px solid #ff8400;
-      border-bottom: 9px solid transparent;
-      border-left: 9px solid transparent;
-      border-right: 9px solid transparent;
-      display: block;
-      content: "";
-      z-index: 10;
-    }
   }
+}
+.bottombox {
+  margin-top: 1rem;
 }
 </style>
 
 <style lang="less">
 .cart {
+  .ivu-checkbox {
+    margin-right: 0.5rem;
+  }
   .ivu-checkbox + span,
   .ivu-checkbox-wrapper + span {
     display: none;

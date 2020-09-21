@@ -68,7 +68,7 @@
             </div>
             <div>{{ item.price }}</div>
             <div>{{ item.buyNum }}</div>
-            <div>{{ item.price*item.buyNum }}</div>
+            <div>{{ (item.price*item.buyNum).toFixed(2) }}</div>
           </div>
         </div>
         <div class="propertybox">
@@ -246,7 +246,12 @@ export default {
 
 <style lang='less' scoped>
 .payment {
+  margin-top: 38px;
+  background-color: #f9f9f9;
   .content {
+    >div {
+      background: #fff;
+    }
     .happyname {
       display: flex;
       height: 7rem;

@@ -6,12 +6,12 @@
       <Tabs value="name1" size="default" class="tab" v-if="users.length == 0">
         <TabPane label="密码登录" name="name1">
           <div class="msgbox" v-show="msg !=''">{{ msg }}</div>
-          <input type="text" placeholder="账号/手机号" class="username" :class="is_phone?'false_input':''" v-model="phoneNum" />
+          <input type="text" placeholder="请输入手机号" class="username" :class="is_phone?'false_input':''" v-model="phoneNum" />
           <input type="password" placeholder="密码" class="password" :class="is_pwd?'false_input':''" v-model="pwd" @keyup.enter="loginClick" />
           <div class="prompt">
             <p>
               <img src="../../assets/img/guide/i.png" />
-              由6~20个字母,数字和符号组成
+              由6-20个字母，数字或’_‘组成
             </p>
             <b @click="rut('find')">忘记密码?</b>
           </div>
@@ -39,7 +39,7 @@
           <div class="prompt">
             <p>
               <img src="../../assets/img/guide/i.png" />
-              由6~20个字母,数字和符号组成
+              验证码只能输入数字
             </p>
             <b v-show="false" @click="rut('find')">忘记密码?</b>
           </div>
@@ -220,6 +220,7 @@ export default {
       this.axios
         .post(this.$api.getAccOrders)
         .then((data) => {
+          this.user = data.data;
           this.users = data.data.loginData;
           this.token = data.data.token;
         })
@@ -247,7 +248,7 @@ export default {
 }
 .username {
   margin-top: 1rem;
-  background: #fcf7f2 url("../../assets/img/guide/zh.png") 1rem 0.8rem no-repeat;
+  background: #fcf7f2 url("../../assets/img/guide/sj.png") 1rem 0.8rem no-repeat;
 }
 .password {
   margin-top: 2rem;

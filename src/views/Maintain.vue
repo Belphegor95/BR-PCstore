@@ -72,6 +72,7 @@ export default {
 
 <style lang='less' scoped>
 .maintain {
+  margin-top: 38px;
   .content {
     > div {
       display: flex;

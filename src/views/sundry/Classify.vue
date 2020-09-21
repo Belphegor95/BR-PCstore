@@ -135,7 +135,12 @@ export default {
             this.cateList = data_;
             this.twoList = this.cateList.cateOneList[0].twolist;
             // 判断 路由是否有值  有值先赋值
-            Object.keys(this.$route.query).length != 0 ? this.getquery() : "";
+            // Object.keys(this.$route.query).length != 0 ? this.getquery() : "";
+            // 取出 标签里的 搜索内容
+            if (!this.$route.query.cate_one) {
+              this.searchClick(this.$route.query.name);
+              return;
+            }
             this.getcatePlist();
           } else {
             this.$toast(this.ErrCode(data.msg));
@@ -145,10 +150,11 @@ export default {
     },
     // 获取分类商品
     getcatePlist: function () {
+      this.searchs = [];
       this.axios
         .post(this.$api.getCatePlist, {
-          cateone: this.cateList.cateOneList[this.id1].id,
-          catetwo: this.twoList[this.id2].id,
+          cateone: this.cateList.cateOneList? this.cateList.cateOneList[this.id1].id: 0,
+          catetwo: this.twoList ? this.twoList[this.id2].id : 0,
         })
         .then((data) => {
           if (data.code == 200) {
@@ -162,24 +168,24 @@ export default {
         });
     },
     //  获取搜索条件对应的id
-    getquery: function () {
-      let query = this.$route.query;
-      for (let i = 0; i < this.cateList.cateOneList.length; i++) {
-        let item = this.cateList.cateOneList[i].id;
-        if (item == query.cate_one) {
-          this.id1 = i;
-          this.twoList = this.cateList.cateOneList[i].twolist;
-          break;
-        }
-      }
-      for (let i = 0; i < this.twoList.length; i++) {
-        let item = this.cateList.cateOneList[i].id;
-        if (item == query.cate_two) {
-          this.id2 = i;
-          break;
-        }
-      }
-    },
+    // getquery: function () {
+    //   let query = this.$route.query;
+    //   for (let i = 0; i < this.cateList.cateOneList.length; i++) {
+    //     let item = this.cateList.cateOneList[i].id;
+    //     if (item == query.cate_one) {
+    //       this.id1 = i;
+    //       this.twoList = this.cateList.cateOneList[i].twolist;
+    //       break;
+    //     }
+    //   }
+    //   for (let i = 0; i < this.twoList.length; i++) {
+    //     let item = this.cateList.cateOneList[i].id;
+    //     if (item == query.cate_two) {
+    //       this.id2 = i;
+    //       break;
+    //     }
+    //   }
+    // },
     // 一级分类
     id1click: function (id) {
       this.searchKey = "";
@@ -194,7 +200,7 @@ export default {
       this.id2 = id;
       this.getcatePlist();
     },
-    // 时间排序方法
+    // 价格排序方法
     pricetypeClick: function () {
       if (this.pricetype == 0) {
         this.pricetype = 1;
@@ -214,6 +220,7 @@ export default {
 
 <style lang='less' scoped>
 .classify {
+  margin-top: 38px;
   .content {
     .sortbox {
       display: flex;

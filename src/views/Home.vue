@@ -131,6 +131,7 @@ export default {
 
 <style lang="less" scoped>
 .home {
+  margin-top: 38px;
   .classifybox {
     background-color: #f9f9f9;
     .w {
@@ -178,8 +179,10 @@ export default {
   }
 }
 .recommendbox {
+  background-color: #f9f9f9;
   padding-top: 1rem;
   .recommend {
+    background-color: #fff;
     display: flex;
     flex-wrap: wrap;
     padding-top: 1rem;
@@ -190,6 +193,7 @@ export default {
   }
 }
 .bottombox {
+  // background-color: #f9f9f9;
   padding-top: 2rem;
 }
 .topbtn {

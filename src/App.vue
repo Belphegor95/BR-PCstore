@@ -9,7 +9,7 @@
 }
 #app {
   color: #000;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 #app > div {
   width: 100%;

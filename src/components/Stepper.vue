@@ -1,7 +1,7 @@
 <!-- 步进器 -->
 <template>
   <div class="stepper">
-    <div class="stepper-" @click="NumReduce">-</div>
+    <div class="stepper-" @click="NumReduce" :style="{color:(stepperObj.num <= 1?'#dcdee2':'#000')}">-</div>
     <InputNumber :max="maxNum" :min="1" v-model="stepperObj.num" />
     <div class="stepper_" @click="NumAdd">+</div>
   </div>
