@@ -7,29 +7,29 @@
     <div class="content">
       <h5>
         <img src="../../assets/img/guide/mm.png" />
-        找回密码
+        重置密码
       </h5>
       <div class="stepsbox">
         <div :class="pitchon >= 0? 'active':''">
           <span>
             <b>1</b>
           </span>
-          <p>验证身份</p>
+          <p>设置密码</p>
         </div>
         <div :class="pitchon >= 1? 'active_':''"></div>
         <div :class="pitchon >= 1? 'active':''">
           <span>
             <b>2</b>
           </span>
-          <p>设置密码</p>
+          <p>完成</p>
         </div>
-        <div :class="pitchon >= 2? 'active_':''"></div>
+        <!-- <div :class="pitchon >= 2? 'active_':''"></div>
         <div :class="pitchon >= 2? 'active':''">
           <span>
             <b>3</b>
           </span>
           <p>完成</p>
-        </div>
+        </div>-->
       </div>
       <div class="formbox">
         <div class="verifybox" v-if="pitchon == 0">
@@ -43,10 +43,6 @@
             <input type="text" v-model="yzm" />
             <captcha :phoneNum="phoneNum" apiurl="getYzmForFindPwd" />
           </div>
-          <Button type="primary" class="okbtn" @click="phoneNumOk(1)">确定</Button>
-          <p>其他方法验证</p>
-        </div>
-        <div class="setbox" v-else-if="pitchon == 1">
           <div>
             <span>新密码:</span>
             <input type="password" v-model="pwd" />
@@ -55,15 +51,16 @@
             <span>再次输入新密码:</span>
             <input type="password" v-model="pwd_" />
           </div>
-          <Button type="primary" class="okbtn" @click="pwdOk(2)">确定</Button>
+          <Button type="primary" class="okbtn" @click="phoneNumOk(1)">确定</Button>
+          <!-- <p>其他方法验证</p> -->
         </div>
-        <div class="accomplishbox" v-else-if="pitchon == 2">
+        <div class="accomplishbox" v-else-if="pitchon == 1">
           <div>
             <img src="../../assets/img/guide/cg.png" />
             <h6>重置成功,请牢记新的登录密码</h6>
           </div>
           <Button type="primary" class="okbtn btn" @click="$router.push('/guide/login')">去登陆</Button>
-          <p @click="$router.push('/')">进入商城</p>
+          <!-- <p @click="$router.push('/')">进入商城</p> -->
         </div>
       </div>
     </div>
@@ -109,12 +106,7 @@ export default {
       } else if (this.yzm.trim().length != 6) {
         this.$toast("验证码输入有误");
         return;
-      }
-      this.pitchon = id;
-      this.$router.push(`/guide/find?pitchon=${this.pitchon}`);
-    },
-    pwdOk: function (id) {
-      if (this.pwd != this.pwd_) {
+      } else if (this.pwd != this.pwd_) {
         this.$toast("两次输入不一致!");
         return;
       } else if (this.pwd.trim() == "" || this.pwd_.trim() == "") {
@@ -243,10 +235,10 @@ export default {
       align-items: center;
       flex-direction: column;
       > div {
-        width: 33rem;
+        width: 38rem;
         margin-bottom: 1rem;
         > span {
-          width: 6rem;
+          width: 8rem;
           font-size: 1rem;
           text-align: right;
           display: inline-block;

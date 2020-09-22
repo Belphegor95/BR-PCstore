@@ -124,6 +124,7 @@ export default {
                 obj.priceId = itemj.priceId;
                 obj.priceName = itemj.priceName.split("  ");
                 this.shoppings.push(obj);
+                this.gettotalPrice()
               }
             }
           } else {
@@ -178,6 +179,7 @@ export default {
                   (x, index, self) => x != index_
                 );
                 this.getShoppingCart();
+                
               } else {
                 this.$toast(this.ErrCode(data.msg));
               }
@@ -266,6 +268,7 @@ export default {
         this.indeterminate = true;
       }
       this.checkAll = false;
+      this.gettotalPrice()
     },
     // 全选
     handleCheckAll() {

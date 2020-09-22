@@ -39,8 +39,12 @@ li {
 input {
   outline: none;
 }
-
+/* 提示框高度 */
 .vl-notify.vl-notify-msg {
   height: 44px;
+}
+/* 退出登录提示框 */
+.vl-notify.vl-notify-alert {
+  height: 160px;
 }
 </style>

@@ -3,7 +3,7 @@
   <div class="nav">
     <div class="shortcut">
       <div class="leftbox">
-        <p @click="ok('/')">欢迎来到开心兔</p>
+        <p @click="back">欢迎来到开心兔</p>
         <p>
           <span class="userbox" v-if="user && user.companyName">
             {{ user.companyName }}
@@ -60,7 +60,12 @@ export default {
     this.getShoppingCartPlistCount();
   },
   methods: {
-    ok(name) {
+    // 回到首页
+    back: function () {
+      if (this.$route.path == "/") return;
+      this.$router.push("/");
+    },
+    ok: function (name) {
       if (this.$route.path == name) return;
       if (!this.user && name != "/cart")
         return this.$router.push("/guide/login");
@@ -141,7 +146,7 @@ export default {
     font-size: 0.9rem;
     height: 38px;
     justify-content: space-between;
-    
+
     > div {
       display: flex;
       p:nth-child(2) {

@@ -6,14 +6,14 @@
     <input type="text" placeholder="请输入手机号" class="username" v-model="phoneNum" />
     <div class="captchabox">
       <input type="text" placeholder="请输入验证码" class="captcha" v-model="yzm" @input="inputYzm" />
-      <Button type="primary" shape="circle" :loading="isloading" size="default" @click="getYzm">{{ !isloading? "获取验证码": btnload }}</Button>
+      <Button type="primary" shape="circle" :loading="isloading" size="default" @click="getYzm">{{ !isloading? "获取验证码": btnload + "秒后重新获取"}}</Button>
     </div>
-    <div class="prompt">
+    <!-- <div class="prompt">
       <p>
         <img src="../../assets/img/guide/i.png" />
         验证码只能输入数字
       </p>
-    </div>
+    </div> -->
     <input type="password" placeholder="请输入初始密码" class="password" v-model="pwd" />
     <div class="prompt">
       <p>

@@ -95,9 +95,12 @@
             <div>
               <span>优惠券:</span>
               <div>
-                <div class="juanbox">
-                  <span>卷</span>
-                  <span>50</span>
+                <div>
+                  <div class="juanbox">
+                    <span>卷</span>
+                    <span>50</span>
+                  </div>
+                  <p>(暂不可用)</p>
                 </div>
                 <p style="color: #000;cursor: pointer;">
                   <Icon type="ios-arrow-forward" />
@@ -249,7 +252,7 @@ export default {
   margin-top: 38px;
   background-color: #f9f9f9;
   .content {
-    >div {
+    > div {
       background: #fff;
     }
     .happyname {
@@ -329,6 +332,7 @@ export default {
       border-bottom: 1px solid #f0f0f0;
       > span:nth-child(2) {
         color: #ff8400;
+        cursor: pointer;
       }
     }
     > div:nth-child(3) {
@@ -434,7 +438,6 @@ export default {
         align-items: center;
         flex-direction: column;
         justify-content: space-evenly;
-        // padding: 2rem 0;
         border-right: 1px solid #e5e5e5;
         > div {
           width: 90%;
@@ -475,18 +478,25 @@ export default {
             width: 100%;
             padding: 0 1rem;
             justify-content: space-between;
-            .juanbox {
+            > div {
               display: flex;
-              > span:nth-child(1) {
-                color: #fff;
-                padding: 0 0.3rem;
-                border: 1px solid #ff8400;
-                background-color: #ff8400;
+              .juanbox {
+                display: flex;
+                > span:nth-child(1) {
+                  color: #fff;
+                  padding: 0 0.3rem;
+                  border: 1px solid #ff8400;
+                  background-color: #ff8400;
+                }
+                > span:nth-child(2) {
+                  color: #ff8400;
+                  padding: 0 0.5rem;
+                  border: 1px solid #ff8400;
+                }
               }
-              > span:nth-child(2) {
-                color: #ff8400;
-                padding: 0 0.5rem;
-                border: 1px solid #ff8400;
+              > p {
+                margin-left: 1rem;
+                color: #999;
               }
             }
             > p:nth-child(2) {

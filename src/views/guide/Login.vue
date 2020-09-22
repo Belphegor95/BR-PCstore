@@ -36,13 +36,6 @@
             <captcha :phoneNum="phoneNum_" apiurl="getYzmForLogin" />
             <!-- <Button type="primary" shape="circle" size="default">获取验证码</Button> -->
           </div>
-          <div class="prompt">
-            <p>
-              <img src="../../assets/img/guide/i.png" />
-              验证码只能输入数字
-            </p>
-            <b v-show="false" @click="rut('find')">忘记密码?</b>
-          </div>
           <button class="btn" @click="loginByYzm">登录</button>
           <p class="account">
             还没有账号?

@@ -123,7 +123,7 @@ export default {
 
 <style lang='less' scoped>
 .service {
-   margin-top: 38px;
+  margin-top: 38px;
   .content {
     margin-bottom: 5rem;
     > div {
@@ -151,12 +151,12 @@ export default {
       }
       > div {
         > ul {
-          border: 1px solid #dddddd;
           > li {
             cursor: pointer;
             display: flex;
             padding: 1rem 0;
-            border-bottom: 1px solid #dddddd;
+            border: 1px solid #dddddd;
+            border-bottom: 1px solid #fff;
             > div {
               flex: 1;
               display: flex;
@@ -198,7 +198,10 @@ export default {
             }
           }
           > li:last-child {
-            border: none;
+            border-bottom: 1px solid #dddddd;
+          }
+          > li:hover {
+            border: 1px solid #ff8500;
           }
         }
       }

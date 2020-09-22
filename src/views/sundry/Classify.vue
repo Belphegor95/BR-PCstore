@@ -153,7 +153,9 @@ export default {
       this.searchs = [];
       this.axios
         .post(this.$api.getCatePlist, {
-          cateone: this.cateList.cateOneList? this.cateList.cateOneList[this.id1].id: 0,
+          cateone: this.cateList.cateOneList
+            ? this.cateList.cateOneList[this.id1].id
+            : 0,
           catetwo: this.twoList ? this.twoList[this.id2].id : 0,
         })
         .then((data) => {
@@ -228,19 +230,20 @@ export default {
       flex-direction: column;
       > div {
         display: flex;
-        align-items: center;
         min-height: 3.18rem;
-        padding: 0.5rem 2rem;
-        border-bottom: 1px dashed #eeeeee;
+        border-bottom: 1px solid #ddd;
         > span {
-          width: 4rem;
+          width: 6rem;
+          flex-shrink: 0;
+          padding: 0.5rem;
+          padding-top: 0.8rem;
           white-space: nowrap;
           display: inline-block;
-          text-align: right;
+          background-color: #f3f3f3;
         }
         > div {
           flex: auto;
-          margin-left: 1rem;
+          padding: 0.5rem;
           > button {
             padding: 0.1rem 1rem;
             margin: 0 1rem 0.5rem 1rem;

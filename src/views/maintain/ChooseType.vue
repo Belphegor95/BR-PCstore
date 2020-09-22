@@ -42,7 +42,7 @@ export default {
           img: require("../../assets/img/maintain/qt.png"),
         },
       ],
-      fixType: null,
+      fixType: 0,
     };
   },
   mounted() {

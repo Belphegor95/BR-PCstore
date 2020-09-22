@@ -149,6 +149,7 @@ b {
       }
       > div:nth-child(1) {
         .tximg {
+          flex-shrink: 0;
           display: inline-block;
           width: 3rem;
           height: 3rem;
@@ -164,7 +165,7 @@ b {
           }
           .xgbox {
             padding-left: 0.5rem;
-            white-space:nowrap;
+            white-space: nowrap;
             // width: 5rem;
             display: flex;
             justify-content: center;

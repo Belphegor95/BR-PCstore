@@ -53,8 +53,8 @@ export default {
       if (this.$route.path != "/") this.$router.push("/");
     },
     onSearch: function () {
-      if (this.$route.path == "/classify") {
-        this.$emit("searchClick", this.search);
+      if (this.search == "") {
+        this.$router.push("/classify");
       } else {
         this.$router.push({
           path: "/classify",
@@ -63,6 +63,18 @@ export default {
           },
         });
       }
+
+      // if (this.$route.path == "/classify") {
+      //   console.info(123)
+      //   this.$emit("searchClick", this.search);
+      // } else {
+      //   this.$router.push({
+      //     path: "/classify",
+      //     query: {
+      //       name: this.search,
+      //     },
+      //   });
+      // }
     },
     // 点击历史记录
     onHistory: function (item) {

@@ -29,7 +29,7 @@
               <img :src="itemJ.picUrl" />
               <div>
                 <h6>这是商品名称</h6>
-                <span>颜色: {{ itemJ.cateName ? itemJ.cateName: '暂无' }}</span>
+                <span v-if="itemJ.cateName">颜色: {{ itemJ.cateName ? itemJ.cateName: '暂无' }}</span>
                 <span>单位: {{ itemJ.priceName | unit }}</span>
               </div>
             </div>
