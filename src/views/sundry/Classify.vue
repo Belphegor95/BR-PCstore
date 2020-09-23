@@ -11,10 +11,10 @@
           <span>全部分类:</span>
           <div>
             <button
-              :class="id1 == index? 'active':''"
+              :class="cate_one == index? 'active':''"
               v-for="(item,index) in cateList.cateOneList"
               :key="index"
-              @click="id1click(index)"
+              @click="cate_oneclick(index)"
             >{{ item.title }}</button>
           </div>
         </div>
@@ -22,10 +22,10 @@
           <span>类型:</span>
           <div>
             <button
-              :class="id2 == index? 'active':''"
+              :class="cate_two == index? 'active':''"
               v-for="(item,index) in twoList"
               :key="index"
-              @click="id2click(index)"
+              @click="cate_twoclick(index)"
             >{{ item.title }}</button>
           </div>
         </div>
@@ -48,6 +48,7 @@
         </div>
       </div>
       <div class="listbox">
+        <p style="font-size: 1rem;padding:0.5rem" v-if="searchs.length == 0">暂无数据</p>
         <commodityCard v-for="(item,index) in searchs" :key="index" :data="item" />
       </div>
     </div>
@@ -74,8 +75,8 @@ export default {
   },
   data() {
     return {
-      id1: 0,
-      id2: 0,
+      cate_one: 0,
+      cate_two: 0,
       value1: null,
       pricetype: 0,
       cateList: [],
@@ -93,17 +94,25 @@ export default {
     this.getcate();
   },
   methods: {
+    // 1.跳转页面不搜索 2.跳转页面搜索 3.本页面不搜索 4.分类跳转并搜索分类
+    is_search: function () {
+      let index = Object.keys(this.$route.query).length;
+      if (index == 0) {
+        this.cate_one = 0;
+        this.cate_two = 0;
+        this.getcatePlist();
+      } else if (index == 1) {
+        this.searchClick(this.$route.query.name);
+      } else {
+        this.getquery();
+      }
+    },
     // 点击搜索
     searchClick: function (searchKey) {
       this.searchKey = searchKey;
-      // 判断是否存在
-      if (!this.searchKey) {
-        this.getcatePlist();
-        return;
-      }
       // 取消选中
-      this.id1 = -1;
-      this.id2 = -1;
+      this.cate_one = -1;
+      this.cate_two = -1;
       this.axios
         .post(this.$api.search, {
           searchKey: this.searchKey.trim(),
@@ -134,14 +143,7 @@ export default {
             // 默认打开第一个
             this.cateList = data_;
             this.twoList = this.cateList.cateOneList[0].twolist;
-            // 判断 路由是否有值  有值先赋值
-            // Object.keys(this.$route.query).length != 0 ? this.getquery() : "";
-            // 取出 标签里的 搜索内容
-            if (!this.$route.query.cate_one) {
-              this.searchClick(this.$route.query.name);
-              return;
-            }
-            this.getcatePlist();
+            this.is_search();
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -154,9 +156,9 @@ export default {
       this.axios
         .post(this.$api.getCatePlist, {
           cateone: this.cateList.cateOneList
-            ? this.cateList.cateOneList[this.id1].id
+            ? this.cateList.cateOneList[this.cate_one].id
             : 0,
-          catetwo: this.twoList ? this.twoList[this.id2].id : 0,
+          catetwo: this.twoList ? this.twoList[this.cate_two].id : 0,
         })
         .then((data) => {
           if (data.code == 200) {
@@ -170,36 +172,40 @@ export default {
         });
     },
     //  获取搜索条件对应的id
-    // getquery: function () {
-    //   let query = this.$route.query;
-    //   for (let i = 0; i < this.cateList.cateOneList.length; i++) {
-    //     let item = this.cateList.cateOneList[i].id;
-    //     if (item == query.cate_one) {
-    //       this.id1 = i;
-    //       this.twoList = this.cateList.cateOneList[i].twolist;
-    //       break;
-    //     }
-    //   }
-    //   for (let i = 0; i < this.twoList.length; i++) {
-    //     let item = this.cateList.cateOneList[i].id;
-    //     if (item == query.cate_two) {
-    //       this.id2 = i;
-    //       break;
-    //     }
-    //   }
-    // },
+    getquery: function () {
+      let query = this.$route.query;
+      this.cate_one = query.cate_one;
+      this.cate_two = query.cate_two;
+      this.getcatePlist();
+      // for (let i = 0; i < this.cateList.cateOneList.length; i++) {
+      //   let item = this.cateList.cateOneList[i].id;
+      //   if (item == query.cate_one) {
+      //     this.cate_one = i;
+      //     this.twoList = this.cateList.cateOneList[i].twolist;
+      //     break;
+      //   }
+      // }
+      // for (let i = 0; i < this.twoList.length; i++) {
+      //   let item = this.cateList.cateOneList[i].id;
+      //   if (item == query.cate_two) {
+      //     this.cate_two = i;
+      //     break;
+      //   }
+      // }
+    },
     // 一级分类
-    id1click: function (id) {
+    cate_oneclick: function (id) {
       this.searchKey = "";
-      this.id1 = id;
+      this.cate_one = id;
       this.twoList = this.cateList.cateOneList[id].twolist;
-      this.id2 = 0;
+      this.cate_two = 0;
       this.getcatePlist();
     },
     // 二级分类
-    id2click: function (id) {
+    cate_twoclick: function (id) {
+      if (this.cate_one == -1) this.cate_one = 0;
       this.searchKey = "";
-      this.id2 = id;
+      this.cate_two = id;
       this.getcatePlist();
     },
     // 价格排序方法

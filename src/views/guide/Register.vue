@@ -14,7 +14,7 @@
         验证码只能输入数字
       </p>
     </div> -->
-    <input type="password" placeholder="请输入初始密码" class="password" v-model="pwd" />
+    <input type="password" placeholder="请输入初始密码" class="password" v-model="pwd" onpaste="return false" />
     <div class="prompt">
       <p>
         <img src="../../assets/img/guide/i.png" />

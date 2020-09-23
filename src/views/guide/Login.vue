@@ -7,7 +7,15 @@
         <TabPane label="密码登录" name="name1">
           <div class="msgbox" v-show="msg !=''">{{ msg }}</div>
           <input type="text" placeholder="请输入手机号" class="username" :class="is_phone?'false_input':''" v-model="phoneNum" />
-          <input type="password" placeholder="密码" class="password" :class="is_pwd?'false_input':''" v-model="pwd" @keyup.enter="loginClick" />
+          <input
+            type="password"
+            onpaste="return false"
+            placeholder="密码"
+            class="password"
+            :class="is_pwd?'false_input':''"
+            v-model="pwd"
+            @keyup.enter="loginClick"
+          />
           <div class="prompt">
             <p>
               <img src="../../assets/img/guide/i.png" />
@@ -69,7 +77,7 @@ export default {
     return {
       value: "",
       phoneNum: "",
-      phoneNum_: "",
+      phoneNum_: "", // 传给获取验证码
       yzm: "",
       pwd: "",
       btnload: false,
@@ -80,6 +88,14 @@ export default {
       user: null,
       token: null,
     };
+  },
+  watch: {
+    phoneNum(val) {
+      this.phoneNum = val.replace(/[^\d]/g, "");
+    },
+    yzm(val) {
+      this.yzm = val.replace(/[^\d]/g, "");
+    },
   },
   mounted() {
     // this.users = this.$store.state.user.loginData || [];

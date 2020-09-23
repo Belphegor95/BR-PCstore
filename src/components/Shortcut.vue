@@ -16,7 +16,7 @@
             </div>
           </span>
           <span v-else @click="rut('guide','login')">请登录</span>
-          <i class="gang" v-if="!user">|</i>
+          <i class="gang" v-if="!user"></i>
           <span v-if="!user" @click="rut('guide','register')">注册</span>
         </p>
       </div>
@@ -163,12 +163,20 @@ export default {
         color: #ff8900;
         margin-right: 1rem;
         cursor: pointer;
-        padding: 0.5rem 0;
+        line-height: 38px;
+        // padding: 0.5rem 0;
       }
       > p:nth-child(2) {
         display: flex;
         align-items: center;
         height: 100%;
+        > i {
+          width: 1px;
+          height: 38%;
+          color: #8b8b8b;
+          display: inline-block;
+          background-color: #8b8b8b;
+        }
         > .userbox {
           border: 1px solid #f1f1f1;
           border-bottom: none;

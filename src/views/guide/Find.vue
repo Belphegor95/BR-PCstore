@@ -45,11 +45,11 @@
           </div>
           <div>
             <span>新密码:</span>
-            <input type="password" v-model="pwd" />
+            <input type="password" v-model="pwd" onpaste="return false" />
           </div>
           <div>
             <span>再次输入新密码:</span>
-            <input type="password" v-model="pwd_" />
+            <input type="password" v-model="pwd_" onpaste="return false" />
           </div>
           <Button type="primary" class="okbtn" @click="phoneNumOk(1)">确定</Button>
           <!-- <p>其他方法验证</p> -->
@@ -83,6 +83,12 @@ export default {
     };
   },
   watch: {
+    phoneNum(val) {
+      this.phoneNum = val.replace(/[^\d]/g, "");
+    },
+    yzm(val) {
+      this.yzm = val.replace(/[^\d]/g, "");
+    },
     $route(to) {
       if (to.query.pitchon) {
         this.pitchon = to.query.pitchon;

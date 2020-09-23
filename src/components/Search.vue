@@ -52,38 +52,40 @@ export default {
     gohome: function () {
       if (this.$route.path != "/") this.$router.push("/");
     },
+    // 点击搜索
     onSearch: function () {
-      if (this.search == "") {
-        this.$router.push("/classify");
-      } else {
-        this.$router.push({
-          path: "/classify",
-          query: {
-            name: this.search,
-          },
-        });
+      if (this.$route.query.name != this.search) {
+        // 如果用户搜索空  清除name值
+        if (this.$route.path == "/classify" && this.search.trim() == "") {
+          if (!this.$route.query.name) return;
+          this.$router.push({
+            query: {},
+          });
+          return;
+        }
+        if (this.search == "") {
+          this.$router.push("/classify");
+        } else {
+          this.$router.push({
+            path: "/classify",
+            query: {
+              name: this.search,
+            },
+          });
+        }
       }
-
-      // if (this.$route.path == "/classify") {
-      //   console.info(123)
-      //   this.$emit("searchClick", this.search);
-      // } else {
-      //   this.$router.push({
-      //     path: "/classify",
-      //     query: {
-      //       name: this.search,
-      //     },
-      //   });
-      // }
     },
     // 点击历史记录
     onHistory: function (item) {
-      this.$router.push({
-        path: "/classify",
-        query: {
-          name: item,
-        },
-      });
+      // 判断  防止重复点击报错
+      if (this.$route.query.name != item) {
+        this.$router.push({
+          path: "/classify",
+          query: {
+            name: item,
+          },
+        });
+      }
     },
     // onHistory: function (id1, id2) {
     //   if (

@@ -6,8 +6,8 @@
       <div v-show="pitchon== -1">
         <div>
           <span>已绑定手机号:</span>
-          <p v-if="user.phone" >{{ user.phone  }}</p>
-          <p v-else >{{ user.phoneNum  }}</p>
+          <p v-if="user.phone">{{ user.phone }}</p>
+          <p v-else>{{ user.phoneNum }}</p>
           <button @click="startphone">更换手机号</button>
         </div>
       </div>
@@ -35,7 +35,7 @@
           <h6>
             账号
             <span v-if="user.phone">{{ user.phone }}</span>
-            <span v-else >{{ user.phoneNum }}</span>
+            <span v-else>{{ user.phoneNum }}</span>
             <!-- 为确认是你本人操作,请完成以下验证 -->
           </h6>
           <div>
@@ -102,6 +102,26 @@ export default {
   },
 
   watch: {
+    phoneNum(val) {
+      this.$nextTick(() => {
+        this.phoneNum = val.replace(/[^\d]/g, "");
+      });
+    },
+    yzm(val) {
+      this.$nextTick(() => {
+        this.yzm = val.replace(/[^\d]/g, "");
+      });
+    },
+    phoneNum_(val) {
+      this.$nextTick(() => {
+        this.phoneNum_ = val.replace(/[^\d]/g, "");
+      });
+    },
+    yzm_(val) {
+      this.$nextTick(() => {
+        this.yzm_ = val.replace(/[^\d]/g, "");
+      });
+    },
     $route(to) {
       if (to.query.pitchon) {
         this.pitchon = to.query.pitchon;
@@ -114,7 +134,7 @@ export default {
     this.$store.commit("show_personid", 5);
     if (this.$route.query.pitchon) this.pitchon = this.$route.query.pitchon;
     if (this.pitchon == 0) {
-      this.phoneNum = this.user.phone;
+      this.phoneNum = this.user.phone ? this.user.phone : this.user.phoneNum;
     }
   },
   methods: {
@@ -159,7 +179,7 @@ export default {
     //   开始换绑手机
     startphone: function () {
       this.pitchon = 0;
-      this.phoneNum = this.user.phone;
+      this.phoneNum = this.user.phone ? this.user.phone : this.user.phoneNum;
       this.$router.push(`/person/phone?pitchon=${this.pitchon}`);
     },
     back: function () {

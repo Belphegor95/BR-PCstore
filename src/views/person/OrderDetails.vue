@@ -94,7 +94,6 @@ export default {
     };
   },
   mounted() {
-    console.info(this.data);
     this.pitchon = this.data.type - 1;
   },
   filters: {

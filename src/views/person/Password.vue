@@ -11,7 +11,7 @@
         <span>验证码:</span>
 
         <div class="btnbox">
-          <Input v-model="yzm" />
+          <Input v-model="yzm" onpaste="return false" />
           <captcha :phoneNum="phoneNum" apiurl="getYzmForFindPwd" />
         </div>
       </div>
@@ -42,6 +42,18 @@ export default {
       pwd: "",
       pwd_: "",
     };
+  },
+  watch: {
+    phoneNum(val) {
+      this.$nextTick(() => {
+        this.phoneNum = val.replace(/[^\d]/g, "");
+      });
+    },
+    yzm(val) {
+      this.$nextTick(() => {
+        this.yzm = val.replace(/[^\d]/g, "");
+      });
+    },
   },
   mounted() {
     this.$store.commit("show_personid", 4);

@@ -149,6 +149,13 @@ export default {
       addressId: null, // 要修改的地址id
     };
   },
+  watch: {
+    phone(val) {
+      this.$nextTick(() => {
+        this.phone = val.replace(/[^\d]/g, "");
+      });
+    },
+  },
   mounted() {
     // this.getprovince();
     this.getAllAddress();
@@ -193,7 +200,6 @@ export default {
     },
     // 编辑
     compile: function (a) {
-      console.info(a)
       this.istype = false;
       this.$refs.formbox.scrollTop = 960;
       this.addressId = a.id;
@@ -210,7 +216,7 @@ export default {
       this.coordinate.lat = a.lat;
       this.coordinate.lng = a.lng;
       // 展示用地址信息
-      this.address_detail = a.address_detail
+      this.address_detail = a.address_detail;
       this.site = addressdata[3];
       this.linkman = a.linkman;
       this.phone = a.phone;
