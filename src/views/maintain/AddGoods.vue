@@ -11,46 +11,26 @@
             :max-size="1024"
             :on-success="upsuccess"
             :show-upload-list="false"
-            :format="['jpg','jpeg','png']"
+            :format="['jpg', 'jpeg', 'png']"
             :on-exceeded-size="handleMaxSize"
+            :before-upload="handleBeforeUpload"
             :on-format-error="handleFormatError"
             :action="$api.baseUrl + $api.uploadFixImg"
           >
             <Button icon="ios-cloud-upload-outline">上传商品图片</Button>
           </Upload>
         </li>
-        <li v-for="(item,index) in attachPic" :key="index">
+        <li v-for="(item, index) in attachPic" :key="index">
           <img :src="item.path" />
         </li>
       </ul>
       <div>
         <div>
-          <span>
-            <b>*</b> 设备型号
-          </span>
-          <Upload
-            v-if="unitType == ''"
-            ref="upload"
-            :max-size="1024"
-            :on-success="upUnitType"
-            :show-upload-list="false"
-            :format="['jpg','jpeg','png']"
-            :on-exceeded-size="handleMaxSize"
-            :before-upload="handleBeforeUpload"
-            :on-format-error="handleFormatError"
-            :action="$api.baseUrl + $api.uploadFixImg"
-          >
-            <Button icon="ios-cloud-upload-outline">设备型号图片</Button>
-          </Upload>
-          <div class="unitTypebox" v-else>
-            <span @click="unitType = ''">x</span>
-            <img class="unitTypeimg" :src="unitType" />
-          </div>
+          <span> <b>*</b> 设备型号 </span>
+          <Input v-model="unitType" style="width: 20rem" />
         </div>
         <div>
-          <span>
-            <b>*</b> 商品名称
-          </span>
+          <span> <b>*</b> 商品名称 </span>
           <Input v-model="goodsName" style="width: 20rem" />
           <!-- <div>
             <img src="../../assets/img/maintain/xx.png" />
@@ -58,9 +38,7 @@
           </div>-->
         </div>
         <div>
-          <span>
-            <b>*</b> 故障描述
-          </span>
+          <span> <b>*</b> 故障描述 </span>
           <Input v-model="detail" type="textarea" style="width: 20rem" />
         </div>
         <div>
@@ -90,34 +68,6 @@
 export default {
   data() {
     return {
-      value: "",
-      cityList: [
-        {
-          value: "New York",
-          label: "New York",
-        },
-        {
-          value: "London",
-          label: "London",
-        },
-        {
-          value: "Sydney",
-          label: "Sydney",
-        },
-        {
-          value: "Ottawa",
-          label: "Ottawa",
-        },
-        {
-          value: "Paris",
-          label: "Paris",
-        },
-        {
-          value: "Canberra",
-          label: "Canberra",
-        },
-      ],
-      model1: "",
       attachPic: [], // 上传列表
       uploadList: [], // 正在上传的图片
       unitType: "", // 设备型号图片地址
@@ -152,12 +102,6 @@ export default {
       if (data.code == 200) {
         data.data.path = data.data.path.replace(new RegExp("\\\\", "g"), "/");
         this.attachPic.push(data.data);
-      }
-    },
-    // 商品型号
-    upUnitType: function (data) {
-      if (data.code == 200) {
-        this.unitType = data.data.path.replace(new RegExp("\\\\", "g"), "/");
       }
     },
     // 上传之前

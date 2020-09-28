@@ -14,19 +14,38 @@
                 <b>*</b>
                 地区：
               </span>
-              <Cascader :data="addressdata" v-model="address_" @on-change="countyClick" style="width: 300px" />
+              <Cascader
+                :data="addressdata"
+                v-model="address_"
+                @on-change="countyClick"
+                style="width: 300px"
+              />
             </div>
             <div>
               <span>
                 <b>*</b>
                 详细地址：
               </span>
-              <Input v-model="detail" placeholder="请输入详细地址" style="width: 300px" />
+              <Input
+                v-model="detail"
+                placeholder="请输入详细地址"
+                style="width: 300px"
+              />
             </div>
             <Button @click="search">搜索</Button>
           </div>
-          <baidu-map ak="FMxNKCVYPKKweAKH5b5Drv31Kz6pOGAg" class="map" @ready="mapReady">
-            <bm-local-search class="search" :keyword="keyword" :auto-viewport="true" @infohtmlset="infohtmlset" :location="location"></bm-local-search>
+          <baidu-map
+            ak="FMxNKCVYPKKweAKH5b5Drv31Kz6pOGAg"
+            class="map"
+            @ready="mapReady"
+          >
+            <bm-local-search
+              class="search"
+              :keyword="keyword"
+              :auto-viewport="true"
+              @infohtmlset="infohtmlset"
+              :location="location"
+            ></bm-local-search>
           </baidu-map>
         </span>
       </div>
@@ -39,33 +58,53 @@
           <!-- <p>切换 ></p> -->
         </div>
         <div>
-          <span>
-            <b>*</b>地址位置:
-          </span>
-          <Input v-model="site" placeholder="请输入地址位置" style="width: 22.5rem" disabled />
-          <Button style="margin-left:1rem" @click="$refs.formbox.scrollTop = 480">修改地址</Button>
+          <span> <b>*</b>地址位置: </span>
+          <Input
+            v-model="site"
+            placeholder="请输入地址位置"
+            style="width: 22.5rem"
+            disabled
+          />
+          <Button
+            style="margin-left: 1rem"
+            @click="$refs.formbox.scrollTop = 480"
+            >修改地址</Button
+          >
         </div>
         <div>
-          <span>
-            <b>*</b>详细地址:
-          </span>
-          <Input v-model="address_detail" placeholder="请填写详细地址" style="width: 22.5rem" />
+          <span> <b>*</b>详细地址: </span>
+          <Input
+            v-model="address_detail"
+            :maxlength="30"
+            placeholder="请填写详细地址"
+            style="width: 22.5rem"
+          />
         </div>
         <div>
-          <span>
-            <b>*</b>收货人姓名:
-          </span>
-          <Input v-model="linkman" placeholder="请填写收货人姓名" style="width: 22.5rem" />
+          <span> <b>*</b>收货人姓名: </span>
+          <Input
+            v-model="linkman"
+            :maxlength="15"
+            placeholder="请填写收货人姓名"
+            style="width: 22.5rem"
+          />
         </div>
         <div>
-          <span>
-            <b>*</b>手机号码:
-          </span>
+          <span> <b>*</b>手机号码: </span>
           <div>
-            <Select v-model="model1" style="width:7.5rem">
-              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <Select v-model="model1" style="width: 7.5rem">
+              <Option
+                v-for="item in cityList"
+                :value="item.value"
+                :key="item.value"
+                >{{ item.label }}</Option
+              >
             </Select>
-            <Input v-model="phone" style="width: 14.5rem;margin-left:0.5rem" />
+            <Input
+              v-model="phone"
+              :maxlength="11"
+              style="width: 14.5rem; margin-left: 0.5rem"
+            />
           </div>
         </div>
 
@@ -84,9 +123,16 @@
         </div>
       </div>
     </div>
-    <div class="mark" style="display: flex;align-items: center;">
-      <img style="margin-right:0.5rem" src="../../assets/img/person/xiao.png" />
-      <p>已保存了{{ address.length }}条地址,还能保存{{ 12 - address.length }}条地址</p>
+    <div class="mark" style="display: flex; align-items: center">
+      <img
+        style="margin-right: 0.5rem"
+        src="../../assets/img/person/xiao.png"
+      />
+      <p>
+        已保存了{{ address.length }}条地址,还能保存{{
+          12 - address.length
+        }}条地址
+      </p>
     </div>
     <div class="listbox">
       <div>
@@ -97,7 +143,7 @@
         <div>操作</div>
         <div></div>
       </div>
-      <div v-for="(item,index) in address" :key="index">
+      <div v-for="(item, index) in address" :key="index">
         <div>{{ item.linkman }}</div>
         <div>{{ item.address | site }}</div>
         <div>{{ item.address_detail }}</div>
@@ -107,7 +153,9 @@
           <span @click="deladdress(item)">删除</span>
         </div>
         <div>
-          <span v-if="item.address_default == 0" @click="editAddress(item)">设置默认地址</span>
+          <span v-if="item.address_default == 0" @click="editAddress(item)"
+            >设置默认地址</span
+          >
           <span v-else style="color: #000">默认地址</span>
         </div>
       </div>
@@ -118,7 +166,7 @@
 <script>
 import BaiduMap from "vue-baidu-map/components/map/Map.vue";
 import BmLocalSearch from "vue-baidu-map/components/search/LocalSearch.vue";
-import dizhi from "../../assets/js/dizhi";
+import dizhi from "@/assets/js/dizhi";
 export default {
   components: {
     BaiduMap,

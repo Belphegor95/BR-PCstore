@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import ticket from "../../components/Ticket";
+import ticket from "@/components/Ticket";
 export default {
   components: {
     ticket,

@@ -45,8 +45,8 @@
             <p>订单已取消</p>
           </div>
           <div>
-            <Button type="warning">立即付款</Button>
-            <Button>修改订单</Button>
+            <Button v-if="item.state <= 1" type="warning" @click="$router.push('/person/orderDetails?ispay=true')">立即付款</Button>
+            <Button v-if="item.state <= 1">修改订单</Button>
           </div>
         </div>
       </li>
@@ -69,8 +69,9 @@ export default {
   methods: {
     // 详情页
     ordetails: function (item) {
+      console.info(item);
       this.$store.commit("show_orderDetails", item);
-      this.$router.push("/person/orderDetails");
+      this.$router.push("/person/orderDetails?ispay=false");
     },
     // 获取列表
     getOrderList: function (type) {

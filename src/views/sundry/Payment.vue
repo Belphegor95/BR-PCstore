@@ -6,21 +6,21 @@
       <div class="happyname">
         <h1 @click="gohome">开心兔商城</h1>
         <div class="stepsbox">
-          <div :class="pitchon >= 0? 'active':''">
+          <div :class="pitchon >= 0 ? 'active' : ''">
             <span>
               <b>1</b>
             </span>
             <p>拍下商品</p>
           </div>
-          <div :class="pitchon >= 1? 'active_':''"></div>
-          <div :class="pitchon >= 1? 'active':''">
+          <div :class="pitchon >= 1 ? 'active_' : ''"></div>
+          <div :class="pitchon >= 1 ? 'active' : ''">
             <span>
               <b>2</b>
             </span>
             <p>付款</p>
           </div>
-          <div :class="pitchon >= 2? 'active_':''"></div>
-          <div :class="pitchon >= 2? 'active':''">
+          <div :class="pitchon >= 2 ? 'active_' : ''"></div>
+          <div :class="pitchon >= 2 ? 'active' : ''">
             <span>
               <b>3</b>
             </span>
@@ -28,110 +28,153 @@
           </div>
         </div>
       </div>
-      <div>
-        <span>确认收货地址</span>
-        <span @click="$router.push('/person/deliveryAddress?is=true')">管理收货地址</span>
-      </div>
-      <div>
-        <RadioGroup v-model="addressindex" class="radiobox">
-          <div v-for="(item,index) in address" :key="index" :class="addressindex == index? 'radio_active':''">
-            <div style="opacity: 0;">
-              <img src="../../assets/img/sundry/dw.png" />
-              <p>寄送到</p>
-            </div>
-            <Radio :label="index">
-              <div>
-                <p>{{ item.address + item.address_detail | site }}</p>
-                <span v-show="addressindex == index" @click="rut(item)">修改本地址</span>
-              </div>
-            </Radio>
-          </div>
-        </RadioGroup>
-        <Button @click="$router.push('/person/deliveryAddress?is=true')">新增地址</Button>
-        <p>购物车</p>
-        <div class="listbox">
-          <div>
-            <div>店铺宝贝</div>
-            <div>商品属性</div>
-            <div>单价</div>
-            <div>数量</div>
-            <div>金额</div>
-          </div>
-          <div v-for="(item,index) in orderdata.plistDetail" :key="index">
-            <div>
-              <img :src="item.picUrl" />
-              <p>{{ item.plistName }}</p>
-            </div>
-            <div>
-              <span>颜色:</span>
-              <p>{{ item.cateName?item.cateName: '暂无' }}</p>
-            </div>
-            <div>{{ item.price }}</div>
-            <div>{{ item.buyNum }}</div>
-            <div>{{ (item.price*item.buyNum).toFixed(2) }}</div>
-          </div>
+      <div class="activeOne" v-if="pitchon == 0">
+        <div>
+          <span>确认收货地址</span>
+          <span @click="$router.push('/person/deliveryAddress?is=true')"
+            >管理收货地址</span
+          >
         </div>
-        <div class="propertybox">
-          <div>
-            <div>
-              <span>给卖家留言</span>
-              <Input v-model="notes" maxlength="100" show-word-limit type="textarea" />
+        <div>
+          <RadioGroup v-model="addressindex" class="radiobox">
+            <div
+              v-for="(item, index) in address"
+              :key="index"
+              :class="addressindex == index ? 'radio_active' : ''"
+            >
+              <div style="opacity: 0">
+                <img src="../../assets/img/sundry/dw.png" />
+                <p>寄送到</p>
+              </div>
+              <Radio :label="index">
+                <div>
+                  <p>{{ (item.address + item.address_detail) | site }}</p>
+                  <span v-show="addressindex == index" @click="rut(item)"
+                    >修改本地址</span
+                  >
+                </div>
+              </Radio>
             </div>
+          </RadioGroup>
+          <Button @click="$router.push('/person/deliveryAddress?is=true')"
+            >新增地址</Button
+          >
+          <p>购物车</p>
+          <div class="listbox">
             <div>
-              <span>发票</span>
-              <Select v-model="billState" style="width:100px">
-                <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-              </Select>
+              <div>店铺宝贝</div>
+              <div>商品属性</div>
+              <div>单价</div>
+              <div>数量</div>
+              <div>金额</div>
+            </div>
+            <div v-for="(item, index) in orderdata.plistDetail" :key="index">
+              <div>
+                <img :src="item.picUrl" />
+                <p>{{ item.plistName }}</p>
+              </div>
+              <div>
+                <span>颜色:</span>
+                <p>{{ item.cateName ? item.cateName : "暂无" }}</p>
+              </div>
+              <div>{{ item.price }}</div>
+              <div>{{ item.buyNum }}</div>
+              <div>{{ (item.price * item.buyNum).toFixed(2) }}</div>
             </div>
           </div>
-          <div>
+          <div class="propertybox">
             <div>
-              <span>配送方式:</span>
               <div>
-                <p>免费配送</p>
-                <p>0.00</p>
+                <span>给卖家留言</span>
+                <Input
+                  v-model="notes"
+                  maxlength="100"
+                  show-word-limit
+                  type="textarea"
+                />
+              </div>
+              <div>
+                <span>发票</span>
+                <Select v-model="billState" style="width: 100px">
+                  <Option
+                    v-for="item in cityList"
+                    :value="item.value"
+                    :key="item.value"
+                    >{{ item.label }}</Option
+                  >
+                </Select>
               </div>
             </div>
             <div>
-              <span>优惠券:</span>
               <div>
+                <span>配送方式:</span>
                 <div>
-                  <div class="juanbox">
-                    <span>卷</span>
-                    <span>50</span>
-                  </div>
-                  <p>(暂不可用)</p>
+                  <p>免费配送</p>
+                  <p>0.00</p>
                 </div>
-                <p style="color: #000;cursor: pointer;">
-                  <Icon type="ios-arrow-forward" />
+              </div>
+              <div>
+                <span>优惠券:</span>
+                <div>
+                  <div>
+                    <div class="juanbox">
+                      <span>卷</span>
+                      <span>50</span>
+                    </div>
+                    <p>(暂不可用)</p>
+                  </div>
+                  <p style="color: #000; cursor: pointer">
+                    <Icon type="ios-arrow-forward" />
+                  </p>
+                </div>
+              </div>
+              <div>
+                <p>
+                  <span>合计:</span>
+                  {{ orderdata.totalMoney }}
                 </p>
               </div>
             </div>
-            <div>
+          </div>
+          <div style="text-align: right; padding: 0.5rem 1rem">满50包邮</div>
+          <div class="bttombox">
+            <div v-if="address.length > 0">
               <p>
-                <span>合计:</span>
+                <span>实付款:</span>
                 {{ orderdata.totalMoney }}
               </p>
+              <div>
+                <span>寄送至:</span>
+                <p>
+                  {{
+                    (address[addressindex].address +
+                      address[addressindex].address_detail)
+                      | site
+                  }}
+                </p>
+              </div>
+              <span
+                >收货人: {{ address[addressindex].linkman }}
+                {{ address[addressindex].phone }}</span
+              >
             </div>
+            <Button
+              class="addbtn"
+              :loading="btnload"
+              @click="onSubmit"
+              v-show="orderdata.totalMoney >= 50"
+              >提交订单</Button
+            >
+            <Button
+              class="forbidbtn"
+              disabled
+              v-show="orderdata.totalMoney < 50"
+              >未满50元</Button
+            >
           </div>
-        </div>
-        <div style="text-align: right;padding: 0.5rem 1rem;">满50包邮</div>
-        <div class="bttombox">
-          <div v-if="address.length > 0">
-            <p>
-              <span>实付款:</span>
-              {{ orderdata.totalMoney }}
-            </p>
-            <div>
-              <span>寄送至:</span>
-              <p>{{ address[addressindex].address + address[addressindex].address_detail | site }}</p>
-            </div>
-            <span>收货人: {{ address[addressindex].linkman }} {{ address[addressindex].phone }}</span>
-          </div>
-          <Button class="addbtn" :loading="btnload" @click="onSubmit" v-show="orderdata.totalMoney >= 50">提交订单</Button>
-          <Button class="forbidbtn" disabled v-show="orderdata.totalMoney < 50">未满50元</Button>
         </div>
       </div>
+      <pay v-else-if="pitchon == 1" />
     </div>
     <div class="bottombox">
       <statement />
@@ -143,10 +186,12 @@
 <script>
 import shortcut from "@/components/Shortcut.vue";
 import statement from "@/components/Statement.vue";
+import pay from "@/components/Pay.vue";
 export default {
   components: {
     shortcut,
     statement,
+    pay,
   },
   data() {
     return {
@@ -209,33 +254,35 @@ export default {
     },
     // 提交订单
     onSubmit: function () {
-      if (this.address.length == 0) {
-        this.$toast("请添加地址!");
-        return;
-      }
-      this.btnload = true;
-      this.axios
-        .post(this.$api.submitOrder, {
-          addressId: this.address[this.addressindex].id,
-          plistIds: this.orderdata.plistIds,
-          sendType: 0, //配送方式 0:免费配送,1:自提
-          notes: this.notes,
-          billState: this.billState,
-        })
-        .then((data) => {
-          if (data.code == 200) {
-            this.btnload = false;
-            // this.$store.commit("show_order_", data.data);
-            this.$router.push("/person/orderForm");
-          } else {
-            this.btnload = false;
-            this.$toast(this.ErrCode(data.msg));
-          }
-        })
-        .catch(() => {
-          this.btnload = false;
-          this.$toast(this.$api.monmsg);
-        });
+      this.pitchon = 1;
+      // 请求接口;
+      // if (this.address.length == 0) {
+      //   this.$toast("请添加地址!");
+      //   return;
+      // }
+      // this.btnload = true;
+      // this.axios
+      //   .post(this.$api.submitOrder, {
+      //     addressId: this.address[this.addressindex].id,
+      //     plistIds: this.orderdata.plistIds,
+      //     sendType: 0, //配送方式 0:免费配送,1:自提
+      //     notes: this.notes,
+      //     billState: this.billState,
+      //   })
+      //   .then((data) => {
+      //     if (data.code == 200) {
+      //       this.btnload = false;
+      //       // this.$store.commit("show_order_", data.data);
+      //       this.$router.push("/person/orderForm");
+      //     } else {
+      //       this.btnload = false;
+      //       this.$toast(this.ErrCode(data.msg));
+      //     }
+      //   })
+      //   .catch(() => {
+      //     this.btnload = false;
+      //     this.$toast(this.$api.monmsg);
+      //   });
     },
   },
   filters: {
@@ -323,112 +370,116 @@ export default {
         }
       }
     }
-    > div:nth-child(2) {
-      display: flex;
-      font-size: 0.9rem;
-      color: #000;
-      padding: 1rem 1rem 0.5rem 1rem;
-      justify-content: space-between;
-      border-bottom: 1px solid #f0f0f0;
-      > span:nth-child(2) {
-        color: #ff8400;
-        cursor: pointer;
-      }
-    }
-    > div:nth-child(3) {
-      padding: 1rem 0;
-      .radiobox {
+    // 拍下商品
+    .activeOne {
+      > div:nth-child(1) {
         display: flex;
-        flex-direction: column;
-        > div {
+        font-size: 0.9rem;
+        color: #000;
+        padding: 1rem 1rem 0.5rem 1rem;
+        justify-content: space-between;
+        border-bottom: 1px solid #f0f0f0;
+        > span:nth-child(2) {
+          color: #ff8400;
+          cursor: pointer;
+        }
+      }
+      > div:nth-child(2) {
+        padding: 1rem 0;
+        .radiobox {
           display: flex;
-          overflow: hidden;
-          padding: 0.2rem 0;
+          flex-direction: column;
           > div {
             display: flex;
-            width: 6rem;
-            align-items: center;
-            justify-content: center;
-            > img {
-              margin-right: 0.2rem;
-            }
-          }
-          > label {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            white-space: unset;
+            overflow: hidden;
+            padding: 0.2rem 0;
             > div {
               display: flex;
-              width: 100%;
+              width: 6rem;
               align-items: center;
-              justify-content: space-between;
-              > p {
-                word-wrap: break-word;
+              justify-content: center;
+              > img {
+                margin-right: 0.2rem;
               }
-              > span {
-                color: #ff8400;
+            }
+            > label {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              white-space: unset;
+              > div {
+                display: flex;
+                width: 100%;
+                align-items: center;
+                justify-content: space-between;
+                > p {
+                  word-wrap: break-word;
+                }
+                > span {
+                  color: #ff8400;
+                }
+              }
+            }
+          }
+          .radio_active {
+            border: 1px solid #ff8400;
+            background-color: #fff0e8;
+            > div:nth-child(1) {
+              opacity: 1 !important;
+            }
+            > label {
+              > div {
+                > p {
+                  font-size: 1.2rem;
+                  font-weight: 700;
+                  word-wrap: break-word;
+                }
               }
             }
           }
         }
-        .radio_active {
-          border: 1px solid #ff8400;
-          background-color: #fff0e8;
-          > div:nth-child(1) {
-            opacity: 1 !important;
-          }
-          > label {
-            > div {
-              > p {
-                font-size: 1.2rem;
-                font-weight: 700;
-                word-wrap: break-word;
-              }
-            }
-          }
+        > button {
+          margin-top: 0.5rem;
+          margin-left: 5.5rem;
         }
-      }
-      > button {
-        margin-top: 0.5rem;
-        margin-left: 5.5rem;
-      }
-      .listbox {
-        > div {
-          display: flex;
+        .listbox {
           > div {
-            flex: 1;
             display: flex;
-            padding: 1rem 0;
-            align-items: center;
-            justify-content: center;
-            border-bottom: 1px dashed #f1f1f1;
-            > img {
-              width: 5rem;
-              height: 5rem;
-              margin-left: 2rem;
+            > div {
+              flex: 1;
+              display: flex;
+              padding: 1rem 0;
+              align-items: center;
+              justify-content: center;
+              border-bottom: 1px dashed #f1f1f1;
+              > img {
+                width: 5rem;
+                height: 5rem;
+                margin-left: 2rem;
+              }
+              > p {
+                margin-left: 0.5rem;
+              }
             }
-            > p {
-              margin-left: 0.5rem;
+            > div:nth-child(2) {
+              color: #999;
+            }
+            > div:nth-child(5) {
+              color: #ff8400;
             }
           }
-          > div:nth-child(2) {
-            color: #999;
-          }
-          > div:nth-child(5) {
-            color: #ff8400;
-          }
-        }
-        > div:nth-child(1) {
-          border: 1px solid #e6e6e6;
-          background-color: #f5f5f5;
-          > div:nth-child(2),
-          > div:nth-child(5) {
-            color: #000;
+          > div:nth-child(1) {
+            border: 1px solid #e6e6e6;
+            background-color: #f5f5f5;
+            > div:nth-child(2),
+            > div:nth-child(5) {
+              color: #000;
+            }
           }
         }
       }
     }
+
     .propertybox {
       display: flex;
       border-bottom: 1px solid #e5e5e5;

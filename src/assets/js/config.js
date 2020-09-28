@@ -82,5 +82,7 @@ api.editAccOrderName = "/api/editAccOrderName"  // 修改用户名 1
 
 api.getFixOrder = "/api/getFixOrder"  //  获取维修单 1
 
+api.getFixDoorMoney = "/api/getFixDoorMoney"  // 获取上门维修费用
+
 
 export { api };

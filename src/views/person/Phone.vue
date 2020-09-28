@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import captcha from "../../components/Captcha";
+import captcha from "@/components/Captcha";
 export default {
   components: {
     captcha,

@@ -3,55 +3,63 @@
   <div class="orderDetails">
     <h4>订单详情</h4>
     <div class="stepsbox">
-      <div :class="pitchon >= 0? 'active':''">
+      <div :class="pitchon >= 0 ? 'active' : ''">
         <span>
           <b>1</b>
         </span>
       </div>
-      <div :class="pitchon >= 1? 'active_':''"></div>
-      <div :class="pitchon >= 1? 'active':''">
+      <div :class="pitchon >= 1 ? 'active_' : ''"></div>
+      <div :class="pitchon >= 1 ? 'active' : ''">
         <span>
           <b>2</b>
         </span>
       </div>
-      <div :class="pitchon >= 2? 'active_':''"></div>
-      <div :class="pitchon >= 2? 'active':''">
+      <div :class="pitchon >= 2 ? 'active_' : ''"></div>
+      <div :class="pitchon >= 2 ? 'active' : ''">
         <span>
           <b>3</b>
         </span>
       </div>
-      <div :class="pitchon >= 3? 'active_':''"></div>
-      <div :class="pitchon >= 3? 'active':''">
+      <div :class="pitchon >= 3 ? 'active_' : ''"></div>
+      <div :class="pitchon >= 3 ? 'active' : ''">
         <span>
           <b>4</b>
         </span>
       </div>
     </div>
-    <div class="orderbox">
+    <div class="orderbox" v-if="pitchon == 0">
       <div class="orderinfo">
         <div>
           <div>订单信息</div>
           <div>
             <div>
               <span>收货地址:</span>
-              <p>{{ data.address.linkman }} {{ data.address.phone }}, {{ data.address.address + data.address.address_detail | site }}</p>
+              <p>
+                {{ orderDetails.address.linkman }}
+                {{ orderDetails.address.phone }},
+                {{
+                  (orderDetails.address.address +
+                    orderDetails.address.address_detail)
+                    | site
+                }}
+              </p>
             </div>
             <div>
               <span>订单编号:</span>
-              <p>{{ data.tradeNo }}</p>
+              <p>{{ orderDetails.tradeNo }}</p>
             </div>
           </div>
         </div>
         <div>
           <div>
             <img src="../../assets/img/person/！.png" />
-            <p>订单状态: {{ data.sendProgress[pitchon].content }}</p>
+            <p>订单状态: {{ orderDetails.sendProgress[pitchon].content }}</p>
           </div>
           <!-- <p v-show="false">您还有17小时46分3秒来付款,超时订单自动关闭</p> -->
           <div>
             <span>您可以</span>
             <Button>立即支付</Button>
-            <Button>取消订单</Button>
+            <!-- <Button>取消订单</Button> -->
           </div>
         </div>
       </div>
@@ -63,12 +71,12 @@
           <div>优惠</div>
           <div>状态</div>
         </div>
-        <div v-for="(item,index) in data.plistDetail" :key="index">
+        <div v-for="(item, index) in orderDetails.plistDetail" :key="index">
           <div class="imgbox">
             <img :src="item.picUrl" />
             <div>
               <h6>{{ item.plistName }}</h6>
-              <span>颜色: {{ item.cateName ?item.cateName : "暂无" }}</span>
+              <span>颜色: {{ item.cateName ? item.cateName : "暂无" }}</span>
               <span>单位: {{ item.priceName | unit }}</span>
             </div>
           </div>
@@ -82,19 +90,26 @@
         </div>
       </div>
     </div>
+    <pay v-else-if="pitchon == 1" />
   </div>
 </template>
 
 <script>
+import pay from "@/components/Pay.vue";
 export default {
+  components: {
+    pay,
+  },
   data() {
     return {
       pitchon: 0,
-      data: this.$store.state.orderDetails,
+      orderDetails: this.$store.state.orderDetails,
     };
   },
   mounted() {
-    this.pitchon = this.data.type - 1;
+    // 判断是否是从支付跳过来的
+    if (this.$route.query.ispay == "true")
+      this.pitchon = this.orderDetails.type - 1;
   },
   filters: {
     site: function (value) {

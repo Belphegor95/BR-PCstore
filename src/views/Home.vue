@@ -182,7 +182,7 @@ export default {
   background-color: #f9f9f9;
   padding-top: 1rem;
   .recommend {
-    background-color: #fff;
+    // background-color: #fff;
     display: flex;
     flex-wrap: wrap;
     padding-top: 1rem;
@@ -199,25 +199,4 @@ export default {
 .topbtn {
   width: 3rem !important;
 }
-// @media screen and (max-width: 1350px) {
-//   .home {
-//     > div {
-//       width: 100%;
-//       > div {
-//         width: 65rem;
-//         margin: auto;
-//       }
-//     }
-//     .classifybox {
-//       .w {
-//         // .classify {
-//         //   width: 20rem;
-//         // }
-//         .Carouselbox {
-//           width: 44rem;
-//         }
-//       }
-//     }
-//   }
-// }
 </style>

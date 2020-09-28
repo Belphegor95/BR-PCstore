@@ -1,7 +1,7 @@
 <!-- 商品卡 -->
 <template>
   <div class="commodityCard" @click="rut">
-    <img  v-if="data.plist_img_url" :src="data.plist_img_url[0]" />
+    <img v-if="data.plist_img_url" :src="data.plist_img_url[0]" />
     <div class="contentbox">
       <p :title="data.plist_name">{{ data.plist_name }}</p>
       <!-- <p>会员价: 90.00￥</p> -->
@@ -38,11 +38,15 @@ export default {
 <style lang="less" scoped>
 .commodityCard {
   width: 19%;
+  overflow: hidden;
+  border-radius: 1rem;
   margin: 0.5rem 0.35rem;
-  border: 1px solid #e9e9e9;
+  background-color: #fff;
+  // border: 1px solid #e9e9e9;
   cursor: pointer;
   > img {
     width: 100%;
+    padding: 0.5rem;
   }
   .contentbox {
     padding: 0 1rem;
@@ -81,6 +85,7 @@ export default {
   }
 }
 .commodityCard:hover {
-  border: 1px solid #ff8900;
+  // border: 1px solid #ff8900;
+  box-shadow: #999 0px 0px 1rem;
 }
 </style>
