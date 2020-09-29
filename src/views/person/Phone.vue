@@ -3,7 +3,7 @@
   <div class="phone">
     <h4>手机绑定</h4>
     <div class="content">
-      <div v-show="pitchon== -1">
+      <div v-show="pitchon == -1">
         <div>
           <span>已绑定手机号:</span>
           <p v-if="user.phone">{{ user.phone }}</p>
@@ -13,19 +13,19 @@
       </div>
       <div v-show="pitchon != -1">
         <div class="stepsbox">
-          <div :class="pitchon >= 0? 'active':''">
+          <div :class="pitchon >= 0 ? 'active' : ''">
             <span>
               <b>1</b>
             </span>
           </div>
-          <div :class="pitchon >= 1? 'active_':''"></div>
-          <div :class="pitchon >= 1? 'active':''">
+          <div :class="pitchon >= 1 ? 'active_' : ''"></div>
+          <div :class="pitchon >= 1 ? 'active' : ''">
             <span>
               <b>2</b>
             </span>
           </div>
-          <div :class="pitchon >= 2? 'active_':''"></div>
-          <div :class="pitchon >= 2? 'active':''">
+          <div :class="pitchon >= 2 ? 'active_' : ''"></div>
+          <div :class="pitchon >= 2 ? 'active' : ''">
             <span>
               <b>3</b>
             </span>
@@ -50,7 +50,9 @@
                 <captcha :phoneNum="phoneNum" apiurl="getYzmForChangePhone" />
               </div>
             </div>
-            <Button type="warning" size="large" @click="applyChangePhone">确定</Button>
+            <Button type="warning" size="large" @click="applyChangePhone"
+              >确定</Button
+            >
           </div>
         </div>
         <div v-else-if="pitchon == 1">
@@ -67,7 +69,9 @@
                 <captcha :phoneNum="phoneNum" apiurl="getYzm" />
               </div>
             </div>
-            <Button type="warning" size="large" @click="changePhone">确定</Button>
+            <Button type="warning" size="large" @click="changePhone"
+              >确定</Button
+            >
           </div>
         </div>
         <div v-else-if="pitchon == 2">
@@ -76,7 +80,9 @@
             新手机号:
             <span>123******5623</span>
           </p>
-          <Button type="warning" size="large" class="btn" @click="back">返回</Button>
+          <Button type="warning" size="large" class="btn" @click="back"
+            >返回</Button
+          >
         </div>
       </div>
     </div>
@@ -131,7 +137,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit("show_personid", 5);
+    this.$store.commit("show_personid", 4);
     if (this.$route.query.pitchon) this.pitchon = this.$route.query.pitchon;
     if (this.pitchon == 0) {
       this.phoneNum = this.user.phone ? this.user.phone : this.user.phoneNum;

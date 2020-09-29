@@ -312,7 +312,7 @@ export default {
   background-color: #f9f9f9!important;
 }
 .content {
-  margin-top: 38px;
+  margin-top: 2rem;
   padding-top: 5rem;
   > div {
     background-color: #fff;

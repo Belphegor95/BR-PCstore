@@ -8,8 +8,8 @@
   padding: 0;
 }
 #app {
+  font-size: 0.75rem;
   color: #000;
-  /* background-color: #fff; */
 }
 #app > div {
   width: 100%;
@@ -19,7 +19,7 @@
   margin: auto;
 }
 .nav {
-  height: 38px;
+  height: 2rem;
   background-color: #f1f1f1;
 }
 #app {

@@ -1,7 +1,7 @@
 <!-- 搜索框 -->
 <template>
   <div class="searchBox">
-    <div>
+    <div class="leftbox">
       <div class="happyname">
         <!-- <span @click="gohome">开心兔商城</span> -->
         <img @click="gohome" src="../assets/img/log.png" />
@@ -10,24 +10,52 @@
       <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
           <input type="text" v-model="search" @keyup.enter="onSearch" />
-          <button @click="onSearch">搜索</button>
+          <button @click="onSearch">
+            <img src="../assets/img/loupe.png" alt="" /> 搜索
+          </button>
+          <ul>
+            <li>
+              <p>123</p>
+              <div>
+                <span>搜索历史</span>
+                <span>删除</span>
+              </div>
+            </li>
+            <li>
+              <p>123</p>
+              <div>
+                <span>搜索历史</span>
+                <span>删除</span>
+              </div>
+            </li>
+            <li>
+              <p>123</p>
+              <div>
+                <span>搜索历史</span>
+                <span>删除</span>
+              </div>
+            </li>
+            <p>全部删除</p>
+          </ul>
         </div>
         <div class="btnbox">
-          <span v-for="(item,index) in searchlist" :key="index" @click="onHistory(item)">{{ item }}</span>
-          <!-- <span @click="onHistory(3,1)">油墨</span>|
-          <span @click="onHistory(3,1)">打印纸</span>|
-          <span @click="onHistory(1,3)">记号笔</span>|
-          <span>档案袋</span>|
-          <span>标签</span>-->
+          <span
+            v-for="(item, index) in searchlist"
+            :key="index"
+            @click="onHistory(item)"
+            >{{ item }}</span
+          >
         </div>
       </div>
-      <div class="visitbox" v-show="isSearch">
-        <button @click="serve">
-          <img src="../assets/img/home/sm.png" />
-          <p>上门服务</p>
-        </button>
-        <!-- <Button size="large">上门服务</Button> -->
-      </div>
+    </div>
+    <div class="codebox" v-show="isSearch">
+      <p>下载手机开心兔</p>
+      <img src="../assets/img/home/qr_code.png" alt="" />
+      <!-- <button @click="serve">
+        <img src="../assets/img/home/sm.png" />
+        <p>上门服务</p>
+      </button> -->
+      <!-- <Button size="large">上门服务</Button> -->
     </div>
   </div>
 </template>
@@ -44,10 +72,7 @@ export default {
       searchlist: ["油墨", "打印纸", "记号笔", "档案袋", "标签"],
     };
   },
-  mounted() {
-    // cate_one=3&cate_two=10
-    // console.info(this.search)
-  },
+  mounted() {},
   methods: {
     gohome: function () {
       if (this.$route.path != "/") this.$router.push("/");
@@ -116,11 +141,13 @@ export default {
 
 <style lang="less" scoped>
 .searchBox {
-  > div:nth-child(1) {
+  height: 7.31rem;
+  display: flex;
+  justify-content: space-between;
+  .leftbox {
     display: flex;
-    height: 10rem;
     .happyname {
-      flex: 2.5;
+      margin-right: 4.7rem;
       display: flex;
       font-weight: 700;
       color: #ff8400;
@@ -135,26 +162,83 @@ export default {
       }
     }
     .serachbox {
-      flex: 2.2;
       display: flex;
       justify-content: center;
       flex-direction: column;
       .serachinput {
         display: flex;
+        height: 2.11rem;
+        position: relative;
         > input {
           outline: 0px;
-          width: 20rem;
-          height: 2.5rem;
+          width: 40.88rem;
           padding-left: 0.8rem;
           border: 0.1rem solid #ff8900;
         }
         > button {
+          display: flex;
+          align-items: center;
           color: #fff;
           padding: 0 1.2rem;
           background-color: #ff8900;
+          > img {
+            margin-right: 0.3rem;
+          }
+        }
+        > ul {
+          display: none;
+          z-index: 10;
+          position: absolute;
+          top: 2.2rem;
+          left: 0;
+          width: 40.88rem;
+          border: 1px solid #cccccc;
+          background-color: #fff;
+          > li {
+            cursor: pointer;
+            display: flex;
+            padding: 0.2rem 0.5rem;
+            justify-content: space-between;
+            > div {
+              > span:nth-child(1) {
+                color: #bebebe;
+              }
+              > span:nth-child(2) {
+                display: none;
+              }
+            }
+          }
+          > p {
+            width: 100%;
+            cursor: pointer;
+            text-align: right;
+            border-top: 1px solid #cccccc;
+            padding: 0.2rem 0.5rem;
+          }
+          > li:hover,
+          > p:hover {
+            background-color: #f5f5f5;
+          }
         }
       }
+      .serachinput:hover {
+        > ul {
+          display: block;
+          li:hover {
+            > div {
+              > span:nth-child(1) {
+                display: none;
+              }
+              > span:nth-child(2) {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+
       .btnbox {
+        color: #999999;
         margin-top: 0.5rem;
         > span {
           margin: 0 0.5rem;
@@ -166,22 +250,38 @@ export default {
         > span:last-child {
           margin-right: 0;
         }
-      }
-    }
-    .visitbox {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      button {
-        display: flex;
-        padding: 0.5rem 1rem;
-        border: 1px solid #e6e6e6;
-        > img {
-          margin-right: 0.5rem;
+        > span:hover {
+          color: #f68b00;
         }
       }
     }
   }
+  .codebox {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    color: #999999;
+    > p {
+      margin-bottom: 0.25rem;
+    }
+    > img {
+      width: 4.13rem;
+    }
+  }
+  // .visitbox {
+  //   flex: 1;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   button {
+  //     display: flex;
+  //     padding: 0.5rem 1rem;
+  //     border: 1px solid #e6e6e6;
+  //     > img {
+  //       margin-right: 0.5rem;
+  //     }
+  //   }
+  // }
 }
 </style>

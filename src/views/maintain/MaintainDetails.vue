@@ -153,7 +153,7 @@ export default {
 
 <style lang='less' scoped>
 .maintainDetails {
-   margin-top: 38px;
+   margin-top: 2rem;
   .content {
     > div {
       padding: 0 2rem;

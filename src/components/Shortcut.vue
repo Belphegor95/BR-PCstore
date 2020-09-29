@@ -10,24 +10,38 @@
             <div>
               <img src="../assets/img/guide/tx.png" />
               <div>
-                <p @click="rut('guide','login?is=true')">切换角色</p>
+                <p @click="rut('guide', 'login?is=true')">切换角色</p>
                 <p @click="quit">退出</p>
               </div>
             </div>
           </span>
-          <span v-else @click="rut('guide','login')">请登录</span>
-          <i class="gang" v-if="!user"></i>
-          <span v-if="!user" @click="rut('guide','register')">注册</span>
+          <span v-else @click="rut('guide', 'login')">请登录</span>
+          <span v-if="!user" @click="rut('guide', 'register')">注册</span>
         </p>
       </div>
       <div class="rightbox">
-        <span @click="rut('person','orderForm')">我的订单</span>|
+        <span @click="rut('person', 'orderForm')">我的订单</span>
         <span class="gwcbox" @click="ok('/cart')">
-          <img src="../assets/img/home/gwc.png" />
-          购物车
-          <b>{{ count }}</b>
-        </span>|
-        <Dropdown style="margin-left: 20px" @on-click="ok">
+          <img src="../assets/img/components/topcart.png" />
+          购物车 (<b>{{ count }}</b
+          >)
+        </span>
+        <div class="myCenterbox">
+          <div class="center">
+            <p @click="ok('/person/userinfo')">个人中心</p>
+            <Icon type="ios-arrow-up" />
+          </div>
+          <div class="mybox">
+            <p
+              v-for="(item, index) in myCenterList"
+              :key="index"
+              @click="ok(item.to)"
+            >
+              {{ item.name }}
+            </p>
+          </div>
+        </div>
+        <!-- <Dropdown style="margin-left: 20px" @on-click="ok">
           <a href="javascript:void(0)">
             个人中心
             <Icon type="ios-arrow-down" />
@@ -39,8 +53,8 @@
             <DropdownItem name="/person/password">修改登录密码</DropdownItem>
             <DropdownItem name="/person/phone">手机绑定</DropdownItem>
             <DropdownItem name="/person/coupon">我的优惠券</DropdownItem>
-          </DropdownMenu>
-        </Dropdown>|
+          </DropdownMenu> </Dropdown
+        > -->
         <span>联系客服</span>
       </div>
     </div>
@@ -53,6 +67,28 @@ export default {
     return {
       count: 0,
       user: this.$store.state.user,
+      myCenterList: [
+        {
+          name: "我的订单",
+          to: "/person/orderForm",
+        },
+        {
+          name: "收货地址",
+          to: "/person/deliveryAddress",
+        },
+        {
+          name: "修改登录密码",
+          to: "/person/password",
+        },
+        {
+          name: "手机绑定",
+          to: "/person/phone",
+        },
+        {
+          name: "我的优惠券",
+          to: "/person/coupon",
+        },
+      ],
     };
   },
   mounted() {
@@ -144,7 +180,7 @@ export default {
     display: flex;
     color: #8b8b8b;
     font-size: 0.9rem;
-    height: 38px;
+    height: 2rem;
     justify-content: space-between;
 
     > div {
@@ -153,29 +189,23 @@ export default {
         > span {
           cursor: pointer;
         }
-        .gang {
-          margin: 0 0.5rem;
-        }
       }
     }
     .leftbox {
+      color: #f39800;
+      font-size: 0.75rem;
       > p:nth-child(1) {
         color: #ff8900;
-        margin-right: 1rem;
+        margin-right: 1.63rem;
         cursor: pointer;
-        line-height: 38px;
-        // padding: 0.5rem 0;
+        line-height: 2rem;
       }
       > p:nth-child(2) {
         display: flex;
         align-items: center;
-        height: 100%;
-        > i {
-          width: 1px;
-          height: 38%;
-          color: #8b8b8b;
-          display: inline-block;
-          background-color: #8b8b8b;
+        > span:nth-child(1) {
+          color: #636363;
+          margin-right: 0.95rem;
         }
         > .userbox {
           border: 1px solid #f1f1f1;
@@ -226,7 +256,10 @@ export default {
       }
     }
     .rightbox {
-      padding: 0.5rem 0;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      color: #838383;
       .gwcbox {
         > img {
           margin-right: 0.2rem;
@@ -238,10 +271,66 @@ export default {
       }
       > span {
         cursor: pointer;
-        margin: 0 0.5rem;
+        margin-left: 1.06rem;
       }
       span:last-child {
         margin-right: 0;
+      }
+      .myCenterbox {
+        display: flex;
+        height: 100%;
+        position: relative;
+        padding: 0 0.69rem;
+        margin-left: 1.06rem;
+        border: 0.06px solid #f1f1f1;
+        border-bottom: none;
+        .center {
+          display: flex;
+          height: 100%;
+          cursor: pointer;
+          align-items: center;
+          > i {
+            margin-left: 0.63rem;
+          }
+        }
+        .center:hover {
+          color: #ff9000;
+        }
+        .mybox {
+          display: none;
+          width: 100% + 3px;
+          background: #fff;
+          position: absolute;
+          // left: 0;
+          left: -1px;
+          top: 1.9rem;
+          border: 0.06px solid #f1f1f1;
+          border-top: none;
+          > p {
+            font-size: 0.77rem;
+            text-indent: 0.75rem;
+            cursor: pointer;
+            white-space: nowrap;
+            height: 2rem;
+            line-height: 2rem;
+          }
+          > p:hover {
+            color: #ff9000;
+          }
+        }
+      }
+      .myCenterbox:hover {
+        background-color: #fff;
+        border: 0.06px solid #dcdcdc;
+        border-bottom: none;
+        i {
+          transform: rotate(180deg);
+        }
+        .mybox {
+          display: block;
+          border: 0.06px solid #dcdcdc;
+          border-top: none;
+        }
       }
     }
   }
@@ -252,7 +341,7 @@ span:hover {
 </style>
 
 <style>
-.shortcut .ivu-dropdown {
+/* .shortcut .ivu-dropdown {
   margin-left: 0;
   margin: 0 0.5rem;
 }
@@ -261,5 +350,5 @@ span:hover {
 }
 .shortcut .ivu-dropdown a:hover {
   color: #ff8900;
-}
+} */
 </style>

@@ -26,8 +26,8 @@
       <p>骑手配送</p>
     </div>
     <div class="QRbox">
-      <img src="../assets/img/home/jg.png" />
-      <p>手机下单更方便</p>
+      <img src="../assets/img/home/qr_code.png" />
+      <!-- <p>手机下单更方便</p> -->
     </div>
   </div>
 </template>
@@ -50,13 +50,17 @@ export default {
     margin-bottom: 1.5rem;
     margin-top: 4rem;
     > h5 {
-      font-size: 1.08rem;
+      font-size: 1.5rem;
+      font-family: SourceHanSansCN;
       font-weight: 500;
-      margin-bottom: 2rem;
+      color: #212121;
     }
     > p {
-      color: #999;
-      line-height: 1.5rem;
+      margin: 0.72rem 0;
+      font-size: 1rem;
+      font-family: SourceHanSansCN;
+      font-weight: 400;
+      color: #212121;
     }
   }
   .QRbox {
@@ -64,13 +68,9 @@ export default {
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    > p {
-      margin-top: 1rem;
-      text-indent: 0;
+    > img {
+      width: 10.38rem;
     }
-  }
-  > div:nth-child(4) {
-    border-right: 1px solid #999;
   }
 }
 </style>

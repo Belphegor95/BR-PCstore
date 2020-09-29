@@ -1,9 +1,9 @@
 <!-- 价格  展示 -->
 <template>
-  <span class="price" :style="{'font-size': size + 'rem'}">
+  <span class="price" :style="{ 'font-size': size + 'rem' }">
     ¥
-    <b :style="{'font-size': size + 0.3 + 'rem'}">{{ integer }}</b>
-    <p>.{{ decimals | decimalsNum}}</p>
+    <b :style="{ 'font-size': size + 0.3 + 'rem' }">{{ integer }}</b>
+    <p>.{{ decimals | decimalsNum }}</p>
   </span>
 </template>
 
@@ -58,7 +58,7 @@ export default {
 
 <style lang='less' scoped>
 .price {
-  color: #ff9d2b;
+  color: #f68b00;
   display: flex;
   align-items: baseline;
   > b {

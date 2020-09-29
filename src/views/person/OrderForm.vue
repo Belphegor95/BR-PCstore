@@ -63,7 +63,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit("show_personid", 2);
+    this.$store.commit("show_personid", 1);
     this.getOrderList(0);
   },
   methods: {

@@ -296,7 +296,7 @@ export default {
 
 <style lang='less' scoped>
 .payment {
-  margin-top: 38px;
+  margin-top: 2rem;
   background-color: #f9f9f9;
   .content {
     > div {

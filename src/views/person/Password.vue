@@ -56,7 +56,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit("show_personid", 4);
+    this.$store.commit("show_personid", 3);
   },
   methods: {
     resetPwd: function () {

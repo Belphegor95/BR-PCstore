@@ -28,7 +28,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit("show_personid", 6);
+    this.$store.commit("show_personid", 5);
     this.getTicket();
   },
   methods: {

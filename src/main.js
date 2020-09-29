@@ -35,6 +35,10 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+// 跳转 回到顶部
+router.afterEach((to, from, next) => {
+  window, scrollTo(0, 0)
+})
 axios.defaults.baseURL = api.baseUrl;
 // axios.defaults.baseURL = "/api";
 // 允许携带cookie

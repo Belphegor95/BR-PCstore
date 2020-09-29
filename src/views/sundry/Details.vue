@@ -76,7 +76,6 @@
                 <img src="../../assets/img/sundry/gwc.png" />
                 加入购物车
               </button>
-              <!-- <button>立即购买</button> -->
             </div>
           </div>
         </div>
@@ -92,6 +91,7 @@
       <guarantee />
       <statement />
     </div>
+    <goTop />
   </div>
 </template>
 
@@ -102,6 +102,7 @@ import guarantee from "@/components/Guarantee.vue";
 import statement from "@/components/Statement.vue";
 import price from "@/components/Price.vue";
 import PicZoom from "vue-piczoom";
+import goTop from "@/components/GoTop.vue";
 export default {
   components: {
     shortcut,
@@ -110,6 +111,7 @@ export default {
     statement,
     price,
     PicZoom,
+    goTop
   },
   data() {
     return {
@@ -176,7 +178,7 @@ export default {
 
 <style lang='less' scoped>
 .details {
-  margin-top: 38px;
+  margin-top: 2rem;
   .content {
     background: #f9f9f9;
     // padding-top: 2rem;

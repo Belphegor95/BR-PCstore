@@ -207,7 +207,7 @@ export default {
   mounted() {
     // this.getprovince();
     this.getAllAddress();
-    this.$store.commit("show_personid", 3);
+    this.$store.commit("show_personid", 2);
   },
   methods: {
     // 百度地图实例生成以后

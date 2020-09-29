@@ -228,7 +228,7 @@ export default {
 
 <style lang='less' scoped>
 .classify {
-  margin-top: 38px;
+  margin-top: 2rem;
   .content {
     .sortbox {
       display: flex;

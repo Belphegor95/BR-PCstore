@@ -6,7 +6,7 @@
       <p :title="data.plist_name">{{ data.plist_name }}</p>
       <!-- <p>会员价: 90.00￥</p> -->
       <p v-if="data.price_lv.unitList">
-        <price :priceNum="data.price_lv.unitList[0].orderPrice" :size="1" />
+        <price :priceNum="data.price_lv.unitList[0].orderPrice" :size="1.5" />
         <!-- <span>原价 ￥{{ data.price_lv.unitList[0].marketPrice }}</span> -->
       </p>
     </div>
@@ -42,11 +42,15 @@ export default {
   border-radius: 1rem;
   margin: 0.5rem 0.35rem;
   background-color: #fff;
-  // border: 1px solid #e9e9e9;
+  border: 1px solid #fff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   > img {
-    width: 100%;
-    padding: 0.5rem;
+    width: 12rem;
+    margin: 1.19rem 0;
   }
   .contentbox {
     padding: 0 1rem;
@@ -60,10 +64,13 @@ export default {
       -webkit-line-clamp: 2;
       line-clamp: 2;
       -webkit-box-orient: vertical;
-      height: 50px;
+
       word-wrap: break-word;
-      //   font-weight: 700;
-      font-size: 1.05rem;
+      height: 50px;
+      font-size: 1rem;
+      font-family: SourceHanSansCN;
+      font-weight: 400;
+      color: #000000;
     }
     > p:nth-child(2) {
       color: #999;
@@ -85,7 +92,7 @@ export default {
   }
 }
 .commodityCard:hover {
-  // border: 1px solid #ff8900;
+  border: 1px solid #ff8900;
   box-shadow: #999 0px 0px 1rem;
 }
 </style>

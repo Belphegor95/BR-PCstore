@@ -123,7 +123,7 @@ export default {
 
 <style lang='less' scoped>
 .service {
-  margin-top: 38px;
+  margin-top: 2rem;
   .content {
     margin-bottom: 5rem;
     > div {

@@ -8,8 +8,12 @@
     <div class="content">
       <div>
         <ul>
-          <li v-for="(item,index) in personnames" :key="index">
-            <span :class="personid == index? 'active':''" @click="rut(index, item.site)">{{ item.name }}</span>
+          <li v-for="(item, index) in personnames" :key="index">
+            <span
+              :class="personid == index ? 'active' : ''"
+              @click="rut(index, item.site)"
+              >{{ item.name }}</span
+            >
           </li>
         </ul>
         <router-view />
@@ -38,10 +42,10 @@ export default {
           name: "个人中心",
           site: "/userinfo",
         },
-        {
-          name: "我的购物车",
-          site: "/cart",
-        },
+        // {
+        //   name: "我的购物车",
+        //   site: "/cart",
+        // },
         {
           name: "我的订单",
           site: "/orderForm",
@@ -73,11 +77,7 @@ export default {
     rut: function (id, name) {
       if (this.personid == id) return;
       this.personid = id;
-      if (this.personid == 1) {
-        this.$router.push(name);
-      } else {
-        this.$router.push(`/person${name}`);
-      }
+      this.$router.push(`/person${name}`);
     },
   },
   watch: {
@@ -90,7 +90,7 @@ export default {
 
 <style lang='less' scoped>
 .person {
-  margin-top: 38px;
+  margin-top: 2rem;
   .content {
     > div {
       display: flex;
