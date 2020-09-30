@@ -69,7 +69,7 @@ export default {
   position: fixed;
   left: 50%;
   bottom: 5rem;
-  margin-left: 610px;
+  margin-left: 600px;
   .goTop {
     width: auto !important;
     margin: 0 !important;

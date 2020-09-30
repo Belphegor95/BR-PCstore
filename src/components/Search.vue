@@ -13,29 +13,15 @@
           <button @click="onSearch">
             <img src="../assets/img/loupe.png" alt="" /> 搜索
           </button>
-          <ul>
-            <li>
-              <p>123</p>
+          <ul v-show="historyList.length != 0">
+            <li v-for="(item, index) in historyList" :key="index">
+              <p>{{ item }}</p>
               <div>
                 <span>搜索历史</span>
-                <span>删除</span>
+                <span @click="detHistoryList(index)">删除</span>
               </div>
             </li>
-            <li>
-              <p>123</p>
-              <div>
-                <span>搜索历史</span>
-                <span>删除</span>
-              </div>
-            </li>
-            <li>
-              <p>123</p>
-              <div>
-                <span>搜索历史</span>
-                <span>删除</span>
-              </div>
-            </li>
-            <p>全部删除</p>
+            <p @click="emptyHistoryList">全部删除</p>
           </ul>
         </div>
         <div class="btnbox">
@@ -69,7 +55,8 @@ export default {
   data() {
     return {
       search: "",
-      searchlist: ["油墨", "打印纸", "记号笔", "档案袋", "标签"],
+      searchlist: ["油墨", "打印纸", "记号笔", "档案袋", "标签"], // 推荐搜索
+      historyList: this.$store.state.historyList, // 搜索的历史记录
     };
   },
   mounted() {},
@@ -79,6 +66,7 @@ export default {
     },
     // 点击搜索
     onSearch: function () {
+      this.addHistoryList(this.search);
       if (this.$route.query.name != this.search) {
         // 如果用户搜索空  清除name值
         if (this.$route.path == "/classify" && this.search.trim() == "") {
@@ -102,6 +90,7 @@ export default {
     },
     // 点击历史记录
     onHistory: function (item) {
+      this.addHistoryList(item);
       // 判断  防止重复点击报错
       if (this.$route.query.name != item) {
         this.$router.push({
@@ -129,6 +118,30 @@ export default {
     // 上门列表
     serve: function () {
       this.$router.push("/maintain/maintainList");
+    },
+    // 添加历史记录
+    addHistoryList: function (item) {
+      if (item.trim() == "") return;
+      // 历史记录限定十个
+      if (this.historyList.length == 10) {
+        this.historyList.splice(9, 1);
+        this.historyList.unshift(item);
+      } else {
+        this.historyList.unshift(item);
+      }
+      let arr = Array.from(new Set(this.historyList));
+      this.historyList = arr;
+      this.$store.commit("show_historyList", arr);
+    },
+    // 删除历史记录
+    detHistoryList: function (index) {
+      this.historyList.splice(index, 1);
+      this.$store.commit("show_historyList", this.historyList);
+    },
+    // 清空历史记录
+    emptyHistoryList: function () {
+      this.historyList = [];
+      this.$store.commit("show_historyList", this.historyList);
     },
   },
   watch: {

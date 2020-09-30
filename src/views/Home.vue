@@ -208,6 +208,7 @@ export default {
           flex-direction: column;
           justify-content: center;
           border: 1px solid #ededed;
+          max-height: 10rem;
           width: 33.3%;
           cursor: pointer;
           > div {

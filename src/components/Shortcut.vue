@@ -301,7 +301,6 @@ export default {
           width: 100% + 3px;
           background: #fff;
           position: absolute;
-          // left: 0;
           left: -1px;
           top: 1.9rem;
           border: 0.06px solid #f1f1f1;

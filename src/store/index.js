@@ -14,6 +14,7 @@ export default new Vuex.Store({
     orderDetails: null, // 订单详情信息
     maintain: {}, // 维修单参数
     maintainDetails: null, // 维修单详情
+    historyList: [], // 搜索历史记录
   },
   mutations: {
     show_user(state, payload) {
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     show_maintain(state, payload) {
       Object.assign(state.maintain, payload);
+    },
+    show_historyList(state, payload) {
+      state.historyList = payload;
     },
     default_maintain(state) {
       state.maintain = {};

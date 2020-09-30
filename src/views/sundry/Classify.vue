@@ -3,7 +3,11 @@
   <div class="classify">
     <shortcut />
     <div class="search_box">
-      <search :isSearch="true" :searchname="searchKey" @searchClick="searchClick" />
+      <search
+        :isSearch="true"
+        :searchname="searchKey"
+        @searchClick="searchClick"
+      />
     </div>
     <div class="content">
       <div class="sortbox">
@@ -11,29 +15,36 @@
           <span>全部分类:</span>
           <div>
             <button
-              :class="cate_one == index? 'active':''"
-              v-for="(item,index) in cateList.cateOneList"
+              :class="cate_one == index ? 'active' : ''"
+              v-for="(item, index) in cateList.cateOneList"
               :key="index"
               @click="cate_oneclick(index)"
-            >{{ item.title }}</button>
+            >
+              {{ item.title }}
+            </button>
           </div>
         </div>
         <div>
           <span>类型:</span>
           <div>
             <button
-              :class="cate_two == index? 'active':''"
-              v-for="(item,index) in twoList"
+              :class="cate_two == index ? 'active' : ''"
+              v-for="(item, index) in twoList"
               :key="index"
               @click="cate_twoclick(index)"
-            >{{ item.title }}</button>
+            >
+              {{ item.title }}
+            </button>
           </div>
         </div>
       </div>
       <div v-show="false">
-        <div :class="pricetype != 0 ?'price_active':''" @click="pricetypeClick">
+        <div
+          :class="pricetype != 0 ? 'price_active' : ''"
+          @click="pricetypeClick"
+        >
           <p>价格</p>
-          <img v-if="pricetype== 1" src="../../assets/img/sundry/s.png" />
+          <img v-if="pricetype == 1" src="../../assets/img/sundry/s.png" />
           <img v-else-if="pricetype == 2" src="../../assets/img/sundry/x.png" />
         </div>
         <div>
@@ -48,8 +59,14 @@
         </div>
       </div>
       <div class="listbox">
-        <p style="font-size: 1rem;padding:0.5rem" v-if="searchs.length == 0">暂无数据</p>
-        <commodityCard v-for="(item,index) in searchs" :key="index" :data="item" />
+        <p style="font-size: 1rem; padding: 0.5rem" v-if="searchs.length == 0">
+          暂无数据
+        </p>
+        <commodityCard
+          v-for="(item, index) in searchs"
+          :key="index"
+          :data="item"
+        />
       </div>
     </div>
     <div class="bottombox">
@@ -124,7 +141,9 @@ export default {
             this.$toast(this.ErrCode(data.msg));
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
     },
     getcate: function () {
       this.axios
@@ -148,7 +167,9 @@ export default {
             this.$toast(this.ErrCode(data.msg));
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
     },
     // 获取分类商品
     getcatePlist: function () {
