@@ -243,6 +243,7 @@ export default {
           this.$toast(this.$api.monmsg);
         });
     },
+    // 回到首页
     gohome: function () {
       this.$router.push("/");
     },
@@ -256,33 +257,33 @@ export default {
     onSubmit: function () {
       this.pitchon = 1;
       // 请求接口;
-      // if (this.address.length == 0) {
-      //   this.$toast("请添加地址!");
-      //   return;
-      // }
-      // this.btnload = true;
-      // this.axios
-      //   .post(this.$api.submitOrder, {
-      //     addressId: this.address[this.addressindex].id,
-      //     plistIds: this.orderdata.plistIds,
-      //     sendType: 0, //配送方式 0:免费配送,1:自提
-      //     notes: this.notes,
-      //     billState: this.billState,
-      //   })
-      //   .then((data) => {
-      //     if (data.code == 200) {
-      //       this.btnload = false;
-      //       // this.$store.commit("show_order_", data.data);
-      //       this.$router.push("/person/orderForm");
-      //     } else {
-      //       this.btnload = false;
-      //       this.$toast(this.ErrCode(data.msg));
-      //     }
-      //   })
-      //   .catch(() => {
-      //     this.btnload = false;
-      //     this.$toast(this.$api.monmsg);
-      //   });
+      if (this.address.length == 0) {
+        this.$toast("请添加地址!");
+        return;
+      }
+      this.btnload = true;
+      this.axios
+        .post(this.$api.submitOrder, {
+          addressId: this.address[this.addressindex].id,
+          plistIds: this.orderdata.plistIds,
+          sendType: 0, //配送方式 0:免费配送,1:自提
+          notes: this.notes,
+          billState: this.billState,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            this.btnload = false;
+            // this.$store.commit("show_order_", data.data);
+            this.$router.push("/person/orderForm");
+          } else {
+            this.btnload = false;
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.btnload = false;
+          this.$toast(this.$api.monmsg);
+        });
     },
   },
   filters: {

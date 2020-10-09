@@ -10,7 +10,9 @@
       <div class="listbox">
         <span>
           <div>
-            <Checkbox  :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
+            <Checkbox :value="checkAll" @click.prevent.native="handleCheckAll"
+              >全选</Checkbox
+            >
           </div>
           <div class="namebox">商品信息</div>
           <div>单价</div>
@@ -19,28 +21,39 @@
           <div>操作</div>
         </span>
         <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
-          <span v-for="(item,index) in shoppings" :key="index">
+          <span v-for="(item, index) in shoppings" :key="index">
             <div>
-              <Checkbox :label="index" />
+              <Checkbox
+                :label="`${item.plistId}_${item.cateId}`"
+                :key="`${item.plistId}_${item.cateId}`"
+              />
+              <!-- <Checkbox :label="item.is" :key="`${item.plistId}_${item.cateId}`" /> -->
             </div>
             <div class="namebox">
               <img :src="item.picUrl" />
               <p>{{ item.plistName }}</p>
             </div>
-            <div>颜色分类: {{ item.priceName[1] ? item.priceName[1]: "暂无" }}</div>
+            <div>
+              颜色分类: {{ item.priceName[1] ? item.priceName[1] : "暂无" }}
+            </div>
             <div>￥ {{ item.orderPrice }}</div>
             <div>
-              <stepper :stepperObj="{num:item.buyNum,index:index}" @getstepperObj="getstepperObj" />
+              <stepper
+                :stepperObj="{ num: item.buyNum, index: index }"
+                @getstepperObj="getstepperObj"
+              />
             </div>
             <div>
-              <span @click="delShopping(item,index)">删除</span>
+              <span @click="delShopping(item, index)">删除</span>
             </div>
           </span>
         </CheckboxGroup>
       </div>
       <div class="operationbox">
         <div>
-          <Checkbox  :value="checkAll" @click.prevent.native="handleCheckAll">全选</Checkbox>
+          <Checkbox :value="checkAll" @click.prevent.native="handleCheckAll"
+            >全选</Checkbox
+          >
         </div>
         <div class="btnbox">
           <div>
@@ -57,11 +70,12 @@
                 <p>{{ totalPrice.toFixed(2) }}</p>
               </div>
               <div class="imgbox" v-show="is_imgbox">
-                <div v-for="(item,index) in checkAllGroup" :key="index">
-                  <img :src="shoppings[item].picUrl" />
-                  <p @click.stop="delPitch(index)">取消选择</p>
+                <div v-for="(item, index) in shoppings" :key="index">
+                  <span v-if="item.is">
+                    <img :src="item.picUrl" />
+                    <p @click.stop="delPitch(index)">取消选择</p>
+                  </span>
                 </div>
-                <span></span>
               </div>
             </div>
           </div>
@@ -124,8 +138,8 @@ export default {
                 obj.priceId = itemj.priceId;
                 obj.priceName = itemj.priceName.split("  ");
                 this.shoppings.push(obj);
-                this.gettotalPrice()
               }
+              this.gettotalPrice();
             }
           } else {
             this.$toast(this.ErrCode(data.msg));
@@ -176,10 +190,9 @@ export default {
             .then((data) => {
               if (data.code == 200) {
                 this.checkAllGroup = this.checkAllGroup.filter(
-                  (x, index, self) => x != index_
+                  (x, index, self) => x != `${item.plistId}_${item.cateId}`
                 );
-                this.getShoppingCart();
-                
+                this.shoppings.splice(index_, 1);
               } else {
                 this.$toast(this.ErrCode(data.msg));
               }
@@ -194,6 +207,7 @@ export default {
     },
     // 下单
     downOrder: function () {
+      this.getdownOrderArr();
       if (this.checkAllGroup.length == 0) {
         return this.$toast("没有需要结算的商品");
       } else if (this.totalPrice < 50) {
@@ -216,29 +230,29 @@ export default {
     // 处理 数据
     getdownOrderArr: function () {
       let arr = [];
-      for (let i = 0; i < this.checkAllGroup.length; i++) {
-        let index = this.checkAllGroup[i];
-        let item = this.shoppings[index];
+      for (let i = 0; i < this.shoppings.length; i++) {
+        let item = this.shoppings[i];
+        // 在这里判断商品是否选中
+        if (!item.is) break;
         let obj = {};
         obj.plistId = item.plistId;
         obj.unit = [];
         let obj_ = {};
         obj_.cateId = item.cateId;
         obj_.priceId = item.priceId;
+        let index_ = -1; // 重复位置索引
         for (let j = 0; j < arr.length; j++) {
           let itemj = arr[j];
           if (itemj.plistId == item.plistId) {
-            itemj.unit.push(obj_);
-            break;
-          } else {
-            obj.unit.push(obj_);
-            arr.push(obj);
+            index_ = j;
             break;
           }
         }
-        if (arr.length == 0) {
+        if (index_ == -1) {
           obj.unit.push(obj_);
           arr.push(obj);
+        } else {
+          arr[index_].unit.push(obj_);
         }
       }
       return arr;
@@ -246,11 +260,12 @@ export default {
     // 获取总价
     gettotalPrice: function () {
       this.totalPrice = 0;
-      for (let i = 0; i < this.checkAllGroup.length; i++) {
-        let index = this.checkAllGroup[i];
-        let item = this.shoppings[index];
+      this.getPitchs();
+      for (let i = 0; i < this.shoppings.length; i++) {
+        let item = this.shoppings[i];
         let num = item.orderPrice * item.buyNum;
-        this.totalPrice += num;
+        // 根据选中来 添加所有总价
+        if (item.is) this.totalPrice += num;
       }
     },
     // 数量改变
@@ -261,14 +276,14 @@ export default {
     },
     // 取消选中
     delPitch: function (index) {
-      this.checkAllGroup.splice(index, "1");
+      this.checkAllGroup.splice(index, 1);
       if (this.checkAllGroup.length == 0) {
         this.indeterminate = false;
       } else {
         this.indeterminate = true;
       }
       this.checkAll = false;
-      this.gettotalPrice()
+      this.gettotalPrice();
     },
     // 全选
     handleCheckAll() {
@@ -282,7 +297,8 @@ export default {
       if (this.checkAll) {
         this.checkAllGroup = [];
         for (let i = 0; i < this.shoppings.length; i++) {
-          this.checkAllGroup.push(i);
+          let item = this.shoppings[i];
+          this.checkAllGroup.push(`${item.plistId}_${item.cateId}`);
         }
       } else {
         this.checkAllGroup = [];
@@ -303,13 +319,32 @@ export default {
       }
       this.gettotalPrice();
     },
+    // 获取选中的商品
+    getPitchs: function () {
+      for (let j = 0; j < this.shoppings.length; j++) {
+        let itemj = this.shoppings[j];
+        //  根据选中  判断出 已经选中的商品
+        for (let i = 0; i < this.checkAllGroup.length; i++) {
+          let item = this.checkAllGroup[i];
+          let split_ = item.split("_");
+          if (itemj.plistId == split_[0] && itemj.cateId == split_[1]) {
+            itemj.is = true;
+            break;
+          } else {
+            itemj.is = false;
+          }
+        }
+        // 如果 直接取消全部 直接全部 取消选中
+        if (this.checkAllGroup.length == 0) itemj.is = false;
+      }
+    },
   },
 };
 </script>
 
 <style lang='less' scoped>
 .cart {
-  background-color: #f9f9f9!important;
+  background-color: #f9f9f9 !important;
 }
 .content {
   margin-top: 2rem;
@@ -443,26 +478,28 @@ export default {
           position: relative;
           margin-right: 1rem;
           height: 6rem;
-          > img {
-            width: 6rem;
-            height: 6rem;
-          }
+          > span {
+            > img {
+              width: 6rem;
+              height: 6rem;
+            }
 
-          > p {
-            top: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            position: absolute;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            color: #fff;
-            background-color: rgba(0, 0, 0, 0.1);
-          }
-          > p:hover {
-            opacity: 1;
-            cursor: pointer;
+            > p {
+              top: 0;
+              width: 100%;
+              height: 100%;
+              display: flex;
+              position: absolute;
+              align-items: center;
+              justify-content: center;
+              opacity: 0;
+              color: #fff;
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+            > p:hover {
+              opacity: 1;
+              cursor: pointer;
+            }
           }
         }
         > div:last-child {

@@ -26,7 +26,10 @@
             </div>
             <p>{{ item.name }}</p>
           </li>
-          <li @click="$router.push('/maintain/maintainList')">
+          <li
+            v-if="navigations.length != 0"
+            @click="$router.push('/maintain/maintainList')"
+          >
             <div>
               <img src="../assets/img/home/shouhou.png" />
               <div></div>
@@ -36,7 +39,7 @@
         </ul>
         <Carousel
           class="Carouselbox"
-          v-model="value"
+          v-model="carouselId"
           autoplay
           :autoplay-speed="5000"
           arrow="never"
@@ -93,7 +96,7 @@ export default {
   },
   data() {
     return {
-      value: 0,
+      carouselId: 0, //  轮播图从第几张图开始
       picUrls: [],
       navigations: [],
       recommend: [],

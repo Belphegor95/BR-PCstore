@@ -198,6 +198,7 @@ export default {
       this.cate_one = query.cate_one;
       this.cate_two = query.cate_two;
       this.getcatePlist();
+      // qi yong
       // for (let i = 0; i < this.cateList.cateOneList.length; i++) {
       //   let item = this.cateList.cateOneList[i].id;
       //   if (item == query.cate_one) {
