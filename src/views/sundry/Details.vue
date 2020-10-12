@@ -8,15 +8,21 @@
     <div class="content">
       <div>
         <div class="imgbox">
-          <pic-zoom class="picbox" :url="detailsdata.plist_img_url[this.imgindex]" :scale="3"></pic-zoom>
+          <pic-zoom
+            class="picbox"
+            :url="detailsdata.plist_img_url[this.imgindex]"
+            :scale="3"
+          ></pic-zoom>
           <div>
             <img src="../../assets/img/sundry/zh.png" @click="leftClick" />
             <div>
-              <div :style="{width: spec_width + 'rem',left: spec_list +'rem'}">
+              <div
+                :style="{ width: spec_width + 'rem', left: spec_list + 'rem' }"
+              >
                 <img
                   :src="item"
-                  :class="imgindex == index ?'img_active':''"
-                  v-for="(item,index) in detailsdata.plist_img_url"
+                  :class="imgindex == index ? 'img_active' : ''"
+                  v-for="(item, index) in detailsdata.plist_img_url"
                   :key="index"
                   @mouseenter="enter(index)"
                 />
@@ -30,37 +36,40 @@
           <div class="box">
             <div>
               <div>
-                <span>
-                  <span>价</span> 格 :
-                </span>
-                <price :priceNum="detailsdata.price_lv.unitList[this.unitid].marketPrice" :size="1.6" />
+                <span> <span>价</span> 格 : </span>
+                <price
+                  :priceNum="
+                    detailsdata.price_lv.unitList[this.unitid].marketPrice
+                  "
+                  :size="1.6"
+                />
               </div>
             </div>
             <div>
               <div>
-                <span>
-                  <span>单</span> 位 :
-                </span>
+                <span> <span>单</span> 位 : </span>
                 <div v-if="detailsdata.price_lv">
                   <button
-                    :class="unitid == index? 'active':''"
-                    v-for="(item,index) in detailsdata.price_lv.unitList"
+                    :class="unitid == index ? 'active' : ''"
+                    v-for="(item, index) in detailsdata.price_lv.unitList"
                     :key="index"
-                    @click="colourClick(true,index)"
-                  >{{ item.unitName ? item.unitName : "暂无" }}</button>
+                    @click="colourClick(true, index)"
+                  >
+                    {{ item.unitName ? item.unitName : "暂无" }}
+                  </button>
                 </div>
               </div>
               <div>
-                <span>
-                  <span>颜</span> 色 :
-                </span>
+                <span> <span>颜</span> 色 : </span>
                 <div v-if="detailsdata.price_lv">
                   <button
-                    :class="colourid == index? 'active':''"
-                    v-for="(item,index) in detailsdata.price_lv.cate"
+                    :class="colourid == index ? 'active' : ''"
+                    v-for="(item, index) in detailsdata.price_lv.cate"
                     :key="index"
-                    @click="colourClick(false,index)"
-                  >{{ item.cateName ? item.cateName : "暂无" }}</button>
+                    @click="colourClick(false, index)"
+                  >
+                    {{ item.cateName ? item.cateName : "暂无" }}
+                  </button>
                 </div>
               </div>
               <div>
@@ -72,7 +81,7 @@
               </div>
             </div>
             <div class="btnbox">
-              <button @click="addShopping">
+              <button @click="addShopping" ref="addbtn">
                 <img src="../../assets/img/sundry/gwc.png" />
                 加入购物车
               </button>
@@ -84,7 +93,11 @@
         <span>产品详情</span>
       </div>
       <div class="detailsimgbox">
-        <img :src="item" v-for="(item,index) in detailsdata.plist_detail_img_url" :key="index" />
+        <img
+          :src="item"
+          v-for="(item, index) in detailsdata.plist_detail_img_url"
+          :key="index"
+        />
       </div>
     </div>
     <div class="bottombox">
@@ -111,14 +124,14 @@ export default {
     statement,
     price,
     PicZoom,
-    goTop
+    goTop,
   },
   data() {
     return {
       detailsdata: this.$store.state.detailsdata,
       spec_width: 6 * 6,
       spec_list: 0,
-      buyNum: 0,
+      buyNum: 1,
       colourid: 0,
       unitid: 0,
       imgindex: 0,
@@ -128,6 +141,9 @@ export default {
   methods: {
     // 添加商品
     addShopping: function () {
+      // let box = document.querySelector(".gwcbox")
+      // let btn = this.$refs.addbtn
+      // console.info(box);
       let arr = [];
       let item = this.detailsdata.price_lv;
       let obj = {};

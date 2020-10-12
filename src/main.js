@@ -39,8 +39,8 @@ axios.interceptors.response.use(
 router.afterEach((to, from, next) => {
   window, scrollTo(0, 0)
 })
-// axios.defaults.baseURL = api.baseUrl;
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = api.baseUrl;
+// axios.defaults.baseURL = "/api";
 // 允许携带cookie
 axios.defaults.withCredentials = true;
 function ErrCode(code) {

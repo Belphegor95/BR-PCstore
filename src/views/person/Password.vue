@@ -5,7 +5,8 @@
     <div class="formbox">
       <div>
         <span>我的手机号:</span>
-        <Input v-model="phoneNum" />
+        <p style="color: #ff8400;">{{ phoneNum }}</p>
+        <!-- <Input v-model="phoneNum" /> -->
       </div>
       <div>
         <span>验证码:</span>
@@ -23,7 +24,9 @@
         <span>再次输入新密码:</span>
         <Input type="password" v-model="pwd_" />
       </div>
-      <Button type="warning" size="large" class="btn" @click="resetPwd">确定</Button>
+      <Button type="warning" size="large" class="btn" @click="resetPwd"
+        >确定</Button
+      >
     </div>
   </div>
 </template>
@@ -36,6 +39,7 @@ export default {
   },
   data() {
     return {
+      user: this.$store.state.user,
       value: "",
       phoneNum: "",
       yzm: "",
@@ -56,6 +60,7 @@ export default {
     },
   },
   mounted() {
+    this.phoneNum = this.user.phone;
     this.$store.commit("show_personid", 3);
   },
   methods: {
@@ -123,7 +128,7 @@ export default {
         display: flex;
         > button {
           color: #ff8400;
-          width: 8rem;
+          // width: 8rem;
           margin-left: 1rem;
           border: 1px solid #ff8400;
         }

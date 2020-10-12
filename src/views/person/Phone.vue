@@ -33,15 +33,16 @@
         </div>
         <div v-if="pitchon == 0">
           <h6>
-            账号
+            <!-- 账号
             <span v-if="user.phone">{{ user.phone }}</span>
-            <span v-else>{{ user.phoneNum }}</span>
+            <span v-else>{{ user.phoneNum }}</span> -->
+            <p>身份认证</p>
             <!-- 为确认是你本人操作,请完成以下验证 -->
           </h6>
           <div>
             <div>
-              <span>绑定手机号:</span>
-              <Input v-model="phoneNum" style="width: 200px" />
+              <span>当前手机号:</span>
+              <p>{{ phoneNum }}</p>
             </div>
             <div>
               <span>验证码:</span>
@@ -56,7 +57,7 @@
           </div>
         </div>
         <div v-else-if="pitchon == 1">
-          <h6>我们不会泄露你的手机信息</h6>
+          <h6>设置新手机号</h6>
           <div>
             <div>
               <span>新手机号:</span>

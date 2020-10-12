@@ -15,7 +15,9 @@
         <div class="schedulebox">
           <div>当前进度</div>
           <ul>
-            <li v-for="(item,index) in detailsData.fixProgress" :key="index">{{ item.time }} {{ item.content }}</li>
+            <li v-for="(item, index) in detailsData.fixProgress" :key="index">
+              {{ item.time }} {{ item.content }}
+            </li>
           </ul>
         </div>
         <div class="msgbox">
@@ -23,7 +25,12 @@
             <tab name="待修商品信息" />
             <div class="msg">
               <div>
-                <img :src="item.path" alt v-for="(item,index) in detailsData.attachPic" :key="index" />
+                <img
+                  :src="item.path"
+                  alt
+                  v-for="(item, index) in detailsData.attachPic"
+                  :key="index"
+                />
               </div>
               <div>
                 <div>
@@ -31,28 +38,46 @@
                     <b>*</b>
                     设备型号
                   </span>
-                  <img style="max-width: 15rem;max-height: 10rem" :src="detailsData.unitType" alt />
+                  <img
+                    style="max-width: 15rem; max-height: 10rem"
+                    :src="detailsData.unitType"
+                    alt
+                  />
                 </div>
                 <div>
                   <span>
                     <b>*</b>
                     商品名称
                   </span>
-                  <Input v-model="fixs[detailsData.fixType]" style="width: 15rem" readonly />
+                  <Input
+                    v-model="fixs[detailsData.fixType]"
+                    style="width: 15rem"
+                    readonly
+                  />
                 </div>
                 <div>
                   <span>
                     <b>*</b>
                     商品类别
                   </span>
-                  <Input v-model="detailsData.goodsName" style="width: 15rem" readonly />
+                  <Input
+                    v-model="detailsData.goodsName"
+                    style="width: 15rem"
+                    readonly
+                  />
                 </div>
                 <div>
                   <span>
                     <b>*</b>
                     故障描述
                   </span>
-                  <Input v-model="detailsData.detail" style="width: 15rem" type="textarea" :autosize="{minRows: 5,maxRows: 5}" readonly />
+                  <Input
+                    v-model="detailsData.detail"
+                    style="width: 15rem"
+                    type="textarea"
+                    :autosize="{ minRows: 5, maxRows: 5 }"
+                    readonly
+                  />
                 </div>
               </div>
             </div>
@@ -61,10 +86,11 @@
             <tab name="上门时间" />
             <div class="sjbox">
               <span>
+                <!-- <p>{{ detailsData.doorTime }}</p> -->
                 <p>{{ detailsData.doorTime | dateline }}</p>
                 <p>{{ detailsData.doorTime | days }}</p>
               </span>
-              <Input v-model="hourdate" readonly style="width: 100px" />
+              <Input v-model="hourdate" readonly style="width: 150px" />
             </div>
           </div>
         </div>
@@ -128,11 +154,13 @@ export default {
     };
   },
   mounted() {
-    this.hourdate = this.detailsData.doorTime.split(" ")[1] + "0";
+    let one = this.detailsData.doorTime.split("--")[0].substring(11) + "0";
+    let two = this.detailsData.doorTime.split("--")[1].substring(11) + "0";
+    this.hourdate = `${one}-${two}`;
   },
   filters: {
     dateline: function (value) {
-      let arr = value.split(" ");
+      let arr = value.split("--");
       if (arr.length != 2) return value;
       let date = new Date(arr[0]);
       let yue = date.getMonth() + 1;
@@ -140,7 +168,7 @@ export default {
       return `${yue}月${tian}天`;
     },
     days: function (value) {
-      let arr = value.split(" ");
+      let arr = value.split("--");
       if (arr.length != 2) return value;
       let date = new Date(arr[0]);
       let day = date.getDay();
@@ -153,7 +181,7 @@ export default {
 
 <style lang='less' scoped>
 .maintainDetails {
-   margin-top: 2rem;
+  margin-top: 2rem;
   .content {
     > div {
       padding: 0 2rem;
