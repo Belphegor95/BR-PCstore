@@ -3,10 +3,18 @@
   <div class="orderForm">
     <h4>我的订单</h4>
     <div class="ordertypebox">
-      <span :class="formid == 0? 'active':''" @click="getOrderList(0)">所有订单</span>
-      <span :class="formid == 1? 'active':''" @click="getOrderList(1)">待付款</span>
-      <span :class="formid == 2? 'active':''" @click="getOrderList(2)">待收货</span>
-      <span :class="formid == 3? 'active':''" @click="getOrderList(3)">已完成</span>
+      <span :class="formid == 0 ? 'active' : ''" @click="getOrderList(0)"
+        >所有订单</span
+      >
+      <span :class="formid == 1 ? 'active' : ''" @click="getOrderList(1)"
+        >待付款</span
+      >
+      <span :class="formid == 2 ? 'active' : ''" @click="getOrderList(2)"
+        >待收货</span
+      >
+      <span :class="formid == 3 ? 'active' : ''" @click="getOrderList(3)"
+        >已完成</span
+      >
     </div>
     <div class="listtop">
       <span>宝贝</span>
@@ -21,32 +29,48 @@
       <Button size="small">下一页</Button>
     </div>
     <ul>
-      <li v-for="(item,index) in orderList" :key="index">
-        <div>{{ item.sendProgress ? item.sendProgress[0].time : "暂无" }} 订单号: {{ item.tradeNo }}</div>
+      <li v-for="(item, index) in orderList" :key="index">
+        <div>
+          {{ item.sendProgress ? item.sendProgress[0].time : "暂无" }} 订单号:
+          {{ item.tradeNo }}
+        </div>
         <div class="orderlist">
           <div>
-            <div class="imgbox" v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ" @click="ordetails(item)">
+            <div
+              class="imgbox"
+              v-for="(itemJ, indeJ) in item.plistDetail"
+              :key="indeJ"
+              @click="ordetails(item)"
+            >
               <img :src="itemJ.picUrl" />
               <div>
                 <h6>这是商品名称</h6>
-                <span v-if="itemJ.cateName">颜色: {{ itemJ.cateName ? itemJ.cateName: '暂无' }}</span>
+                <span v-if="itemJ.cateName"
+                  >颜色: {{ itemJ.cateName ? itemJ.cateName : "暂无" }}</span
+                >
                 <span>单位: {{ itemJ.priceName | unit }}</span>
               </div>
             </div>
           </div>
           <div>
-            <div v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ">{{ itemJ.priceName }}</div>
+            <div v-for="(itemJ, indeJ) in item.plistDetail" :key="indeJ">
+              {{ itemJ.priceName }}
+            </div>
           </div>
           <div>
-            <div v-for="(itemJ,indeJ) in item.plistDetail" :key="indeJ">{{ itemJ.buyNum }}</div>
+            <div v-for="(itemJ, indeJ) in item.plistDetail" :key="indeJ">
+              {{ itemJ.buyNum }}
+            </div>
           </div>
           <div>￥ {{ item.money }}</div>
           <div>
-            <p>订单已取消</p>
+            <p>{{ item.state | typename }}</p>
           </div>
           <div>
-            <Button v-if="item.state <= 1" type="warning" @click="$router.push('/person/orderDetails?ispay=true')">立即付款</Button>
-            <Button v-if="item.state <= 1">修改订单</Button>
+            <Button v-if="item.state == 0" type="warning" @click="onGopay(item)"
+              >立即付款</Button
+            >
+            <Button v-if="item.state == 0">修改订单</Button>
           </div>
         </div>
       </li>
@@ -69,9 +93,8 @@ export default {
   methods: {
     // 详情页
     ordetails: function (item) {
-      console.info(item);
       this.$store.commit("show_orderDetails", item);
-      this.$router.push("/person/orderDetails?ispay=false");
+      this.$router.push("/person/orderDetails");
     },
     // 获取列表
     getOrderList: function (type) {
@@ -91,6 +114,17 @@ export default {
           this.$toast(this.$api.monmsg);
         });
     },
+    // 点击 去支付
+    onGopay: function (item) {
+      this.$router.push({
+        path: "/payment",
+        query: {
+          pitchon: 1,
+          tradeNo: item.tradeNo,
+          money: item.money,
+        },
+      });
+    },
   },
   filters: {
     unit: function (value) {
@@ -98,6 +132,25 @@ export default {
       let arr = value.split("/");
       if (arr[1]) return arr[1];
       return value;
+    },
+    typename: function (val) {
+      if (val == -1) {
+        return "已取消";
+      } else if (val == 0) {
+        return "未支付";
+      } else if (val == 1) {
+        return "已支付";
+      } else if (val == 2) {
+        return "商家已接单";
+      } else if (val == 3) {
+        return "仓库正在打包商品";
+      } else if (val == 4) {
+        return "骑手正在赶往仓库";
+      } else if (val == 5) {
+        return "骑手正在配送";
+      } else if (val == 6) {
+        return "配送完成";
+      }
     },
   },
 };

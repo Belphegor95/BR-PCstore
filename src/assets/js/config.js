@@ -3,7 +3,7 @@ var api = api || {};
 // api.baseUrl = "http://121.196.123.181:3000"
 
 api.baseUrl = "http://192.168.1.189:3000"   // 孙飞请求地址
- 
+
 // api.baseUrl = "http://39.105.230.213:3000"   // 打包环境地址
 
 api.monmsg = "网络遇到问题,请重试!";
@@ -83,6 +83,10 @@ api.editAccOrderName = "/api/editAccOrderName"  // 修改用户名 1
 api.getFixOrder = "/api/getFixOrder"  //  获取维修单 1
 
 api.getFixDoorMoney = "/api/getFixDoorMoney"  // 获取上门维修费用
+
+api.getWxPayQr = "/api/getWxPayQr"  // 订单二维码
+
+api.checkPay = "/api/checkPay"  // 是否支付  （轮询）
 
 
 export { api };

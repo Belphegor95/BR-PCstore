@@ -6,6 +6,9 @@ import { api } from "./assets/js/config";
 import less from 'less'
 import './plugins/iview'
 
+// import "jr-qrcode"
+import "babel-polyfill"
+
 import axios from "axios";
 import qs from "qs";
 Vue.config.keyCodes.caps = 20;
@@ -39,8 +42,8 @@ axios.interceptors.response.use(
 router.afterEach((to, from, next) => {
   window, scrollTo(0, 0)
 })
-axios.defaults.baseURL = api.baseUrl;
-// axios.defaults.baseURL = "/api";
+// axios.defaults.baseURL = api.baseUrl;
+axios.defaults.baseURL = "/api";
 // 允许携带cookie
 axios.defaults.withCredentials = true;
 function ErrCode(code) {

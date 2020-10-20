@@ -1,7 +1,4 @@
 module.exports = {
-    // css: {
-    //     extract: false
-    // },
     //=>process.env.NODE_ENV：环境变量中存储的是开发环境还是生产环境
     publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
     //=>outputDir
@@ -35,6 +32,13 @@ module.exports = {
         }
     },
     //=>多余1核cpu时：启动并行压缩
-    parallel: require('os').cpus().length > 1
+    parallel: require('os').cpus().length > 1,
+    // chainWebpack: config => {
+    //     config.module.rule('iview')
+    //         .test(/\.js$/)
+    //         .use('babel')
+    //         .loader('babel-loader')
+    //         .end()
+    // }
 }
 // 39.97.249.76

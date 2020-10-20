@@ -207,7 +207,6 @@ export default {
     },
     // 下单
     downOrder: function () {
-      this.getdownOrderArr();
       if (this.checkAllGroup.length == 0) {
         return this.$toast("没有需要结算的商品");
       } else if (this.totalPrice < 50) {
@@ -233,7 +232,7 @@ export default {
       for (let i = 0; i < this.shoppings.length; i++) {
         let item = this.shoppings[i];
         // 在这里判断商品是否选中
-        if (!item.is) break;
+        if (!item.is) continue;
         let obj = {};
         obj.plistId = item.plistId;
         obj.unit = [];
@@ -345,9 +344,10 @@ export default {
 <style lang='less' scoped>
 .cart {
   background-color: #f9f9f9 !important;
+  margin-top: 2rem;
 }
 .content {
-  margin-top: 2rem;
+  // margin-top: 2rem;
   padding-top: 5rem;
   > div {
     background-color: #fff;

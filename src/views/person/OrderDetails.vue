@@ -3,31 +3,31 @@
   <div class="orderDetails">
     <h4>订单详情</h4>
     <div class="stepsbox">
-      <div :class="pitchon >= 0 ? 'active' : ''">
+      <div :class="orderDetails.state >= 0 ? 'active' : ''">
         <span>
           <b>1</b>
         </span>
       </div>
-      <div :class="pitchon >= 1 ? 'active_' : ''"></div>
-      <div :class="pitchon >= 1 ? 'active' : ''">
+      <div :class="orderDetails.state >= 1 ? 'active_' : ''"></div>
+      <div :class="orderDetails.state >= 1 ? 'active' : ''">
         <span>
           <b>2</b>
         </span>
       </div>
-      <div :class="pitchon >= 2 ? 'active_' : ''"></div>
-      <div :class="pitchon >= 2 ? 'active' : ''">
+      <div :class="orderDetails.state >= 2 ? 'active_' : ''"></div>
+      <div :class="orderDetails.state >= 2 ? 'active' : ''">
         <span>
           <b>3</b>
         </span>
       </div>
-      <div :class="pitchon >= 3 ? 'active_' : ''"></div>
-      <div :class="pitchon >= 3 ? 'active' : ''">
+      <div :class="orderDetails.state >= 3 ? 'active_' : ''"></div>
+      <div :class="orderDetails.state >= 3 ? 'active' : ''">
         <span>
           <b>4</b>
         </span>
       </div>
     </div>
-    <div class="orderbox" v-if="pitchon == 0">
+    <div class="orderbox">
       <div class="orderinfo">
         <div>
           <div>订单信息</div>
@@ -53,13 +53,18 @@
         <div>
           <div>
             <img src="../../assets/img/person/！.png" />
-            <p>订单状态: {{ orderDetails.sendProgress[pitchon].content }}</p>
+            <p>
+              订单状态:
+              {{
+                orderDetails.sendProgress[orderDetails.state]
+                  ? orderDetails.sendProgress[orderDetails.state].content
+                  : "暂无"
+              }}
+            </p>
           </div>
-          <!-- <p v-show="false">您还有17小时46分3秒来付款,超时订单自动关闭</p> -->
-          <div>
+          <div v-if="orderDetails.state == 1">
             <span>您可以</span>
-            <Button>立即支付</Button>
-            <!-- <Button>取消订单</Button> -->
+            <Button @click="onGopay">立即支付</Button>
           </div>
         </div>
       </div>
@@ -90,26 +95,40 @@
         </div>
       </div>
     </div>
-    <pay v-else-if="pitchon == 1" />
   </div>
 </template>
 
 <script>
-import pay from "@/components/Pay.vue";
 export default {
-  components: {
-    pay,
-  },
   data() {
     return {
-      pitchon: 0,
+      orderOk: {},
       orderDetails: this.$store.state.orderDetails,
     };
   },
   mounted() {
     // 判断是否是从支付跳过来的
-    if (this.$route.query.ispay == "true")
-      this.pitchon = this.orderDetails.type - 1;
+    // if (this.$route.query.ispay == "true") {
+    //   this.pitchon = this.orderDetails.type - 1;
+    //   this.orderOk = {
+    //     tradeNo: this.orderDetails.tradeNo,
+    //     money: this.orderDetails.money,
+    //     pitchon: this.pitchon,
+    //   };
+    // }
+  },
+  methods: {
+    // 点击 去支付
+    onGopay: function () {
+      this.$router.push({
+        path: "/payment",
+        query: {
+          pitchon: 1,
+          tradeNo: this.orderDetails.tradeNo,
+          money: this.orderDetails.money,
+        },
+      });
+    },
   },
   filters: {
     site: function (value) {
@@ -225,6 +244,7 @@ export default {
         flex: auto;
         display: flex;
         align-items: center;
+        justify-content: center;
         flex-direction: column;
         > div:nth-child(1) {
           display: flex;

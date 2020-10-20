@@ -3,16 +3,27 @@
   <div class="login">
     <img src="../../assets/img/guide/bj.png" />
     <div class="loginbox">
-      <Tabs value="name1" size="default" class="tab" v-if="users.length == 0">
+      <Tabs
+        value="name1"
+        size="default"
+        class="tab"
+        v-if="users == undefined || users.length == 0"
+      >
         <TabPane label="密码登录" name="name1">
-          <div class="msgbox" v-show="msg !=''">{{ msg }}</div>
-          <input type="text" placeholder="请输入手机号" class="username" :class="is_phone?'false_input':''" v-model="phoneNum" />
+          <div class="msgbox" v-show="msg != ''">{{ msg }}</div>
+          <input
+            type="text"
+            placeholder="请输入手机号"
+            class="username"
+            :class="is_phone ? 'false_input' : ''"
+            v-model="phoneNum"
+          />
           <input
             type="password"
             onpaste="return false"
             placeholder="密码"
             class="password"
-            :class="is_pwd?'false_input':''"
+            :class="is_pwd ? 'false_input' : ''"
             v-model="pwd"
             @keyup.enter="loginClick"
           />
@@ -30,13 +41,19 @@
           </p>
         </TabPane>
         <TabPane label="短信登录" name="name2">
-          <div class="msgbox" v-show="msg !=''">{{ msg }}</div>
-          <input type="text" placeholder="请输入手机号" :class="is_phone?'false_input':''" class="phone" v-model="phoneNum_" />
+          <div class="msgbox" v-show="msg != ''">{{ msg }}</div>
+          <input
+            type="text"
+            placeholder="请输入手机号"
+            :class="is_phone ? 'false_input' : ''"
+            class="phone"
+            v-model="phoneNum_"
+          />
           <div class="captchabox">
             <input
               type="text"
               placeholder="请输入验证码"
-              :class="is_pwd?'false_input':''"
+              :class="is_pwd ? 'false_input' : ''"
               class="captcha"
               v-model="yzm"
               @keyup.enter="loginByYzm"
@@ -54,7 +71,11 @@
       <div class="userbox" v-else>
         <div>请选择要登录的ID</div>
         <ul>
-          <li v-for="(item,index) in  users" :key="index" @click="userClick(item)">
+          <li
+            v-for="(item, index) in users"
+            :key="index"
+            @click="userClick(item)"
+          >
             <img src="../../assets/img/guide/tx.png" />
             <div class="userName">
               <p>开心兔商城用户:{{ item.id }}</p>
@@ -102,7 +123,7 @@ export default {
     let is = this.$route.query.is;
     if (is) this.getAccOrders();
     this.user = JSON.parse(sessionStorage.getItem("user"));
-    if (this.user) this.users = this.user.loginData;
+    if (this.user) this.users = this.user.loginData ? this.user.loginData : [];
   },
   methods: {
     rut: function (name) {

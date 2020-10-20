@@ -12,15 +12,15 @@
             </span>
             <p>拍下商品</p>
           </div>
-          <div :class="pitchon >= 1 ? 'active_' : ''"></div>
-          <div :class="pitchon >= 1 ? 'active' : ''">
+          <div :class="pitchon >= 2 ? 'active_' : ''"></div>
+          <div :class="pitchon >= 2 ? 'active' : ''">
             <span>
               <b>2</b>
             </span>
             <p>付款</p>
           </div>
-          <div :class="pitchon >= 2 ? 'active_' : ''"></div>
-          <div :class="pitchon >= 2 ? 'active' : ''">
+          <div :class="pitchon >= 3 ? 'active_' : ''"></div>
+          <div :class="pitchon >= 3 ? 'active' : ''">
             <span>
               <b>3</b>
             </span>
@@ -174,7 +174,7 @@
           </div>
         </div>
       </div>
-      <pay v-else-if="pitchon == 1" />
+      <pay :orderOk="orderOk" @onPay="onPay" v-else />
     </div>
     <div class="bottombox">
       <statement />
@@ -210,12 +210,21 @@ export default {
       ],
       billState: 0,
       orderdata: this.$store.state.order,
+      orderOk: {},
       btnload: false,
       address: [],
     };
   },
   mounted() {
+    this.orderOk = this.$route.query;
+    this.pitchon = this.orderOk.pitchon ? this.orderOk.pitchon : 0;
     this.getAllAddress();
+  },
+  watch: {
+    "$route.query"(val) {
+      this.orderOk = val;
+      this.pitchon = this.orderOk.pitchon ? this.orderOk.pitchon : 0;
+    },
   },
   methods: {
     // 获取用户所有地址
@@ -273,8 +282,17 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.btnload = false;
-            // this.$store.commit("show_order_", data.data);
-            this.$router.push("/person/orderForm");
+            // this.pitchon = 1;
+            this.orderOk = data.data;
+            this.$router.push({
+              path: "/payment",
+              query: {
+                pitchon: 1,
+                money: data.data.money,
+                qrCode: data.data.qrCode,
+                tradeNo: data.data.tradeNo,
+              },
+            });
           } else {
             this.btnload = false;
             this.$toast(this.ErrCode(data.msg));
@@ -284,6 +302,38 @@ export default {
           this.btnload = false;
           this.$toast(this.$api.monmsg);
         });
+    },
+    // 获取支付二维码
+    getWxPayQr: function (obj) {
+      this.axios
+        .post(this.$api.getWxPayQr, {
+          tradeNo: obj.tradeNo,
+        })
+        .then((data) => {
+          if (data.code == 200) {
+            obj.qrCode = data.data.qrCode;
+            this.$router.push({
+              path: "/payment",
+              query: obj,
+            });
+          } else {
+            this.$toast(this.ErrCode(data.msg));
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 支付 操作
+    onPay: function (obj) {
+      if (obj.pitchon == 2) {
+        this.getWxPayQr(obj);
+      } else if (obj.pitchon == 3) {
+        this.$router.push({
+          path: "/payment",
+          query: obj,
+        });
+      }
     },
   },
   filters: {

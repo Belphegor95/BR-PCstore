@@ -221,7 +221,7 @@ export default {
             width: 10rem;
             height: 4rem;
             position: absolute;
-            top: 2.3rem;
+            top: 2rem;
             left: 0;
             background-color: #fff;
             border: 1px solid #eeeeee;
