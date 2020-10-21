@@ -108,25 +108,24 @@
             <div>
               <div>
                 <span>配送方式:</span>
-                <div>
+                <div class="psbox">
                   <p>免费配送</p>
                   <p>0.00</p>
                 </div>
               </div>
               <div>
                 <span>优惠券:</span>
-                <div>
-                  <div>
-                    <div class="juanbox">
-                      <span>卷</span>
-                      <span>50</span>
-                    </div>
-                    <p>(暂不可用)</p>
-                  </div>
-                  <p style="color: #000; cursor: pointer">
-                    <Icon type="ios-arrow-forward" />
-                  </p>
-                </div>
+                <Select
+                  v-model="ticketid"
+                  style="width: 150px; margin-left: 1rem"
+                >
+                  <Option
+                    v-for="item in ticketList"
+                    :value="item.id"
+                    :key="item.id"
+                    >{{ item.name }}</Option
+                  >
+                </Select>
               </div>
               <div>
                 <p>
@@ -213,12 +212,15 @@ export default {
       orderOk: {},
       btnload: false,
       address: [],
+      ticketid: 0,
+      ticketList: [],
     };
   },
   mounted() {
     this.orderOk = this.$route.query;
     this.pitchon = this.orderOk.pitchon ? this.orderOk.pitchon : 0;
     this.getAllAddress();
+    this.getTicket()
   },
   watch: {
     "$route.query"(val) {
@@ -246,6 +248,26 @@ export default {
                 break;
               }
             }
+          }
+        })
+        .catch(() => {
+          this.$toast(this.$api.monmsg);
+        });
+    },
+    // 获取优惠券
+    getTicket: function () {
+      this.axios
+        .post(this.$api.getTicket)
+        .then((data) => {
+          if (data.code == 200) {
+            this.ticketList = [];
+            for (let i = 0; i < data.data.length; i++) {
+              let item = data.data[i];
+              item.name = item.money + "元现金券"
+              if (item.type == 0) this.ticketList.push(item);
+            }
+          } else {
+            this.$toast(this.ErrCode(data.msg));
           }
         })
         .catch(() => {
@@ -572,30 +594,17 @@ export default {
           align-items: center;
           border-bottom: 1px solid #e5e5e5;
           > span {
-            width: 7rem;
+            width: 6rem;
+            flex-shrink: 0;
             text-align: right;
           }
-          > div {
+          .psbox {
             display: flex;
             width: 100%;
             padding: 0 1rem;
             justify-content: space-between;
             > div {
               display: flex;
-              .juanbox {
-                display: flex;
-                > span:nth-child(1) {
-                  color: #fff;
-                  padding: 0 0.3rem;
-                  border: 1px solid #ff8400;
-                  background-color: #ff8400;
-                }
-                > span:nth-child(2) {
-                  color: #ff8400;
-                  padding: 0 0.5rem;
-                  border: 1px solid #ff8400;
-                }
-              }
               > p {
                 margin-left: 1rem;
                 color: #999;

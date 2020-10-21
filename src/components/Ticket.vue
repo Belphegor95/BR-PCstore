@@ -1,38 +1,20 @@
 <!-- 优惠券 -->
 <template>
-  <div class="ticket">
-    <div class="tickettop">
-      <img v-if="isticket" src="../assets/img/person/cg.png" />
-      <img v-else src="../assets/img/person/gq.png" />
-      <div>
-        <p>
-          <i>¥</i>
-          <span>50</span>
-        </p>
-        <p>2020.8.13 - 2020.8.17</p>
-      </div>
+  <div
+    class="ticket"
+    :class="
+      ticket.type == 0 ? 'ticket_0' : ticket.type == 1 ? 'ticket_1' : 'ticket_2'
+    "
+    @click="$router.push('/')"
+  >
+    <div>
+      <span><i>¥</i>{{ ticket.money }}</span>
     </div>
-    <div class="ticketbottom">
+    <div>
+      <div>可抵扣{{ ticket.money }}元现金</div>
       <div>
-        <div>
-          <span>优惠券名称 :</span>
-          <p>50元现金券</p>
-        </div>
-        <div>
-          <span>使 用 说 明 :</span>
-          <p>可抵扣50元现金</p>
-        </div>
-        <div>
-          <span>
-            <b>有</b>
-            <b>效</b>
-            期:
-          </span>
-          <p>2020.8.13 - 2020.8.17</p>
-        </div>
-      </div>
-      <div v-if="isticket">
-        <button class="btn">立即使用</button>
+        <span>使用期限:</span>
+        <p>{{ ticket.outTime | date }}</p>
       </div>
     </div>
   </div>
@@ -41,77 +23,70 @@
 <script>
 export default {
   props: {
-    isticket: Boolean,
+    ticket: Object,
   },
   data() {
     return {};
+  },
+  mounted() {
+    console.info(this.ticket);
+  },
+  filters: {
+    date(val) {
+      let arr = val.split(" ");
+      return arr[0];
+    },
   },
 };
 </script>
 
 <style lang='less' scoped>
 .ticket {
-  height: 18rem;
-  background-color: #fafafa;
-  .tickettop {
-    position: relative;
+  width: 12.6rem;
+  height: 4.3rem;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  > div:nth-child(1) {
+    width: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > span {
+      font-size: 1.8rem;
+      padding-left: 0.4rem;
+      margin-top: -0.9rem;
+      height: 2rem;
+      position: relative;
+      > i {
+        position: absolute;
+        left: 0;
+        top: -0.4rem;
+        font-size: 0.9rem;
+        font-style: normal;
+      }
+    }
+  }
+  > div:nth-child(2) {
+    flex: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 0.5rem;
+    padding-bottom: 1.6rem;
+    flex-direction: column;
     > div {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      color: #fff;
       display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-      > p {
-        display: flex;
-        > span {
-          font-size: 3rem;
-        }
-        > i {
-          line-height: 3rem;
-          font-size: 1.5rem;
-          font-style: normal;
-        }
-      }
-      > p:nth-child(2) {
-        font-size: 1rem;
-      }
     }
   }
-  .ticketbottom {
-    > div:nth-child(1) {
-      font-size: 0.7rem;
-      padding: 0.8rem 0.5rem;
-      > div {
-        display: flex;
-        margin-bottom: 0.4rem;
-        > span {
-          width: 4.7rem;
-          text-align: justify;
-          > b {
-            font-weight: 400;
-            margin-right: 0.72rem;
-          }
-        }
-        > p {
-          color: #999;
-        }
-      }
-    }
-    > div:nth-child(2) {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      .btn {
-        color: #ff8400;
-        padding: 0.3rem 1rem;
-        border-radius: 2rem;
-        border: 1px solid #ff8400;
-      }
-    }
-  }
+}
+.ticket_0 {
+  background: url("../assets/img/person/cg.png") no-repeat;
+}
+.ticket_1 {
+  background: url("../assets/img/person/sy.png") no-repeat;
+}
+.ticket_2 {
+  background: url("../assets/img/person/gq.png") no-repeat;
 }
 </style>

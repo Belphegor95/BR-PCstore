@@ -159,7 +159,7 @@ export default {
                 }
               }
             }
-            // 默认打开第一个
+            // // 默认打开第一个
             this.cateList = data_;
             this.twoList = this.cateList.cateOneList[0].twolist;
             this.is_search();

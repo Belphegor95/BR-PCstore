@@ -15,7 +15,7 @@
 </template>
 
 <script>
-// import search from "@/components/Search.vue";
+// import search from "@/components/Search.vue";  
 export default {
   // components: {
   //   search,
