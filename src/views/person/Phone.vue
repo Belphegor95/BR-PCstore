@@ -107,7 +107,6 @@ export default {
       yzm_: "",
     };
   },
-
   watch: {
     phoneNum(val) {
       this.$nextTick(() => {
@@ -258,7 +257,6 @@ export default {
             font-size: 1.2rem;
             margin-top: 1.5rem;
             color: #bdbdbd;
-            // text-indent: -1rem;
           }
         }
         > div:nth-child(even) {

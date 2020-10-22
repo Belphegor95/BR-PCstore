@@ -128,7 +128,6 @@ export default {
         display: flex;
         > button {
           color: #ff8400;
-          // width: 8rem;
           margin-left: 1rem;
           border: 1px solid #ff8400;
         }

@@ -70,7 +70,9 @@
             <Button v-if="item.state == 0" type="warning" @click="onGopay(item)"
               >立即付款</Button
             >
-            <Button v-if="item.state == 0">修改订单</Button>
+            <Button @click="onEditOrder(item.tradeNo)" v-if="item.state == 0"
+              >修改订单</Button
+            >
           </div>
         </div>
       </li>
@@ -124,6 +126,34 @@ export default {
           money: item.money,
         },
       });
+    },
+    onEditOrder: function (tradeNo) {
+      this.$layer.confirm(
+        "你确定要修改订单吗?",
+        {
+          btn: ["确定", "取消"], //按钮
+        },
+        (index) => {
+          this.axios
+            .post(this.$api.editOrder, {
+              tradeNo: tradeNo,
+            })
+            .then((data) => {
+              if (data.code == 200) {
+                this.$router.push("/cart");
+              } else {
+                this.$toast(this.ErrCode(data.msg));
+              }
+            })
+            .catch(() => {
+              this.$toast(this.$api.monmsg);
+            });
+          this.$layer.close(index);
+        },
+        (index) => {
+          this.$layer.close(index);
+        }
+      );
     },
   },
   filters: {

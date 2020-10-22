@@ -73,6 +73,5 @@ button {
 }
 .active {
   border: 1px solid #999 !important;
-  // color: #999 !important;
 }
 </style>

@@ -88,5 +88,6 @@ api.getWxPayQr = "/api/getWxPayQr"  // 订单二维码
 
 api.checkPay = "/api/checkPay"  // 是否支付  （轮询）
 
+api.editOrder = "/api/editOrder"  // 修改订单
 
 export { api };

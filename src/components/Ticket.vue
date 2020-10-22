@@ -28,9 +28,6 @@ export default {
   data() {
     return {};
   },
-  mounted() {
-    console.info(this.ticket);
-  },
   filters: {
     date(val) {
       let arr = val.split(" ");

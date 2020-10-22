@@ -85,7 +85,7 @@
           <div class="propertybox">
             <div>
               <div>
-                <span>给卖家留言</span>
+                <span>给卖家留言:</span>
                 <Input
                   v-model="notes"
                   maxlength="100"
@@ -94,7 +94,7 @@
                 />
               </div>
               <div>
-                <span>发票</span>
+                <span>发票:</span>
                 <Select v-model="billState" style="width: 100px">
                   <Option
                     v-for="item in cityList"
@@ -130,7 +130,7 @@
               <div>
                 <p>
                   <span>合计:</span>
-                  {{ orderdata.totalMoney }}
+                  {{ isticketNum(orderdata.totalMoney) }}
                 </p>
               </div>
             </div>
@@ -140,7 +140,7 @@
             <div v-if="address.length > 0">
               <p>
                 <span>实付款:</span>
-                {{ orderdata.totalMoney }}
+                {{ isticketNum(orderdata.totalMoney) }}
               </p>
               <div>
                 <span>寄送至:</span>
@@ -212,15 +212,20 @@ export default {
       orderOk: {},
       btnload: false,
       address: [],
-      ticketid: 0,
-      ticketList: [],
+      ticketid: -1,
+      ticketList: [
+        {
+          id: -1,
+          name: "不使用优惠券",
+        },
+      ],
     };
   },
   mounted() {
     this.orderOk = this.$route.query;
     this.pitchon = this.orderOk.pitchon ? this.orderOk.pitchon : 0;
     this.getAllAddress();
-    this.getTicket()
+    this.getTicket();
   },
   watch: {
     "$route.query"(val) {
@@ -260,10 +265,15 @@ export default {
         .post(this.$api.getTicket)
         .then((data) => {
           if (data.code == 200) {
-            this.ticketList = [];
+            this.ticketList = [
+              {
+                id: -1,
+                name: "不使用优惠券",
+              },
+            ];
             for (let i = 0; i < data.data.length; i++) {
               let item = data.data[i];
-              item.name = item.money + "元现金券"
+              item.name = item.money + "元现金券";
               if (item.type == 0) this.ticketList.push(item);
             }
           } else {
@@ -300,11 +310,11 @@ export default {
           sendType: 0, //配送方式 0:免费配送,1:自提
           notes: this.notes,
           billState: this.billState,
+          ticketId: this.ticketid ? this.ticketid : -1,
         })
         .then((data) => {
           if (data.code == 200) {
             this.btnload = false;
-            // this.pitchon = 1;
             this.orderOk = data.data;
             this.$router.push({
               path: "/payment",
@@ -355,6 +365,16 @@ export default {
           path: "/payment",
           query: obj,
         });
+      }
+    },
+    // 计算优惠之后的价格
+    isticketNum: function (val) {
+      if (!this.ticketid || this.ticketid == -1) return val;
+      for (let i = 0; i < this.ticketList.length; i++) {
+        let item = this.ticketList[i];
+        if (item.id == this.ticketid) {
+          return Number(val) - item.money;
+        }
       }
     },
   },

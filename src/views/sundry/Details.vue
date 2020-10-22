@@ -141,9 +141,6 @@ export default {
   methods: {
     // 添加商品
     addShopping: function () {
-      // let box = document.querySelector(".gwcbox")
-      // let btn = this.$refs.addbtn
-      // console.info(box);
       let arr = [];
       let item = this.detailsdata.price_lv;
       let obj = {};

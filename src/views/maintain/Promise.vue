@@ -174,10 +174,8 @@ export default {
       this.dayid = index;
       let hour = new Date().getHours(); //得到小时
       let fen = new Date().getMinutes(); // 得到分钟
-      // if (index != 0) return;
       for (let i = 0; i < this.hours.length; i++) {
         let item = this.hours[i];
-        console.info(item);
         if (index == 0) {
           if (item.hr < hour) {
             item.is = true;

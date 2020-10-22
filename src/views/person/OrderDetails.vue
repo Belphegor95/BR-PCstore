@@ -48,6 +48,14 @@
               <span>订单编号:</span>
               <p>{{ orderDetails.tradeNo }}</p>
             </div>
+            <div>
+              <span>发票方式:</span>
+              <p>{{ orderDetails.billState ? "电子发票" : "不要发票" }}</p>
+            </div>
+            <div>
+              <span>订单备注:</span>
+              <p>{{ orderDetails.notes ? orderDetails.notes : "暂无" }}</p>
+            </div>
           </div>
         </div>
         <div>
@@ -73,8 +81,7 @@
           <div>商品</div>
           <div>单价</div>
           <div>数量</div>
-          <div>优惠</div>
-          <div>状态</div>
+          <div>小计</div>
         </div>
         <div v-for="(item, index) in orderDetails.plistDetail" :key="index">
           <div class="imgbox">
@@ -87,10 +94,26 @@
           </div>
           <div>{{ item.priceName | price }}</div>
           <div>{{ item.buyNum }}</div>
-          <div></div>
+          <div>¥{{ item.money * item.buyNum }}</div>
+        </div>
+      </div>
+      <div class="monybox">
+        <div>
           <div>
-            <p>未支付</p>
-            <p>17时45分</p>
+            <span>商品总价:</span>
+            <span>{{ orderDetails.money }}</span>
+          </div>
+          <div>
+            <span>运费(快递):</span>
+            <span>¥0.00</span>
+          </div>
+          <div>
+            <span>优惠券:</span>
+            <span>{{ orderDetails.ticketMoney | ticketMoney }}</span>
+          </div>
+          <div>
+            <span>需付款:</span>
+            <span>{{ total(orderDetails.money) }}</span>
           </div>
         </div>
       </div>
@@ -129,6 +152,14 @@ export default {
         },
       });
     },
+    // 计算总价格
+    total: function (val) {
+      if (this.orderDetails.ticketMoney) {
+        return Number(val) - Number(this.orderDetails.ticketMoney);
+      } else {
+        return val;
+      }
+    },
   },
   filters: {
     site: function (value) {
@@ -144,6 +175,10 @@ export default {
       // 价格
       let arr = value.split("/");
       if (arr.length == 2) return arr[0];
+    },
+    ticketMoney: function (val) {
+      if (!val) return "¥0";
+      return `-¥${val}`;
     },
   },
 };
@@ -186,7 +221,6 @@ export default {
         font-size: 1.2rem;
         margin-top: 1.5rem;
         color: #bdbdbd;
-        // text-indent: -1rem;
       }
     }
     > div:nth-child(even) {
@@ -256,11 +290,6 @@ export default {
             text-indent: 1.5rem;
           }
         }
-        // > p {
-        //   font-size: 1.1rem;
-        //   color: #a9a9a9;
-        //   margin: 2rem 0;
-        // }
         > div:nth-child(2) {
           margin-top: 4rem;
           font-size: 1.1rem;
@@ -314,6 +343,23 @@ export default {
       }
       > div:last-child {
         border: none;
+      }
+    }
+  }
+  .monybox {
+    background-color: #f3f3f3;
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 1rem 2rem;
+    > div {
+      width: 15rem;
+      display: flex;
+      flex-direction: column;
+      > div {
+        display: flex;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        justify-content: space-between;
       }
     }
   }

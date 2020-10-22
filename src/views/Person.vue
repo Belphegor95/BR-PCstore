@@ -42,10 +42,6 @@ export default {
           name: "个人中心",
           site: "/userinfo",
         },
-        // {
-        //   name: "我的购物车",
-        //   site: "/cart",
-        // },
         {
           name: "我的订单",
           site: "/orderForm",
@@ -96,12 +92,10 @@ export default {
       display: flex;
       > ul {
         flex: 1;
-        // width: 18rem;
         padding-top: 2rem;
         text-indent: 2rem;
         > li {
           padding: 0.5rem;
-          // line-height: 2.5rem;
           font-size: 1rem;
           color: #999;
           > span {

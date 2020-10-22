@@ -223,7 +223,6 @@ export default {
     > P {
       color: #5599ff;
       font-size: 1rem;
-      // font-weight: 700;
       cursor: pointer;
     }
   }
