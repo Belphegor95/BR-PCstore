@@ -3,10 +3,14 @@
 <template>
   <div class="cart" @click="is_imgbox = false">
     <shortcut />
+    <!-- <div class="search_box">
+      <search :isSearch="true" />
+    </div> -->
+    <breadcrumb :tos="[{name: '首页', to: '/'},{ name: '购物车', to: '/cart' }]" />
     <div class="content">
-      <div>
+      <!-- <div>
         <h5>我的购物车</h5>
-      </div>
+      </div> -->
       <div class="listbox">
         <span>
           <div>
@@ -15,12 +19,17 @@
             >
           </div>
           <div class="namebox">商品信息</div>
+          <div></div>
           <div>单价</div>
-          <div>金额</div>
           <div>数量</div>
+          <div>金额</div>
           <div>操作</div>
         </span>
-        <CheckboxGroup v-model="checkAllGroup" @on-change="checkAllGroupChange">
+        <CheckboxGroup
+          class="list"
+          v-model="checkAllGroup"
+          @on-change="checkAllGroupChange"
+        >
           <span v-for="(item, index) in shoppings" :key="index">
             <div>
               <Checkbox
@@ -36,13 +45,19 @@
             <div>
               颜色分类: {{ item.priceName[1] ? item.priceName[1] : "暂无" }}
             </div>
-            <div>￥ {{ item.orderPrice }}</div>
+            <div> {{ item.priceName[0] }}</div>
             <div>
               <stepper
-                :stepperObj="{ num: item.buyNum, index: index }"
+                :stepperObj="{
+                  num: item.buyNum,
+                  index: index,
+                  width: '7rem',
+                  height: '2rem',
+                }"
                 @getstepperObj="getstepperObj"
               />
             </div>
+            <div>￥ {{ (item.orderPrice * item.buyNum).toFixed(2) }}</div>
             <div>
               <span @click="delShopping(item, index)">删除</span>
             </div>
@@ -54,34 +69,36 @@
           <Checkbox :value="checkAll" @click.prevent.native="handleCheckAll"
             >全选</Checkbox
           >
-        </div>
-        <div class="btnbox">
           <div>
-            <P>总价:</P>
             <div>
-              <p @click.stop="is_imgbox = !is_imgbox">
-                已选中
-                <b>{{ checkAllGroup.length }}</b> 件商品
-                <Icon type="ios-arrow-down" v-if="!is_imgbox" />
-                <Icon type="ios-arrow-up" v-else />
-              </p>
               <div>
-                ￥
-                <p>{{ totalPrice.toFixed(2) }}</p>
+                <p @click.stop="is_imgbox = !is_imgbox">
+                  已选中
+                  <b>{{ checkAllGroup.length }}</b> 件商品
+                  <Icon type="ios-arrow-down" v-if="!is_imgbox" />
+                  <Icon type="ios-arrow-up" v-else />
+                </p>
+                <div class="imgbox" v-show="is_imgbox">
+                  <div v-for="(item, index) in shoppings" :key="index">
+                    <span v-if="item.is">
+                      <img :src="item.picUrl" />
+                      <p @click.stop="delPitch(index)">取消选择</p>
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div class="imgbox" v-show="is_imgbox">
-                <div v-for="(item, index) in shoppings" :key="index">
-                  <span v-if="item.is">
-                    <img :src="item.picUrl" />
-                    <p @click.stop="delPitch(index)">取消选择</p>
-                  </span>
+              <div>
+                <P>总价:</P>
+                <div>
+                  ￥
+                  <p>{{ totalPrice.toFixed(2) }}</p>
                 </div>
               </div>
             </div>
           </div>
-          <div>
-            <Button type="warning" @click="downOrder">去结算</Button>
-          </div>
+        </div>
+        <div class="btnbox">
+          <Button type="warning" @click="downOrder">结算</Button>
         </div>
       </div>
     </div>
@@ -95,11 +112,15 @@
 import shortcut from "@/components/Shortcut.vue";
 import statement from "@/components/Statement.vue";
 import stepper from "@/components/Stepper.vue";
+import breadcrumb from "@/components/Breadcrumb.vue";
+// import search from "@/components/Search.vue";
 export default {
   components: {
     shortcut,
     statement,
     stepper,
+    breadcrumb,
+    // search,
   },
   data() {
     return {
@@ -343,205 +364,232 @@ export default {
 
 <style lang='less' scoped>
 .cart {
-  background-color: #f9f9f9 !important;
   margin-top: 2rem;
-}
-.content {
-  // margin-top: 2rem;
-  padding-top: 5rem;
-  > div {
-    background-color: #fff;
-  }
-  h5 {
-    font-size: 1.2rem;
-    font-weight: 400;
-    margin-bottom: 0.3rem;
-  }
-  .listbox {
-    font-size: 0.8rem;
-    border-bottom: 1px solid #eee;
-    span {
-      display: flex;
-      > div {
-        flex: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      > div:nth-child(1) {
-        flex: 1;
-      }
-      .namebox {
-        flex: 3;
-        display: flex;
-        align-items: stretch;
-        > img {
-          width: 6rem;
-          height: 6rem;
-        }
-        > p {
-          width: 10rem;
-          padding-left: 0.5rem;
-          margin-top: 0.5rem;
-        }
-      }
+  .content {
+    h5 {
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 0.3rem;
     }
-    > span:nth-child(1) {
-      padding: 0.5rem 0;
-      border: 1px solid #e6e6e6;
-      background-color: #f5f5f5;
-    }
-    > div > span {
+    .listbox {
       font-size: 0.8rem;
-      padding: 1rem 0;
-      border-bottom: 1px solid #f2f2f2;
-      > div:nth-child(3) {
-        color: #999;
-      }
-      > div:nth-child(6) > span {
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        cursor: pointer;
-        color: #ff8400;
-      }
-    }
-    > div > span:last-child {
-      border-bottom: none;
-    }
-  }
-  .operationbox {
-    margin-top: 1rem !important;
-    display: flex;
-    padding: 0.5rem 2rem;
-    position: relative;
-    border: 1px solid #e6e6e6;
-    justify-content: space-between;
-    > div:nth-child(1) {
-      display: flex;
-      align-items: center;
-    }
-    .btnbox {
-      display: flex;
-      > div:nth-child(1) {
+      padding-top: 1rem;
+      border-bottom: 1px solid #eee;
+      span {
         display: flex;
-        align-items: flex-end;
-        > p:nth-child(1) {
-          margin-bottom: 0.3rem;
-          margin-right: 0.5rem;
+        > div {
+          flex: 2;
+          display: flex;
+          // align-items: center;
+          justify-content: center;
         }
-        > div:nth-child(2) {
-          // 已选中
-          > p:nth-child(1) {
+        > div:nth-child(1) {
+          flex: 1;
+        }
+        .namebox {
+          flex: 3;
+          display: flex;
+          align-items: stretch;
+          > img {
+            width: 6rem;
+            height: 6rem;
+            border: 1px solid #dcdcdc;
+          }
+          > p {
+            width: 10rem;
+            padding-left: 0.5rem;
+            margin-top: 0.5rem;
+          }
+        }
+      }
+      > span:nth-child(1) {
+        padding: 0.5rem 0;
+        // border: 1px solid #e6e6e6;
+        // background-color: #f5f5f5;
+      }
+      .list {
+        > span {
+          padding: 1.19rem 0;
+          margin-bottom: 1.13rem;
+          border: 1px solid #c4c4c4;
+          > div:nth-child(3) {
             color: #999;
-            cursor: pointer;
+          }
+          > div:nth-child(4) {
+            font-weight: 700;
+          }
+          > div:nth-child(6) {
+            font-weight: 700;
+            color: #f68b00;
+          }
+          > div:nth-child(6) > span {
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            > b {
-              font-weight: 400;
-              color: #ff8400;
-            }
-          }
-          > div:nth-child(2) {
-            display: flex;
-            align-items: baseline;
+            cursor: pointer;
             color: #ff8400;
-            > P {
-              font-size: 1.6rem;
-            }
           }
         }
-      }
-      //   去结算
-      > div:nth-child(2) {
-        display: flex;
-        margin-left: 2rem;
-        align-items: center;
-        > button {
-          padding: 0 2rem;
+        > div > span:last-child {
+          border-bottom: none;
         }
-      }
-      .imgbox {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        bottom: 5.5rem;
-        display: flex;
-        flex-wrap: wrap;
-        padding: 1rem;
-        background: #fff;
-        border: 1px solid #ff8400;
-        > div {
-          position: relative;
-          margin-right: 1rem;
-          height: 6rem;
-          > span {
-            > img {
-              width: 6rem;
-              height: 6rem;
-            }
-
-            > p {
-              top: 0;
-              width: 100%;
-              height: 100%;
-              display: flex;
-              position: absolute;
-              align-items: center;
-              justify-content: center;
-              opacity: 0;
-              color: #fff;
-              background-color: rgba(0, 0, 0, 0.1);
-            }
-            > p:hover {
-              opacity: 1;
-              cursor: pointer;
-            }
-          }
-        }
-        > div:last-child {
-          margin-right: 0;
-        }
-      }
-      .imgbox:before {
-        box-sizing: content-box;
-        width: 0px;
-        height: 0px;
-        position: absolute;
-        bottom: -16px;
-        right: 14.55rem;
-        padding: 0;
-        border-top: 8px solid #ffffff;
-        border-bottom: 8px solid transparent;
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        display: block;
-        content: "";
-        z-index: 12;
-      }
-      .imgbox:after {
-        box-sizing: content-box;
-        width: 0px;
-        height: 0px;
-        position: absolute;
-        bottom: -18px;
-        right: 14.5rem;
-        padding: 0;
-        border-top: 9px solid #ff8400;
-        border-bottom: 9px solid transparent;
-        border-left: 9px solid transparent;
-        border-right: 9px solid transparent;
-        display: block;
-        content: "";
-        z-index: 10;
       }
     }
-    //
+    .operationbox {
+      margin-top: 1rem !important;
+      display: flex;
+
+      position: relative;
+      border: 1px solid #e6e6e6;
+      justify-content: space-between;
+      > div:nth-child(1) {
+        flex: auto;
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 2rem;
+        padding-right: 0;
+        justify-content: space-between;
+        > div:nth-child(2) {
+          > div:nth-child(1) {
+            display: flex;
+            align-items: center;
+            > div:nth-child(2) {
+              display: flex;
+              width: 12rem;
+              align-items: center;
+              margin-left: 2rem;
+              > div {
+                display: flex;
+                margin-left: 1rem;
+                font-size: 1.5rem;
+                font-family: Microsoft YaHei;
+                font-weight: bold;
+                color: #e20000;
+              }
+            }
+            > div:nth-child(1) {
+              // 已选中
+              > p:nth-child(1) {
+                color: #000;
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                > b {
+                  font-weight: 400;
+                  color: #ff0000;
+                  font-size: 1rem;
+                }
+              }
+              > div:nth-child(2) {
+                display: flex;
+                align-items: baseline;
+                color: #ff8400;
+                > P {
+                  font-size: 1.6rem;
+                }
+              }
+            }
+          }
+          //   去结算
+          > div:nth-child(2) {
+            display: flex;
+            margin-left: 2rem;
+            align-items: center;
+            > button {
+              padding: 0 2rem;
+            }
+          }
+          .imgbox {
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 5.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 1rem;
+            background: #fff;
+            border: 1px solid #ff8400;
+            > div {
+              position: relative;
+              margin-right: 1rem;
+              height: 6rem;
+              > span {
+                > img {
+                  width: 6rem;
+                  height: 6rem;
+                }
+                > p {
+                  top: 0;
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  position: absolute;
+                  align-items: center;
+                  justify-content: center;
+                  opacity: 0;
+                  color: #fff;
+                  background-color: rgba(0, 0, 0, 0.1);
+                }
+                > p:hover {
+                  opacity: 1;
+                  cursor: pointer;
+                }
+              }
+            }
+            > div:last-child {
+              margin-right: 0;
+            }
+          }
+          .imgbox:before {
+            box-sizing: content-box;
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            bottom: -16px;
+            right: 25.05rem;
+            padding: 0;
+            border-top: 8px solid #ffffff;
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            display: block;
+            content: "";
+            z-index: 12;
+          }
+          .imgbox:after {
+            box-sizing: content-box;
+            width: 0px;
+            height: 0px;
+            position: absolute;
+            bottom: -18px;
+            right: 25rem;
+            padding: 0;
+            border-top: 9px solid #ff8400;
+            border-bottom: 9px solid transparent;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            display: block;
+            content: "";
+            z-index: 10;
+          }
+        }
+      }
+      .btnbox {
+        display: flex;
+        width: 8.06rem;
+        > button {
+          width: 100%;
+          height: 100%;
+          border-radius: 0;
+        }
+      }
+    }
   }
 }
+
 .bottombox {
   margin-top: 1rem;
 }

@@ -6,6 +6,12 @@ api.baseUrl = "http://192.168.1.189:3000"   // 孙飞请求地址
 
 // api.baseUrl = "http://39.105.230.213:3000"   // 打包环境地址
 
+// api.baseUrl = "http://8.131.87.240:3000"   // 打包环境地址
+
+// api.baseUrl = "http://www.kaixintu.cn:3000"   // 打包环境地址
+
+// api.baseUrl = "http://brshop.free.vipnps.vip"   // 远端地址
+
 api.monmsg = "网络遇到问题,请重试!";
 
 api.regist = "/api/regist"  // 注册 1

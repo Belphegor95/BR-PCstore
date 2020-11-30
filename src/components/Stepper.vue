@@ -1,7 +1,13 @@
 <!-- 步进器 -->
 <template>
-  <div class="stepper">
-    <div class="stepper-" @click="NumReduce" :style="{color:(stepperObj.num <= 1?'#dcdee2':'#000')}">-</div>
+  <div class="stepper" :style="{ width: stepperObj.width,height: stepperObj.height }">
+    <div
+      class="stepper-"
+      @click="NumReduce"
+      :style="{ color: stepperObj.num <= 1 ? '#dcdee2' : '#000' }"
+    >
+      -
+    </div>
     <InputNumber :max="maxNum" :min="1" v-model="stepperObj.num" />
     <div class="stepper_" @click="NumAdd">+</div>
   </div>
@@ -39,13 +45,12 @@ export default {
 
 <style lang='less' scoped>
 .stepper {
-  border: 1px solid #dcdee2;
+  border: 1px solid #dcdcdc;
   justify-content: center;
-  border-radius: 0.5rem;
   display: flex;
   .stepper-,
   .stepper_ {
-    width: 1.5rem;
+    width: 25%;
     display: flex;
     cursor: pointer;
     align-items: center;
@@ -54,19 +59,24 @@ export default {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background: #f9f9f9;
   }
   .stepper- {
-    border-right: 1px solid #dcdee2;
+    border-right: 1px solid #dcdcdc;
   }
   .stepper_ {
-    border-left: 1px solid #dcdee2;
+    border-left: 1px solid #dcdcdc;
   }
 }
 </style>
 <style>
 .stepper .ivu-input-number {
   border: 0;
-  width: 50px;
+  height: 100%;
+  /* width: 50px; */
+}
+.stepper .ivu-input-number-input-wrap {
+  height: 100%;
 }
 .stepper .ivu-input-number-handler-wrap {
   /* opacity: 0; */
@@ -78,6 +88,8 @@ export default {
   box-shadow: none;
 }
 .stepper .ivu-input-number-input {
+  height: 100%;
+  font-size: 1rem;
   text-align: center;
 }
 </style>

@@ -5,7 +5,7 @@
     <div class="formbox">
       <div>
         <span>我的手机号:</span>
-        <p style="color: #ff8400;">{{ phoneNum }}</p>
+        <p style="color: #ff8400">{{ phoneNum }}</p>
         <!-- <Input v-model="phoneNum" /> -->
       </div>
       <div>
@@ -61,7 +61,7 @@ export default {
   },
   mounted() {
     this.phoneNum = this.user.phone;
-    this.$store.commit("show_personid", 3);
+    this.$store.commit("show_personid", 4);
   },
   methods: {
     resetPwd: function () {
@@ -104,14 +104,16 @@ export default {
 
 <style lang='less' scoped>
 .password {
-  flex: 4;
+  // flex: 4;
   > div {
     margin-top: 1rem;
   }
   > .formbox {
-    width: 27.5rem;
-    margin-bottom: 5rem;
+    border: 1px solid #ebebeb;
+    min-height: 15.7rem;
+    padding: 0.65rem;
     > div {
+      width: 27.5rem;
       display: flex;
       align-items: center;
       margin-bottom: 1rem;
@@ -127,13 +129,13 @@ export default {
       .btnbox {
         display: flex;
         > button {
-          color: #ff8400;
           margin-left: 1rem;
           border: 1px solid #ff8400;
         }
       }
     }
     .btn {
+      border-radius: 0;
       width: 12rem;
       margin-top: 2rem;
       margin-left: 9rem;

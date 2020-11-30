@@ -1,13 +1,23 @@
+import 'babel-polyfill'
+// import promise from 'es6-promise';
+// promise.polyfill();
+import '@babel/polyfill';
+// require('babel-polyfill')
+// require('es6-promise').polyfill()
+// import Es6Promise from 'es6-promise'
+// Es6Promise.polyfill()
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { api } from "./assets/js/config";
+import { api } from "./assets/js/config.js";
 import less from 'less'
-import './plugins/iview'
+// import './plugins/iview'
+import ViewUI from 'view-design';
+import 'view-design/dist/styles/iview.css';
+Vue.use(ViewUI);
 
 // import "jr-qrcode"
-import "babel-polyfill"
 
 import axios from "axios";
 import qs from "qs";
@@ -42,8 +52,8 @@ axios.interceptors.response.use(
 router.afterEach((to, from, next) => {
   window, scrollTo(0, 0)
 })
-// axios.defaults.baseURL = api.baseUrl;
-axios.defaults.baseURL = "/api";
+axios.defaults.baseURL = api.baseUrl;
+// axios.defaults.baseURL = "/api";
 // 允许携带cookie
 axios.defaults.withCredentials = true;
 function ErrCode(code) {
@@ -129,6 +139,12 @@ import layer from 'vue-layer'
 import 'vue-layer/lib/vue-layer.css';
 Vue.prototype.$layer = layer(Vue);
 Vue.prototype.$toast = layer(Vue).msg;
+
+if (!Array.prototype.find) {
+  Array.prototype.find = function(callback) {
+    return callback && (this.filter(callback) || [])[0];
+  };
+}
 
 Vue.use(less)
 Vue.config.productionTip = false

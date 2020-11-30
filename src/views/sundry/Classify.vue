@@ -9,6 +9,7 @@
         @searchClick="searchClick"
       />
     </div>
+    <breadcrumb :tos="[{name: '首页', to: '/'},{ name: '商品分类', to: '/classify' }]" />
     <div class="content">
       <div class="sortbox">
         <div>
@@ -38,8 +39,9 @@
           </div>
         </div>
       </div>
-      <div v-show="false">
+      <div>
         <div
+          v-show="false"
           :class="pricetype != 0 ? 'price_active' : ''"
           @click="pricetypeClick"
         >
@@ -47,7 +49,7 @@
           <img v-if="pricetype == 1" src="../../assets/img/sundry/s.png" />
           <img v-else-if="pricetype == 2" src="../../assets/img/sundry/x.png" />
         </div>
-        <div>
+        <div v-show="false">
           <div>
             <InputNumber :max="10" :min="1" v-model="value1" />-
             <InputNumber :max="10" :min="1" v-model="value1" />
@@ -82,6 +84,7 @@ import search from "@/components/Search.vue";
 import commodityCard from "@/components/CommodityCard.vue";
 import guarantee from "@/components/Guarantee.vue";
 import statement from "@/components/Statement.vue";
+import breadcrumb from "@/components/Breadcrumb.vue";
 export default {
   components: {
     shortcut,
@@ -89,6 +92,7 @@ export default {
     commodityCard,
     guarantee,
     statement,
+    breadcrumb,
   },
   data() {
     return {
@@ -113,12 +117,13 @@ export default {
   methods: {
     // 1.跳转页面不搜索 2.跳转页面搜索 3.本页面不搜索 4.分类跳转并搜索分类
     is_search: function () {
-      let index = Object.keys(this.$route.query).length;
+      let index = Object.keys(this.$route.query).length || 0;
       if (index == 0) {
         this.cate_one = 0;
         this.cate_two = 0;
+        this.twoList = this.cateList.cateOneList[0].twolist;
         this.getcatePlist();
-      } else if (index == 1) {
+      } else if (index == 1 && this.$route.query.name) {
         this.searchClick(this.$route.query.name);
       } else {
         this.getquery();
@@ -145,6 +150,7 @@ export default {
           this.$toast(this.$api.monmsg);
         });
     },
+    // 获取 分类
     getcate: function () {
       this.axios
         .get(this.$api.cate)
@@ -161,7 +167,6 @@ export default {
             }
             // // 默认打开第一个
             this.cateList = data_;
-            this.twoList = this.cateList.cateOneList[0].twolist;
             this.is_search();
           } else {
             this.$toast(this.ErrCode(data.msg));
@@ -184,6 +189,9 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.searchs = data.data;
+            if (this.searchs.length == 0) {
+              this.$toast("暂无此类新商品");
+            }
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -195,39 +203,34 @@ export default {
     //  获取搜索条件对应的id
     getquery: function () {
       let query = this.$route.query;
-      this.cate_one = query.cate_one;
-      this.cate_two = query.cate_two;
-      this.getcatePlist();
-      // 弃用
-      // for (let i = 0; i < this.cateList.cateOneList.length; i++) {
-      //   let item = this.cateList.cateOneList[i].id;
-      //   if (item == query.cate_one) {
-      //     this.cate_one = i;
-      //     this.twoList = this.cateList.cateOneList[i].twolist;
-      //     break;
-      //   }
-      // }
-      // for (let i = 0; i < this.twoList.length; i++) {
-      //   let item = this.cateList.cateOneList[i].id;
-      //   if (item == query.cate_two) {
-      //     this.cate_two = i;
-      //     break;
-      //   }
-      // }
+      //  因为保存的是索引 所有需要循环
+      this.cateList.cateOneList.forEach((item, index) => {
+        if (item.id == query.cate_one) {
+          this.cate_one = index;
+          this.twoList = this.cateList.cateOneList[index].twolist || [];
+        }
+      });
+      this.twoList.forEach((item, index) => {
+        if (item.id == query.cate_two) {
+          this.cate_two = index;
+        }
+      });
+      //  因为有的没有二级分类 所以 不用执行搜索
+      this.cate_two != 0 ? this.getcatePlist() : this.$toast("暂无此类新商品");
     },
     // 一级分类
-    cate_oneclick: function (id) {
+    cate_oneclick: function (index) {
       this.searchKey = "";
-      this.cate_one = id;
-      this.twoList = this.cateList.cateOneList[id].twolist;
+      this.cate_one = index;
+      this.twoList = this.cateList.cateOneList[index].twolist;
       this.cate_two = 0;
       this.getcatePlist();
     },
     // 二级分类
-    cate_twoclick: function (id) {
+    cate_twoclick: function (index) {
       if (this.cate_one == -1) this.cate_one = 0;
       this.searchKey = "";
-      this.cate_two = id;
+      this.cate_two = index;
       this.getcatePlist();
     },
     // 价格排序方法
@@ -252,14 +255,16 @@ export default {
 .classify {
   margin-top: 2rem;
   .content {
+    margin-top: 1.5rem;
     .sortbox {
       display: flex;
       color: #666666;
       flex-direction: column;
+      border: 1px solid #c4c4c4;
       > div {
         display: flex;
         min-height: 3.18rem;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px dashed #c4c4c4;
         > span {
           width: 6rem;
           flex-shrink: 0;
@@ -283,6 +288,9 @@ export default {
           }
         }
       }
+      > div:last-child {
+        border-bottom: none;
+      }
     }
     // 价格
     > div:nth-child(2) {
@@ -291,6 +299,7 @@ export default {
       margin-top: 1rem !important;
       border: 1px solid #e6e6e6;
       background-color: #f5f5f5;
+      height: 2.25rem;
       > div:nth-child(1) {
         display: flex;
         width: 4rem;

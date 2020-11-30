@@ -2,31 +2,6 @@
 <template>
   <div class="orderDetails">
     <h4>订单详情</h4>
-    <div class="stepsbox">
-      <div :class="orderDetails.state >= 0 ? 'active' : ''">
-        <span>
-          <b>1</b>
-        </span>
-      </div>
-      <div :class="orderDetails.state >= 1 ? 'active_' : ''"></div>
-      <div :class="orderDetails.state >= 1 ? 'active' : ''">
-        <span>
-          <b>2</b>
-        </span>
-      </div>
-      <div :class="orderDetails.state >= 2 ? 'active_' : ''"></div>
-      <div :class="orderDetails.state >= 2 ? 'active' : ''">
-        <span>
-          <b>3</b>
-        </span>
-      </div>
-      <div :class="orderDetails.state >= 3 ? 'active_' : ''"></div>
-      <div :class="orderDetails.state >= 3 ? 'active' : ''">
-        <span>
-          <b>4</b>
-        </span>
-      </div>
-    </div>
     <div class="orderbox">
       <div class="orderinfo">
         <div>
@@ -70,15 +45,17 @@
               }}
             </p>
           </div>
-          <div v-if="orderDetails.state == 1">
+          <p>您还有17小时10分08秒付款，超时订单将自动关闭</p>
+          <div v-if="orderDetails.state == 0">
             <span>您可以</span>
-            <Button @click="onGopay">立即支付</Button>
+            <Button type="warning" @click="onGopay">立即付款</Button>
           </div>
         </div>
       </div>
       <div class="orderlist">
         <div>
           <div>商品</div>
+          <div>商品属性</div>
           <div>单价</div>
           <div>数量</div>
           <div>小计</div>
@@ -86,34 +63,34 @@
         <div v-for="(item, index) in orderDetails.plistDetail" :key="index">
           <div class="imgbox">
             <img :src="item.picUrl" />
-            <div>
-              <h6>{{ item.plistName }}</h6>
-              <span>颜色: {{ item.cateName ? item.cateName : "暂无" }}</span>
-              <span>单位: {{ item.priceName | unit }}</span>
-            </div>
+            <h6>{{ item.plistName }}</h6>
+          </div>
+          <div>
+            <p>颜色: {{ item.cateName ? item.cateName : "暂无" }}</p>
+            <p>单位: {{ item.priceName | unit }}</p>
           </div>
           <div>{{ item.priceName | price }}</div>
           <div>{{ item.buyNum }}</div>
-          <div>¥{{ item.money * item.buyNum }}</div>
+          <p>¥{{ item.money * item.buyNum }}</p>
         </div>
-      </div>
-      <div class="monybox">
-        <div>
+        <div class="monybox">
           <div>
-            <span>商品总价:</span>
-            <span>{{ orderDetails.money }}</span>
-          </div>
-          <div>
-            <span>运费(快递):</span>
-            <span>¥0.00</span>
-          </div>
-          <div>
-            <span>优惠券:</span>
-            <span>{{ orderDetails.ticketMoney | ticketMoney }}</span>
-          </div>
-          <div>
-            <span>需付款:</span>
-            <span>{{ total(orderDetails.money) }}</span>
+            <div>
+              <span>商品总价：</span>
+              <span>{{ orderDetails.money }}</span>
+            </div>
+            <div>
+              <span>运送方式：普通配送快递 免邮</span>
+              <span>¥0.00</span>
+            </div>
+            <div>
+              <span>优惠券：</span>
+              <span>{{ orderDetails.ticketMoney | ticketMoney }}</span>
+            </div>
+            <div>
+              <span>需付款：</span>
+              <span>¥{{ total(orderDetails.money) }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -149,6 +126,7 @@ export default {
           pitchon: 1,
           tradeNo: this.orderDetails.tradeNo,
           money: this.orderDetails.money,
+          orderType: 0,
         },
       });
     },
@@ -186,76 +164,25 @@ export default {
 
 <style lang='less' scoped>
 .orderDetails {
-  flex: 4;
+  // flex: 4;
   > div {
     margin-top: 1rem;
   }
-  //   步骤条
-  .stepsbox {
-    display: flex;
-    margin-top: 2.5rem;
-    justify-content: center;
-    > div:nth-child(odd) {
-      margin: 0 1rem;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      > span {
-        display: block;
-        text-align: center;
-        color: #fff;
-        width: 2.2rem;
-        height: 2.2rem;
-        line-height: 2.2rem;
-        border-radius: 0.2rem;
-        background-color: #bdbdbd;
-        transform: rotate(45deg);
-        > b {
-          display: flex;
-          font-size: 1.2rem;
-          justify-content: center;
-          transform: rotate(-45deg);
-        }
-      }
-      > p {
-        font-size: 1.2rem;
-        margin-top: 1.5rem;
-        color: #bdbdbd;
-      }
-    }
-    > div:nth-child(even) {
-      margin-top: 0.9rem;
-      width: 12rem;
-      height: 0.5rem;
-      background-color: #bdbdbd;
-    }
-    > div:nth-child(5) {
-      margin-left: 1.5rem;
-    }
-    .active {
-      > span {
-        background-color: #ff8400 !important;
-      }
-      > p {
-        color: #ff8400 !important;
-      }
-    }
-    .active_ {
-      background: #ff8400 !important;
-    }
-  }
   //   订单盒子
   .orderbox {
-    padding-top: 2rem;
     .orderinfo {
       display: flex;
       > div:nth-child(1) {
-        width: 18rem;
+        width: 24rem;
+        padding: 0.8rem 0.4rem;
         border: 1px solid #e6e6e6;
         > div:nth-child(1) {
-          padding: 0.5rem;
+          padding-bottom: 0.2rem;
+          padding-left: 0.2rem;
           color: #666666;
-          background: #f5f5f5;
+          font-family: SimSun;
+          font-weight: bold;
+          color: #000000;
           border-bottom: 1px solid #e6e6e6;
         }
         > div:nth-child(2) {
@@ -267,19 +194,31 @@ export default {
             margin-bottom: 1rem;
             > span {
               width: 5.5rem;
+              font-size: 0.75rem;
+              font-family: SimSun;
+              font-weight: 400;
+              color: #000000;
             }
             > p {
               width: 100%;
+              font-size: 0.75rem;
+              font-family: SimSun;
+              font-weight: 400;
+              color: #000000;
             }
           }
         }
       }
       > div:nth-child(2) {
+        margin-left: 2rem;
+        padding: 2rem 0;
         flex: auto;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
         flex-direction: column;
+        background-color: #fef4e8;
+        border: 1px solid #ff9000;
         > div:nth-child(1) {
           display: flex;
           align-items: center;
@@ -290,8 +229,14 @@ export default {
             text-indent: 1.5rem;
           }
         }
-        > div:nth-child(2) {
-          margin-top: 4rem;
+        > P {
+          font-size: 0.75rem;
+          font-family: SimSun;
+          font-weight: 400;
+          color: #464545;
+        }
+        > div:nth-child(3) {
+          // margin-top: 4rem;
           font-size: 1.1rem;
           color: #000;
           display: flex;
@@ -299,6 +244,7 @@ export default {
           padding: 0 2rem;
           > button {
             margin-left: 2rem;
+            border-radius: 0;
           }
         }
       }
@@ -306,21 +252,23 @@ export default {
     .orderlist {
       margin-top: 1rem;
       margin-bottom: 2rem;
+      padding: 0.5rem;
       border: 1px solid #e6e6e6;
+      overflow: hidden;
+      background-color: #fbfbfb;
       > div {
         display: flex;
         padding: 0.5rem;
-        align-items: center;
-        border-bottom: 1px solid #e6e6e6;
+        // align-items: center;
+        margin-top: 0.5rem;
+        border-top: 1px solid #e6e6e6;
         .imgbox {
           display: flex;
           > img {
             width: 6rem;
             height: 6rem;
           }
-          > div {
-            display: flex;
-            text-align: left;
+          > h6 {
             padding-left: 0.5rem;
             flex-direction: column;
             justify-content: space-around;
@@ -333,33 +281,69 @@ export default {
         > div:nth-child(1) {
           flex: 2;
         }
+        > p:nth-last-child(1) {
+          flex: 1;
+          text-align: center;
+          font-size: 0.88rem;
+          font-family: Microsoft YaHei;
+          font-weight: bold;
+          color: #f68b00;
+        }
       }
       .imgbox {
         display: flex;
         //   flex-direction: column;
       }
       > div:nth-child(1) {
-        background-color: #f5f5f5;
+        // margin-bottom: 1rem;
+        background-color: #ffeed8;
+      }
+      > div:nth-last-child(2) {
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e6e6e6;
       }
       > div:last-child {
         border: none;
       }
-    }
-  }
-  .monybox {
-    background-color: #f3f3f3;
-    display: flex;
-    flex-direction: row-reverse;
-    padding: 1rem 2rem;
-    > div {
-      width: 15rem;
-      display: flex;
-      flex-direction: column;
-      > div {
+      .monybox {
+        width: 25rem;
+        float: right;
+        // background-color: #f3f3f3;
         display: flex;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-        justify-content: space-between;
+        flex-direction: row-reverse;
+        padding: 1rem 2rem;
+        > div {
+          width: 15rem;
+          display: flex;
+          flex-direction: column;
+          > div {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            justify-content: space-between;
+            > span:nth-child(1) {
+              font-size: 0.75rem;
+              font-family: SimSun;
+              font-weight: 400;
+              color: #000000;
+            }
+            > span:nth-child(2) {
+              font-size: 0.88rem;
+              font-family: SimSun;
+              font-weight: 400;
+              color: #686868;
+            }
+          }
+          > div:last-child {
+            > span:nth-child(2) {
+              font-size: 1.63rem;
+              font-family: Microsoft YaHei;
+              font-weight: bold;
+              color: #e20000;
+            }
+          }
+        }
       }
     }
   }

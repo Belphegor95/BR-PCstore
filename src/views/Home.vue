@@ -66,10 +66,6 @@
       </div>
     </div>
     <!-- 回到顶部 -->
-    <!-- <BackTop class="topbtn" >
-      <div>123</div>
-      <img src="../assets/img/hg.png" />
-    </BackTop> -->
     <goTop />
     <div class="bottombox">
       <guarantee />
@@ -194,7 +190,7 @@ export default {
       height: 28.13rem;
       justify-content: space-between;
       .classify {
-        width: 23.06rem;
+        width: 23rem;
         display: flex;
         flex-wrap: wrap;
         background-color: #fff;
@@ -238,13 +234,41 @@ export default {
             color: #000;
           }
         }
+        > li:nth-child(2) {
+            border-left-color: transparent;
+            border-right-color: transparent;
+        }
+        > li:nth-child(4) {
+          border-top-color: transparent;
+          /*border-bottom-color: transparent;*/
+        }
+        > li:nth-child(5) {
+          border-color: transparent;
+          border-bottom-color: #ededed;
+        }
+        > li:nth-child(6) {
+          border-top-color: transparent;
+        }
+        > li:nth-child(7) {
+          border-top-color: transparent;
+        }
+        > li:nth-child(8) {
+          border-top-color: transparent;
+          border-left-color: transparent;
+        }
         > li:hover {
+          > p {
+            color: #ff8900;
+          }
           border: 1px solid #ff8900;
         }
       }
       .Carouselbox {
-        width: 51.94rem;
+        width: 52rem;
         background-color: #fff;
+        img {
+          width: 100%;
+        }
       }
     }
   }

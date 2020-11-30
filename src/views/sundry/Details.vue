@@ -5,6 +5,7 @@
     <div class="search_box">
       <search :isSearch="true" />
     </div>
+    <breadcrumb :tos="[{name: '首页', to: '/'},{ name: '商品详情', to: '/details' }]" />
     <div class="content">
       <div>
         <div class="imgbox">
@@ -36,10 +37,10 @@
           <div class="box">
             <div>
               <div>
-                <span> <span>价</span> 格 : </span>
+                <span>开 心 价 : </span>
                 <price
                   :priceNum="
-                    detailsdata.price_lv.unitList[this.unitid].marketPrice
+                    detailsdata.price_lv.unitList[this.unitid].orderPrice
                   "
                   :size="1.6"
                 />
@@ -55,7 +56,11 @@
                     :key="index"
                     @click="colourClick(true, index)"
                   >
-                    {{ item.unitName ? item.unitName : "暂无" }}
+                    {{ item.unitName
+                    }}<i v-if="item.rate != 1"
+                      >({{ item.rate
+                      }}{{ detailsdata.price_lv.unitList[0].unitName }})</i
+                    >
                   </button>
                 </div>
               </div>
@@ -72,19 +77,26 @@
                   </button>
                 </div>
               </div>
-              <div>
+              <div class="btnbox">
                 <span>购买数量:</span>
                 <div>
-                  <InputNumber :min="1" v-model="buyNum" />
-                  <p>库存数量 : 库存充足</p>
+                  <!-- <InputNumber :min="1" v-model="buyNum" /> -->
+                  <!-- <p>库存数量 : 库存充足</p> -->
+                  <stepper
+                    :stepperObj="{
+                      num: buyNum,
+                      index: 0,
+                      width: '10rem',
+                      height: '3.13rem',
+                    }"
+                    @getstepperObj="getstepperObj"
+                  />
                 </div>
+                <button @click="addShopping" class="addbtn">
+                  <img src="../../assets/img/sundry/gwc.png" />
+                  加入购物车
+                </button>
               </div>
-            </div>
-            <div class="btnbox">
-              <button @click="addShopping" ref="addbtn">
-                <img src="../../assets/img/sundry/gwc.png" />
-                加入购物车
-              </button>
             </div>
           </div>
         </div>
@@ -93,6 +105,33 @@
         <span>产品详情</span>
       </div>
       <div class="detailsimgbox">
+        <div class="detailbox">
+          <div>
+            商品名称：<span>{{ detailsdata.plist_name }}</span>
+          </div>
+          <div>
+            商品颜色：<span
+              v-for="(item, index) in detailsdata.price_lv.cate"
+              :key="index"
+              >{{ item.cateName || "暂无"
+              }}<i v-if="index != detailsdata.price_lv.cate.length - 1"
+                >、</i
+              ></span
+            >
+          </div>
+          <div>
+            商品数量：<span
+              v-for="(item, index) in detailsdata.price_lv.unitList"
+              :key="index"
+              >{{ item.unitName
+              }}<i v-if="index != detailsdata.price_lv.unitList - 1"
+                >、</i
+              ></span
+            >
+          </div>
+          <div>商品产地：中国大陆</div>
+          <div>商品用途：办公</div>
+        </div>
         <img
           :src="item"
           v-for="(item, index) in detailsdata.plist_detail_img_url"
@@ -116,6 +155,8 @@ import statement from "@/components/Statement.vue";
 import price from "@/components/Price.vue";
 import PicZoom from "vue-piczoom";
 import goTop from "@/components/GoTop.vue";
+import breadcrumb from "@/components/Breadcrumb.vue";
+import stepper from "@/components/Stepper.vue";
 export default {
   components: {
     shortcut,
@@ -125,6 +166,8 @@ export default {
     price,
     PicZoom,
     goTop,
+    breadcrumb,
+    stepper,
   },
   data() {
     return {
@@ -168,6 +211,14 @@ export default {
           this.$toast(this.$api.monmsg);
         });
     },
+    // 数量改变
+    getstepperObj: function (obj) {
+      console.info(obj);
+      this.buyNum = obj.num;
+      // this.shoppings[obj.index].buyNum = obj.num;
+      // this.shoppingCarCount(this.shoppings[obj.index]);
+      // this.$forceUpdate();
+    },
     // 左滚
     leftClick: function () {
       if (this.spec_list == 0) return;
@@ -192,8 +243,11 @@ export default {
 <style lang='less' scoped>
 .details {
   margin-top: 2rem;
+  i {
+    font-style: normal;
+  }
   .content {
-    background: #f9f9f9;
+    // background: #f9f9f9;
     // padding-top: 2rem;
     > div:nth-child(1) {
       background-color: #fff;
@@ -201,11 +255,12 @@ export default {
       border-top: 1px solid #e5e5e5;
       padding-top: 2rem;
       .imgbox {
+        width: 21rem;
         // position: relative;
         // 顶部大图
         > div:nth-child(1) {
-          width: 30rem;
-          height: 30rem;
+          width: 21rem;
+          height: 21rem;
           border: 1px solid #f2f2f2;
           > img {
             max-width: 100%;
@@ -231,12 +286,14 @@ export default {
             > div {
               top: 0;
               height: 5rem;
+              display: flex;
+              align-items: center;
               position: absolute;
               > img {
                 border: 1px solid #fff;
-                margin: 0 0.5rem;
-                width: 5rem;
-                height: 5rem;
+                margin: 0 0.3rem;
+                width: 3.25rem;
+                height: 3.25rem;
               }
               > .img_active {
                 border: 1px solid #ff8400;
@@ -246,9 +303,9 @@ export default {
         }
       }
       .sizebox {
-        width: 100%;
-        padding: 4rem;
-        padding-top: 2rem;
+        // width: 100%;
+        flex: auto;
+        padding-left: 1.56rem;
         > h6 {
           width: 30rem;
           margin-bottom: 2rem;
@@ -256,14 +313,12 @@ export default {
         }
         .box {
           display: flex;
-          padding: 1rem;
           flex-direction: column;
-          background-color: #f9f9f9;
           > div {
             font-size: 1rem;
+            margin-bottom: 1rem;
             > div {
               display: flex;
-              margin: 1rem 0;
               > span:nth-child(1) {
                 display: flex;
                 align-items: center;
@@ -283,10 +338,9 @@ export default {
                 > button {
                   color: #666666;
                   font-size: 0.8rem;
-                  border-radius: 1rem;
-                  padding: 0.2rem 1rem;
+                  padding: 0.75rem 2.25rem;
                   margin-right: 1rem;
-                  border: 1px solid #e9e9e9;
+                  border: 1px solid #dcdcdc;
                 }
                 .active {
                   color: #ff8900;
@@ -296,30 +350,31 @@ export default {
             }
           }
           > div:nth-child(1) {
-            border-bottom: 1px solid #e5e5e5;
-            padding-bottom: 1rem;
+            padding: 1rem 1.3rem;
+            background-color: #fff4e6;
+          }
+          > div:nth-child(2) {
+            > div {
+              margin-bottom: 1rem;
+            }
           }
           .btnbox {
-            display: flex;
-            align-items: center;
-            > button {
-              height: 3rem;
-              margin-left: 2rem;
-              border-radius: 0.1rem;
-              padding: 0.5rem 2rem;
-              border: 1px solid #ff8900;
-            }
-            > button:nth-child(1) {
-              color: #ff8900;
+            border-top: 1px dotted#DCDCDC;
+            padding-top: 1.5rem;
+            .addbtn {
+              width: 14rem;
+              height: 3.13rem;
+              background: #ff9000;
+              margin-left: 1.56rem;
+              color: #fff;
               display: flex;
               align-items: center;
+              justify-content: center;
               > img {
-                margin-right: 0.5rem;
+                width: 1.5rem;
+                height: 1.25rem;
+                margin-right: 0.63rem;
               }
-            }
-            > button:nth-child(2) {
-              background: #ff8900;
-              color: #fff;
             }
           }
         }
@@ -327,16 +382,14 @@ export default {
     }
     .namebox {
       margin-top: 6rem !important;
-      border: 1px solid #eaeaea;
-      background-color: #fff;
+      background: #f2f2f2;
       > span {
-        border-top: 0.3rem solid #ff8900;
-        border-right: 1px solid #eaeaea;
         display: inline-block;
-        padding: 0.8rem 2rem;
+        padding: 0.8rem 3rem;
         font-size: 1.1rem;
-        // width: 5rem;
-        // line-height: 3rem;
+        background: #ffffff;
+        border: 1px solid #dcdcdc;
+        border-top: 0.3rem solid #ff8900;
       }
     }
     .detailsimgbox {
@@ -344,6 +397,23 @@ export default {
       padding: 1rem;
       font-size: 0;
       padding-bottom: 10rem;
+      .detailbox {
+        margin-top: 1.8rem;
+        margin-bottom: 3rem;
+        font-size: 1rem;
+        // font-size: 0.75rem;
+        padding: 0 4rem;
+        border-bottom: 1px dotted#DCDCDC;
+        display: flex;
+        flex-wrap: wrap;
+        > div {
+          width: 25%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin-bottom: 1rem;
+        }
+      }
       > img {
         width: 100%;
       }
@@ -356,8 +426,15 @@ export default {
 .details .ivu-input-number-handler-wrap {
   opacity: 1;
 }
-.mouse-cover-canvas {
+.details .mouse-cover-canvas {
   width: 35.5rem;
   height: 35.5rem;
+}
+/* 设置  数字输入框符号 */
+.details .ivu-icon-ios-arrow-up:before {
+  content: "\F102";
+}
+.details .ivu-icon-ios-arrow-down:before {
+  content: "\F292";
 }
 </style>

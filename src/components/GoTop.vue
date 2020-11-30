@@ -9,18 +9,53 @@
         <p>购物车</p>
         <i>{{ count }}</i>
       </div>
-      <div class="imgbox">
-        <img src="../assets/img/components/service.png" alt="" />
-        <img src="../assets/img/components/service_.png" alt="" />
-        <p>人工客服</p>
-      </div>
+      <Poptip placement="left-end">
+        <div
+          class="imgbox"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+          "
+        >
+          <img src="../assets/img/components/service.png" alt="" />
+          <img src="../assets/img/components/service_.png" alt="" />
+          <p>人工客服</p>
+        </div>
+        <div class="api poptip" slot="content">
+          <div>
+            <img src="../assets/img/components/service.png" alt="" />
+            <div>
+              <p>客服热线</p>
+              <p>15839451057</p>
+            </div>
+          </div>
+          <div>
+            <img src="../assets/img/components/service.png" alt="" />
+            <div>
+              <p>客服热线</p>
+              <p>15839451057</p>
+            </div>
+          </div>
+          <div>
+            <img src="../assets/img/components/service.png" alt="" />
+            <div>
+              <p>客服热线</p>
+              <p>15839451057</p>
+            </div>
+          </div>
+        </div>
+      </Poptip>
+
       <div class="imgbox" @click="serve('/maintain/maintainList')">
         <img src="../assets/img/components/visit.png" alt="" />
         <img src="../assets/img/components/visit_.png" alt="" />
         <p>上门服务</p>
       </div>
-      <BackTop class="topbtn">
-        <img src="../assets/img/uptop.png" />
+      <BackTop class="imgbox topbtn">
+        <img src="../assets/img/components/uptop.png" />
+        <img src="../assets/img/components/uptop_.png" />
         <p>TOP</p>
       </BackTop>
     </div>
@@ -43,6 +78,7 @@ export default {
     },
   },
   mounted() {
+    this.count = this.$store.state.count;
     window.addEventListener("scroll", this.showbtn, true);
   },
   methods: {
@@ -130,6 +166,38 @@ export default {
         display: inline-block;
       }
     }
+    .poptip {
+      padding: 0.8rem;
+      > div {
+        display: flex;
+        // align-items: center;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #ccc;
+        // flex-direction: column;
+        > img {
+          height: 22px;
+          margin-right: 0.5rem;
+        }
+        > div {
+          > p:nth-child(1) {
+            margin-bottom: 0.3rem;
+          }
+           > p:nth-child(2) {
+             color: #f68b00;
+             font-size: 1.1rem;
+          }
+        }
+      }
+      > div:last-child {
+        border: none;
+      }
+    }
   }
+}
+</style>
+
+<style lang="less">
+.ivu-poptip-popper {
+  left: -210px !important;
 }
 </style>

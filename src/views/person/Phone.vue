@@ -75,12 +75,17 @@
             >
           </div>
         </div>
-        <div v-else-if="pitchon == 2">
-          <p>更换手机号成功</p>
-          <p>
-            新手机号:
-            <span>123******5623</span>
-          </p>
+        <div class="okbox" v-else-if="pitchon == 2">
+          <div>
+            <img src="../../assets/img/person/ok.png" alt="" />
+            <div>
+              <p>更换手机号成功</p>
+              <p>
+                新手机号:
+                <span>123******5623</span>
+              </p>
+            </div>
+          </div>
           <Button type="warning" size="large" class="btn" @click="back"
             >返回</Button
           >
@@ -137,7 +142,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.commit("show_personid", 4);
+    this.$store.commit("show_personid", 5);
     if (this.$route.query.pitchon) this.pitchon = this.$route.query.pitchon;
     if (this.pitchon == 0) {
       this.phoneNum = this.user.phone ? this.user.phone : this.user.phoneNum;
@@ -197,11 +202,13 @@ export default {
 
 <style lang='less' scoped>
 .phone {
-  flex: 4;
   > div {
     margin-top: 1rem;
   }
   .content {
+    border: 1px solid #ebebeb;
+    min-height: 15.7rem;
+    padding: 0.65rem;
     > div:nth-child(1) {
       > div {
         width: 23rem;
@@ -240,11 +247,11 @@ export default {
             display: block;
             text-align: center;
             color: #fff;
-            width: 2.2rem;
-            height: 2.2rem;
-            line-height: 2.2rem;
-            border-radius: 0.2rem;
-            background-color: #bdbdbd;
+            width: 2.51rem;
+            height: 2.51rem;
+            line-height: 2.51rem;
+            border-radius: 50%;
+            background-color: #ffc273;
             transform: rotate(45deg);
             > b {
               display: flex;
@@ -256,14 +263,14 @@ export default {
           > p {
             font-size: 1.2rem;
             margin-top: 1.5rem;
-            color: #bdbdbd;
+            color: #ffc273;
           }
         }
         > div:nth-child(even) {
           margin-top: 0.9rem;
           width: 20rem;
-          height: 0.5rem;
-          background-color: #bdbdbd;
+          height: 0.25rem;
+          background-color: #ffc273;
         }
         > div:nth-child(5) {
           margin-left: 1.5rem;
@@ -309,7 +316,7 @@ export default {
             }
             > div:nth-child(2) {
               > button {
-                color: #ff8400;
+                // color: #ff8400;
                 margin-left: 1rem;
                 padding: 0.25rem 1.5rem;
                 border: 1px solid #ff8400;
@@ -339,6 +346,30 @@ export default {
         }
       }
     }
+    .okbox {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      > div:nth-child(1) {
+        display: flex;
+        align-items: center;
+        > img {
+          margin-right: 2rem;
+        }
+        > div {
+          > p:nth-child(1) {
+            font-size: 1.29rem;
+            font-family: Microsoft YaHei;
+            font-weight: 400;
+            color: #000000;
+            margin-bottom: 0.8rem;
+          }
+        }
+      }
+    }
   }
+}
+button {
+  border-radius: 0;
 }
 </style>

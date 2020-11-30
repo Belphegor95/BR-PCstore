@@ -3,7 +3,7 @@
   <div class="pay">
     <div class="tsbox">
       <p>
-        订单提交成功!请您尽快付款!订单号: <span>{{ orderOk.tradeNo }}</span>
+        订单提交成功，请您尽快付款！订单号： <span>{{ orderOk.tradeNo }}</span>
       </p>
       <p>
         应付金额: <span>{{ orderOk.money }}元</span>
@@ -18,7 +18,13 @@
       </div>
       <div class="btnbox">
         <button class="weixinbtn" @click="onPay(2)">
-          <img src="../assets/img/pay/weixin.png" alt="" />
+          <img src="../assets/img/pay/weixin.png" />
+        </button>
+        <button
+          class="zhifubaobtn"
+          @click="$toast('支付方式暂未开通,清使用其他支付方式')"
+        >
+          <img loading="lazy" src="../assets/img/pay/zhifubao.png" />
         </button>
       </div>
     </div>
@@ -52,7 +58,7 @@
         <p>微信支付：{{ orderOk.money }}元</p>
       </div>
       <div>
-        <button>查看订单详情</button> |
+        <button @click="onList">查看订单列表</button> |
         <button @click="$router.push('/')">继续逛逛</button>
       </div>
     </div>
@@ -60,6 +66,7 @@
 </template>
 
 <script>
+import OrderFormVue from "../views/person/OrderForm.vue";
 const qrcode = require("jr-qrcode");
 export default {
   props: {
@@ -90,11 +97,20 @@ export default {
       let obj = JSON.parse(JSON.stringify(this.$route.query));
       obj.pitchon = index;
       this.$emit("onPay", obj);
+      // 判断是否是 维修单
+    },
+    // 返回列表页面
+    onList: function () {
+      let url = "";
+      this.$route.query.orderType == 1
+        ? (url = "/maintain/maintainList")
+        : (url = "/person/orderForm");
+      this.$router.push(url);
     },
     isCheckPay: function () {
       this.axios
         .post(this.$api.checkPay, {
-          tradeNo: this.orderOk.tradeNo,
+          tradeNo: `${this.orderOk.tradeNo}0`,
         })
         .then((data) => {
           if (data.code == 200) {
@@ -126,14 +142,19 @@ export default {
 .pay {
   display: flex;
   flex-direction: column;
-  padding: 3rem;
+  padding: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #c4c4c4;
   .tsbox {
     display: flex;
-    padding: 0.3rem;
+    height: 2rem;
+    background: #ffeed8;
+    align-items: center;
+    padding: 0 0.5rem;
     justify-content: space-between;
     > p {
       > span {
-        color: red;
+        color: #f39800;
       }
     }
     > p:nth-child(2) {
@@ -146,10 +167,11 @@ export default {
   .payOne {
     width: 100%;
     display: flex;
+    margin-top: 0.5rem;
     padding: 1rem 3rem;
     flex-direction: column;
-    border: 1px solid #eee;
-    box-shadow: 0 6px 32px rgba(0, 0, 0, 0.13);
+    border-top: 1px solid #c4c4c4;
+    // box-shadow: 0 6px 32px rgba(0, 0, 0, 0.13);
     > div:nth-child(1) {
       width: 100%;
       display: flex;
@@ -167,14 +189,23 @@ export default {
     }
     .btnbox {
       display: flex;
-      padding: 3rem 1rem;
+      padding: 3rem 15rem;
       align-items: center;
-      justify-content: center;
-      .weixinbtn {
-        padding: 0.2rem 1.2rem;
+      justify-content: space-around;
+      > button {
+        width: 12rem;
+        padding: 0.2rem 0;
         border: 1px solid #ccc;
+      }
+      .weixinbtn {
         > img {
-          width: 8rem;
+          // width: 8rem;
+          height: 2.5rem;
+        }
+      }
+      .zhifubaobtn {
+        > img {
+          height: 2.5rem;
         }
       }
     }

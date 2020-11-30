@@ -4,38 +4,49 @@
     <shortcut />
     <div class="content">
       <div class="happyname">
-        <h1 @click="gohome">开心兔商城</h1>
-        <div class="stepsbox">
-          <div :class="pitchon >= 0 ? 'active' : ''">
-            <span>
-              <b>1</b>
-            </span>
-            <p>拍下商品</p>
-          </div>
-          <div :class="pitchon >= 2 ? 'active_' : ''"></div>
-          <div :class="pitchon >= 2 ? 'active' : ''">
-            <span>
-              <b>2</b>
-            </span>
-            <p>付款</p>
-          </div>
-          <div :class="pitchon >= 3 ? 'active_' : ''"></div>
-          <div :class="pitchon >= 3 ? 'active' : ''">
-            <span>
-              <b>3</b>
-            </span>
-            <p>确认收货</p>
+        <div>
+          <h1 @click="gohome">开心兔</h1>
+          <span>核实订单信息</span>
+        </div>
+        <div class="stepsbox1">
+          <div
+            v-for="(item, index) in [
+              '我的购物车',
+              '填写核对订单信息',
+              '成功提交订单',
+            ]"
+            :key="index"
+            :class="
+              index - 1 < pitchon
+                ? 'active'
+                : index - 1 == pitchon
+                ? 'active_'
+                : ''
+            "
+          >
+            <div>
+              <span
+                ><span>{{ index + 1 }}</span></span
+              >
+            </div>
+            <p>{{ index + 1 }}.{{ item }}</p>
           </div>
         </div>
       </div>
       <div class="activeOne" v-if="pitchon == 0">
         <div>
-          <span>确认收货地址</span>
-          <span @click="$router.push('/person/deliveryAddress?is=true')"
+          <div>
+            <span>确认收货地址</span>
+            <span @click="$router.push('/person/deliveryAddress?is=true')"
+              >新增收货地址</span
+            >
+            <!-- <Button @click="$router.push('/person/deliveryAddress?is=true')"
+              >新增地址</Button
+            > -->
+          </div>
+          <!-- <span @click="$router.push('/person/deliveryAddress?is=true')"
             >管理收货地址</span
-          >
-        </div>
-        <div>
+          > -->
           <RadioGroup v-model="addressindex" class="radiobox">
             <div
               v-for="(item, index) in address"
@@ -44,22 +55,20 @@
             >
               <div style="opacity: 0">
                 <img src="../../assets/img/sundry/dw.png" />
-                <p>寄送到</p>
               </div>
               <Radio :label="index">
                 <div>
                   <p>{{ (item.address + item.address_detail) | site }}</p>
                   <span v-show="addressindex == index" @click="rut(item)"
-                    >修改本地址</span
+                    >编辑</span
                   >
                 </div>
               </Radio>
             </div>
           </RadioGroup>
-          <Button @click="$router.push('/person/deliveryAddress?is=true')"
-            >新增地址</Button
-          >
-          <p>购物车</p>
+        </div>
+        <div>
+          <p>确认订单信息</p>
           <div class="listbox">
             <div>
               <div>店铺宝贝</div>
@@ -79,7 +88,7 @@
               </div>
               <div>{{ item.price }}</div>
               <div>{{ item.buyNum }}</div>
-              <div>{{ (item.price * item.buyNum).toFixed(2) }}</div>
+              <div>￥{{ (item.price * item.buyNum).toFixed(2) }}</div>
             </div>
           </div>
           <div class="propertybox">
@@ -115,62 +124,60 @@
               </div>
               <div>
                 <span>优惠券:</span>
-                <Select
-                  v-model="ticketid"
-                  style="width: 150px; margin-left: 1rem"
-                >
-                  <Option
-                    v-for="item in ticketList"
-                    :value="item.id"
-                    :key="item.id"
-                    >{{ item.name }}</Option
-                  >
-                </Select>
+                <div class="totalbox">
+                  <Select v-model="ticketid" style="width: 150px">
+                    <Option
+                      v-for="item in ticketList"
+                      :value="item.id"
+                      :key="item.id"
+                      >{{ item.name }}</Option
+                    >
+                  </Select>
+                  <p>￥0</p>
+                </div>
               </div>
               <div>
-                <p>
-                  <span>合计:</span>
-                  {{ isticketNum(orderdata.totalMoney) }}
-                </p>
+                <span>合计:</span>
+                <div class="totalbox">
+                  <span></span>
+                  <p>￥{{ isticketNum(orderdata.totalMoney) }}</p>
+                </div>
               </div>
             </div>
           </div>
-          <div style="text-align: right; padding: 0.5rem 1rem">满50包邮</div>
-          <div class="bttombox">
-            <div v-if="address.length > 0">
+          <!-- <div style="text-align: right; padding: 0.5rem 1rem">满50包邮</div> -->
+        </div>
+        <div class="bttombox">
+          <div v-if="address.length > 0">
+            <p>
+              <span>实付款:</span>
+              {{ isticketNum(orderdata.totalMoney) }}
+            </p>
+            <div>
+              <span>寄送至:</span>
               <p>
-                <span>实付款:</span>
-                {{ isticketNum(orderdata.totalMoney) }}
+                {{
+                  (address[addressindex].address +
+                    address[addressindex].address_detail)
+                    | site
+                }}
               </p>
-              <div>
-                <span>寄送至:</span>
-                <p>
-                  {{
-                    (address[addressindex].address +
-                      address[addressindex].address_detail)
-                      | site
-                  }}
-                </p>
-              </div>
-              <span
-                >收货人: {{ address[addressindex].linkman }}
-                {{ address[addressindex].phone }}</span
-              >
             </div>
-            <Button
-              class="addbtn"
-              :loading="btnload"
-              @click="onSubmit"
-              v-show="orderdata.totalMoney >= 50"
-              >提交订单</Button
-            >
-            <Button
-              class="forbidbtn"
-              disabled
-              v-show="orderdata.totalMoney < 50"
-              >未满50元</Button
+            <span
+              >收货人: {{ address[addressindex].linkman }}
+              {{ address[addressindex].phone }}</span
             >
           </div>
+          <Button
+            class="addbtn"
+            :loading="btnload"
+            @click="onSubmit"
+            v-show="orderdata.totalMoney >= 50"
+            >提交订单</Button
+          >
+          <Button class="forbidbtn" disabled v-show="orderdata.totalMoney < 50"
+            >未满50元</Button
+          >
         </div>
       </div>
       <pay :orderOk="orderOk" @onPay="onPay" v-else />
@@ -217,6 +224,7 @@ export default {
         {
           id: -1,
           name: "不使用优惠券",
+          money: 0,
         },
       ],
     };
@@ -296,7 +304,6 @@ export default {
     },
     // 提交订单
     onSubmit: function () {
-      this.pitchon = 1;
       // 请求接口;
       if (this.address.length == 0) {
         this.$toast("请添加地址!");
@@ -314,17 +321,22 @@ export default {
         })
         .then((data) => {
           if (data.code == 200) {
-            this.btnload = false;
+            this.$toast("下单成功,即将跳转到支付页面!");
             this.orderOk = data.data;
-            this.$router.push({
-              path: "/payment",
-              query: {
-                pitchon: 1,
-                money: data.data.money,
-                qrCode: data.data.qrCode,
-                tradeNo: data.data.tradeNo,
-              },
-            });
+            setTimeout(() => {
+              this.btnload = false;
+              this.pitchon = 1;
+              this.$router.push({
+                path: "/payment",
+                query: {
+                  pitchon: 1,
+                  money: data.data.money,
+                  qrCode: data.data.qrCode,
+                  tradeNo: data.data.tradeNo,
+                  orderType: data.data.orderType,
+                },
+              });
+            }, 3000);
           } else {
             this.btnload = false;
             this.$toast(this.ErrCode(data.msg));
@@ -390,22 +402,34 @@ export default {
 <style lang='less' scoped>
 .payment {
   margin-top: 2rem;
-  background-color: #f9f9f9;
   .content {
     > div {
       background: #fff;
     }
     .happyname {
       display: flex;
-      height: 7rem;
+      // height: 7rem;
       font-weight: 700;
       color: #ff8400;
       align-items: center;
       justify-content: space-between;
-      > h1 {
-        font-size: 2rem;
-        cursor: pointer;
-        text-indent: 1rem;
+      > div:nth-child(1) {
+        display: flex;
+        padding: 2rem 0;
+        align-items: flex-end;
+        > h1 {
+          font-size: 3.8rem;
+          cursor: pointer;
+          text-indent: 1rem;
+        }
+        > span {
+          color: #000;
+          font-size: 1.25rem;
+          font-family: Microsoft YaHei;
+          font-weight: 400;
+          margin-left: 2.3rem;
+          margin-bottom: 1rem;
+        }
       }
       //   步骤条
       .stepsbox {
@@ -462,23 +486,125 @@ export default {
           background: #ff8400 !important;
         }
       }
+      .stepsbox1 {
+        display: flex;
+        color: #c4c4c4;
+        margin-right: 2rem;
+        > div {
+          display: flex;
+          flex-direction: column;
+          margin-right: -1rem;
+          > div {
+            width: 12rem;
+            height: 0.38rem;
+            > span:nth-child(1) {
+              width: 100%;
+              height: 0.38rem;
+              background: #c4c4c4;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 1rem;
+              > span {
+                // height: 2rem;
+                width: 1.26rem;
+                height: 1.26rem;
+                line-height: 1.26rem;
+                background: #c4c4c4;
+                text-align: center;
+                color: #fff;
+                border-radius: 50%;
+              }
+            }
+          }
+          > p {
+            margin-top: 0.88rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-family: Microsoft YaHei;
+            font-weight: 400;
+          }
+        }
+        // 第一个倒圆角
+        > div:nth-child(1) > div > span:nth-child(1) {
+          border-radius: 1rem 0 0 1rem;
+        }
+        // 最后一个特殊处理
+        > div:last-child > div {
+          width: 10rem;
+          height: 0.38rem;
+          > span:nth-child(1) {
+            width: 50%;
+            height: 0.38rem;
+            background: #c4c4c4;
+            display: flex;
+            // align-items: center;
+            justify-content: flex-end;
+            > span {
+              // height: 2rem;
+              width: 1.26rem;
+              height: 1.26rem;
+              line-height: 1.26rem;
+              background: #c4c4c4;
+              text-align: center;
+              color: #fff;
+              border-radius: 50%;
+            }
+          }
+        }
+        .active {
+          color: #ffc273;
+          > div {
+            > span {
+              background-color: #ffc273 !important;
+              > span {
+                background-color: #ffc273 !important;
+              }
+            }
+          }
+        }
+        .active_ {
+          color: #ff9000;
+          z-index: 1s;
+          > div {
+            > span {
+              background-color: #ff9000 !important;
+              > span {
+                background-color: #ff9000 !important;
+              }
+            }
+          }
+        }
+      }
     }
     // 拍下商品
     .activeOne {
       > div:nth-child(1) {
+        border: 1px solid #c4c4c4;
         display: flex;
+        flex-direction: column;
         font-size: 0.9rem;
         color: #000;
         padding: 1rem 1rem 0.5rem 1rem;
-        justify-content: space-between;
-        border-bottom: 1px solid #f0f0f0;
-        > span:nth-child(2) {
-          color: #ff8400;
-          cursor: pointer;
+        > div:nth-child(1) {
+          display: flex;
+          height: 1.5rem;
+          margin-bottom: 0.88rem;
+          justify-content: space-between;
+          border-bottom: 1px solid #c4c4c4;
+          > span:nth-child(1) {
+            font-size: 0.75rem;
+            font-family: Microsoft YaHei;
+            font-weight: bold;
+          }
+          > span:nth-child(2) {
+            // color: #ff8400;
+            font-size: 0.75rem;
+            font-family: Microsoft YaHei;
+            font-weight: 400;
+            cursor: pointer;
+          }
         }
-      }
-      > div:nth-child(2) {
-        padding: 1rem 0;
         .radiobox {
           display: flex;
           flex-direction: column;
@@ -486,6 +612,7 @@ export default {
             display: flex;
             overflow: hidden;
             padding: 0.2rem 0;
+            margin: 0.2rem 0;
             > div {
               display: flex;
               width: 6rem;
@@ -535,16 +662,31 @@ export default {
           margin-top: 0.5rem;
           margin-left: 5.5rem;
         }
+      }
+      > div:nth-child(2) {
+        margin-top: 1.8rem;
+        padding: 0.8rem;
+        background: #fbfbfb;
+        border: 1px solid #c4c4c4;
+        > p:nth-child(1) {
+          height: 1.5rem;
+          font-size: 0.75rem;
+          font-family: Microsoft YaHei;
+          font-weight: bold;
+          color: #000000;
+          margin-bottom: 0.88rem;
+          border-bottom: 1px solid #c4c4c4;
+        }
         .listbox {
+          border-bottom: 1px solid #c4c4c4;
           > div {
             display: flex;
             > div {
               flex: 1;
               display: flex;
               padding: 1rem 0;
-              align-items: center;
               justify-content: center;
-              border-bottom: 1px dashed #f1f1f1;
+
               > img {
                 width: 5rem;
                 height: 5rem;
@@ -562,8 +704,10 @@ export default {
             }
           }
           > div:nth-child(1) {
-            border: 1px solid #e6e6e6;
-            background-color: #f5f5f5;
+            background: #ffeed8;
+            > div {
+              padding: 0.4rem 0;
+            }
             > div:nth-child(2),
             > div:nth-child(5) {
               color: #000;
@@ -575,14 +719,13 @@ export default {
 
     .propertybox {
       display: flex;
-      border-bottom: 1px solid #e5e5e5;
+      // border-bottom: 1px solid #e5e5e5;
       > div:nth-child(1) {
         flex: 1;
         display: flex;
         align-items: center;
         flex-direction: column;
         justify-content: space-evenly;
-        border-right: 1px solid #e5e5e5;
         > div {
           width: 90%;
           display: flex;
@@ -590,7 +733,6 @@ export default {
           > span {
             width: 5rem;
             margin-top: 0.3rem;
-            text-align: right;
             margin-right: 1rem;
             display: inline-block;
           }
@@ -612,11 +754,10 @@ export default {
           padding: 1rem;
           color: #000;
           align-items: center;
-          border-bottom: 1px solid #e5e5e5;
           > span {
             width: 6rem;
             flex-shrink: 0;
-            text-align: right;
+            // text-align: right;
           }
           .psbox {
             display: flex;
@@ -634,14 +775,15 @@ export default {
               color: #ff8400;
             }
           }
-          > p:nth-child(1) {
+
+          .totalbox {
             width: 100%;
+            display: flex;
             padding: 0 1rem;
-            text-align: right;
-            color: #ff8400;
-            font-size: 1.1rem;
-            > span {
-              color: #000;
+            justify-content: space-between;
+            > p {
+              color: #ff8400;
+              font-size: 1.1rem;
             }
           }
         }
@@ -652,7 +794,7 @@ export default {
     }
     .bttombox {
       display: flex;
-      padding: 3rem 0;
+      padding: 1.94rem 0;
       align-items: flex-end;
       flex-direction: column;
       > div {
@@ -660,13 +802,13 @@ export default {
         display: flex;
         padding: 0.5rem 1rem;
         flex-direction: column;
-        border: 1px solid #ff8400;
+        border: 0.25rem solid #ffdeb2;
         > p,
         > span {
           text-align: right;
         }
         > p {
-          color: #ff8400;
+          color: #e20000;
           font-size: 1.6rem;
           font-weight: 700;
           > span {
@@ -690,8 +832,8 @@ export default {
         color: #fff;
       }
       > .addbtn {
-        border: 1px solid #ff8400;
-        background: #ff8400;
+        border: 1px solid #f68b00;
+        background: #f68b00;
       }
       > .forbidbtn {
         border: 1px solid #dcdee2;

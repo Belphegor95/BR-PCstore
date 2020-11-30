@@ -5,10 +5,10 @@
     <div class="content">
       <div>
         <span :class="isticket == 0 ? 'active' : ''" @click="onIs(0)"
-          >可用卷</span
+          >可用</span
         >
         <span :class="isticket != 0 ? 'active' : ''" @click="onIs(1)"
-          >不可用卷</span
+          >不可用</span
         >
       </div>
       <div>
@@ -38,7 +38,7 @@ export default {
     };
   },
   mounted() {
-    this.$store.commit("show_personid", 5);
+    this.$store.commit("show_personid", 2);
     this.getTicket();
   },
   methods: {
@@ -76,24 +76,44 @@ export default {
 
 <style lang='less' scoped>
 .coupon {
-  flex: 4;
+  // flex: 4;
   .content {
+    border: 1px solid #ebebeb;
+    min-height: 15.7rem;
+    padding: 0.65rem;
     > div:nth-child(1) {
-      padding: 1rem;
+      border-bottom: 1px solid #ebebeb;
+      // padding: 1rem;
       > span {
         cursor: pointer;
         font-size: 1rem;
-        margin-right: 4rem;
+        height: 2rem;
+        display: inline-block;
+        padding: 0.2rem 0.69rem;
       }
       .active {
         color: #ff8400;
+        position: relative;
+      }
+      .active:after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 1px;
+        position: absolute;
+        top: 2rem;
+        bottom: 0;
+        right: 0;
+        background: #FF9000;
+        z-index: 1;
       }
     }
     > div:nth-child(2) {
       display: flex;
       flex-wrap: wrap;
       .ticket_ {
-        margin-right: 1rem;
+        margin-top: 1.38rem;
+        margin-right: 3.1rem;
       }
     }
   }

@@ -5,7 +5,7 @@
       <div class="happyname">
         <!-- <span @click="gohome">开心兔商城</span> -->
         <img @click="gohome" src="../assets/img/log.png" />
-        <h1 @click="gohome">开心兔商城</h1>
+        <!-- <h1 @click="gohome">开心兔</h1> -->
       </div>
       <div class="serachbox" v-show="isSearch">
         <div class="serachinput">
@@ -14,11 +14,11 @@
             <img src="../assets/img/loupe.png" alt="" /> 搜索
           </button>
           <ul v-show="historyList.length != 0">
-            <li v-for="(item, index) in historyList" :key="index">
+            <li v-for="(item, index) in historyList" @click="onHistory(item)" :key="index">
               <p>{{ item }}</p>
               <div>
                 <span>搜索历史</span>
-                <span @click="detHistoryList(index)">删除</span>
+                <span @click.stop="detHistoryList(index)">删除</span>
               </div>
             </li>
             <p @click="emptyHistoryList">全部删除</p>
@@ -160,17 +160,22 @@ export default {
   .leftbox {
     display: flex;
     .happyname {
+      overflow: hidden;
       margin-right: 4.7rem;
+      margin-left: 3.7rem;
       display: flex;
       font-weight: 700;
-      color: #ff8400;
+      // color: #ff8400;
+      font-family: huxiaobo;
       text-indent: 1rem;
       align-items: center;
       > img {
         cursor: pointer;
+        width: 13rem;
       }
       > h1 {
-        font-size: 2rem;
+        color: #f39800;
+        font-size: 3rem;
         cursor: pointer;
       }
     }
@@ -184,11 +189,13 @@ export default {
         position: relative;
         > input {
           outline: 0px;
+          height: 2.1rem;
           width: 40.88rem;
           padding-left: 0.8rem;
-          border: 0.1rem solid #ff8900;
+          border: 0.1rem solid #F39800;
         }
         > button {
+          height: 2.1rem;
           display: flex;
           align-items: center;
           color: #fff;
@@ -202,7 +209,7 @@ export default {
           display: none;
           z-index: 10;
           position: absolute;
-          top: 2.2rem;
+          top: 2.1rem;
           left: 0;
           width: 40.88rem;
           border: 1px solid #cccccc;
@@ -249,10 +256,10 @@ export default {
           }
         }
       }
-
       .btnbox {
         color: #999999;
         margin-top: 0.5rem;
+        font-size: 0.9rem;
         > span {
           margin: 0 0.5rem;
           cursor: pointer;

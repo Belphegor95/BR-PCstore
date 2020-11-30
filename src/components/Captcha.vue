@@ -1,6 +1,6 @@
 <!-- 获取验证码 -->
 <template>
-  <Button :loading="isloading" :class="isloading?'active':''" @click="getYzm">{{ !isloading? "获取验证码": btnload + "秒后重新获取" }}</Button>
+  <Button  type="warning" :loading="isloading" :class="isloading?'active':''" @click="getYzm">{{ !isloading? "获取验证码": btnload + "秒后重新获取" }}</Button>
 </template>
 
 <script>
@@ -69,6 +69,7 @@ export default {
 
 <style lang='less' scoped>
 button {
+  color: #fff;
   border-radius: 0;
 }
 .active {

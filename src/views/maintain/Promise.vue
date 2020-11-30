@@ -81,6 +81,7 @@
         </div>
       </div>
       <button class="nextStep" @click="advance">确定下单</button>
+      <!-- <button class="nextStep" @click="onGopay">立即支付</button> -->
     </div>
   </div>
 </template>
@@ -134,7 +135,8 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.$toast("维修下单成功!");
-            this.$router.push("/maintain/maintainList");
+            this.onGopay(data.data);
+            // this.$router.push("/maintain/maintainList");
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -205,6 +207,18 @@ export default {
       this.$router.push({
         path: "/person/deliveryAddress",
         query: item,
+      });
+    },
+    // 点击 去支付
+    onGopay: function (obj) {
+      this.$router.push({
+        path: "/payment",
+        query: {
+          pitchon: 1,
+          tradeNo: obj.tradeNo,
+          money: obj.money,
+          orderType: obj.orderType,
+        },
       });
     },
     // 获取天数
@@ -414,6 +428,7 @@ export default {
     }
     .nextStep {
       margin-top: 5rem;
+      margin-bottom: 2rem;
     }
   }
 }

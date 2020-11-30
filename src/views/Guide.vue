@@ -54,6 +54,9 @@ export default {
         color: #ff8400;
         font-size: 1.6rem;
       }
+      > img {
+        width: 7rem;
+      }
     }
   }
   .content {

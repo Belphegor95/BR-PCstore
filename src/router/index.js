@@ -119,6 +119,11 @@ const routes = [
     name: 'Classify',
     component: () => import('../views/sundry/Classify.vue'),
   },
+  {
+    path: '/policy',
+    name: 'Policy',
+    component: () => import('../views/Policy.vue'),
+  },
 ]
 
 const router = new VueRouter({

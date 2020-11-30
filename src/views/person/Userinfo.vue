@@ -2,7 +2,58 @@
 <template>
   <div class="userinfo">
     <h4>个人中心</h4>
-    <div class="userbox">
+    <div class="contentbox">
+      <div>
+        <span>昵称:</span>
+        <Input
+          v-model="model"
+          placeholder="请输入昵称"
+          style="width: 12.5rem"
+        />
+        <p>你的昵称你做主,想改随时改.</p>
+      </div>
+      <div>
+        <span>注册手机号:</span>
+        <div>1380395648</div>
+      </div>
+      <div>
+        <span>头像:</span>
+        <div class="imgbox">
+          <img src="../../assets/img/person/webp_0.png" alt="" />
+          <img src="../../assets/img/person/webp_1.png" alt="" />
+          <img src="../../assets/img/person/webp_2.png" alt="" />
+          <img src="../../assets/img/person/webp_3.png" alt="" />
+        </div>
+      </div>
+      <div>
+        <span>性别:</span>
+        <RadioGroup v-model="animal">
+          <Radio label="0">男</Radio>
+          <Radio label="1">女</Radio>
+          <Radio label="2">保密</Radio>
+        </RadioGroup>
+      </div>
+      <div>
+        <span>邮箱:</span>
+        <Input
+          v-model="model"
+          placeholder="请输入有效邮箱"
+          style="width: 12.5rem"
+        />
+        <p>将用于接收电子发票,请正确填写.</p>
+      </div>
+      <div>
+        <span>公司全称:</span>
+        <Input
+          v-model="model"
+          placeholder="请输入公司全称"
+          style="width: 14.5rem"
+        />
+        <p>建议填写公司全称.例：郑州***有限公司.</p>
+      </div>
+      <Button type="warning">保存</Button>
+    </div>
+    <!-- <div class="userbox">
       <div>
         <div>
           <span class="tximg"></span>
@@ -24,7 +75,6 @@
                 </div>
               </div>
             </div>
-            <!-- <p>(taobaoxiaonao)</p> -->
           </div>
         </div>
         <div>
@@ -78,7 +128,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -86,13 +136,15 @@
 export default {
   data() {
     return {
+      model: "",
+      animal: 0,
       user: this.$store.state.user,
       name: "",
       is: false,
     };
   },
   mounted() {
-    this.$store.commit("show_personid", 0);
+    this.$store.commit("show_personid", 3);
   },
   methods: {
     editAccOrderName: function () {
@@ -130,163 +182,49 @@ b {
   font-weight: 400;
 }
 .userinfo {
-  flex: 4;
+  // flex: 4;
   > div {
     margin-top: 1rem;
     border: 1px solid #ececec;
   }
-  // 用户信息
-  .userbox {
-    width: 100%;
-    > div:nth-child(1) {
-      display: flex;
-      padding: 0.5rem;
-      background-color: #f5f5f5;
-      > div {
-        flex: 1;
-        display: flex;
-        align-items: center;
-      }
-      > div:nth-child(1) {
-        .tximg {
-          flex-shrink: 0;
-          display: inline-block;
-          width: 3rem;
-          height: 3rem;
-          border-radius: 50%;
-          background-color: #000;
-        }
-        .usernamebox {
-          display: flex;
-          padding-left: 1.3rem;
-          flex-direction: column;
-          > div {
-            display: flex;
-          }
-          .xgbox {
-            padding-left: 0.5rem;
-            white-space: nowrap;
-            // width: 5rem;
-            display: flex;
-            justify-content: center;
-            position: relative;
-            text-indent: 0;
-            > b {
-              cursor: pointer;
-              font-weight: 400;
-              color: #ff8400;
-              border-bottom: none;
-            }
-            > div {
-              padding: 1rem;
-              width: 22rem;
-              height: 5.5rem;
-              background: #fff;
-              display: flex;
-              border: 1px solid #eee;
-              flex-direction: column;
-              justify-content: space-between;
-              position: absolute;
-              top: 1.3rem;
-              left: 0;
-              > div:nth-child(1) {
-                > button {
-                  margin-left: 0.5rem;
-                }
-              }
-              > div:nth-child(2) {
-                display: flex;
-                align-items: center;
-                color: #515a6e;
-                > img {
-                  margin-right: 0.3rem;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    > div:nth-child(2) {
-      display: flex;
-      > div {
-        flex: 1;
-        padding: 0.8rem 1rem;
-        > span {
-          width: 100%;
-          text-align: center;
-          display: inline-block;
-          border-right: 1px solid #e9e9e9;
-        }
-      }
-      > div:nth-child(3) > span {
-        border: none;
-      }
-    }
-  }
-  // 我的物流
-  .usersign {
-    display: flex;
-    padding: 0.5rem;
-    background: #f5f5f5;
-    > img {
-      width: 1.6rem;
-      margin-right: 1rem;
-    }
-  }
-  // 订单信息
-  .userorder {
-    margin-bottom: 3rem;
+  .contentbox {
+    border: 1px solid #ebebeb;
+    min-height: 15.7rem;
+    padding: 0.65rem;
     > div {
       display: flex;
-      font-size: 0.8rem;
-      line-height: 1.3rem;
-      padding: 1rem 2rem;
+      margin-top: 1rem;
       align-items: center;
-      > div {
-        flex: 1;
+      > span:nth-child(1) {
+        margin-right: 0.5rem;
+        font-size: 0.75rem;
+        font-family: SimSun;
+        font-weight: 400;
+        color: #000000;
       }
-      // 订单信息
-      > div:nth-child(1) {
-        border-right: 1px solid #e9e9e9;
+      > p:nth-child(3) {
+        margin-left: 2.5rem;
+        font-size: 0.77rem;
+        font-family: SimSun;
+        font-weight: 400;
+        color: #999;
       }
-      // 订单物流
-      > div:nth-child(2) {
-        display: flex;
-        // padding-left: 8rem;
-        // 路径
-        > .waybox {
-          width: 0.15rem;
-          margin-left: 6rem;
-          position: relative;
-          margin-right: 1rem;
-          background: #dddddd;
-          > span {
-            display: inline-block;
-            width: 0.7rem;
-            height: 0.7rem;
-            border-radius: 50%;
-            background: #dddddd;
-            position: absolute;
-            left: -0.3rem;
-          }
-          > span:nth-child(1) {
-            top: 0.9rem;
-          }
-          > span:nth-child(2) {
-            top: 4.3rem;
-          }
+      .imgbox {
+        > img {
+          cursor: pointer;
+          border: 1px solid #999;
+          margin-right: 1.75rem;
         }
-        // 动态
-        > div:nth-child(2) {
-          > div:nth-child(1) {
-            margin-bottom: 1rem;
-          }
+        > img:hover {
+          border: 1px solid #ff9000;
         }
       }
     }
-    > div:nth-child(1) {
-      border-bottom: 1px solid #e9e9e9;
+    > button {
+      margin-top: 1rem;
+      margin-left: 20rem;
+      width: 12.81rem;
+      border-radius: 0;
     }
   }
 }
