@@ -28,21 +28,21 @@
             <img src="../assets/img/components/service.png" alt="" />
             <div>
               <p>客服热线</p>
-              <p>15839451057</p>
+              <p>0371-55688112</p>
             </div>
           </div>
           <div>
             <img src="../assets/img/components/service.png" alt="" />
             <div>
-              <p>客服热线</p>
-              <p>15839451057</p>
+              <p>微信咨询</p>
+              <p>15188377992</p>
             </div>
           </div>
           <div>
             <img src="../assets/img/components/service.png" alt="" />
             <div>
-              <p>客服热线</p>
-              <p>15839451057</p>
+              <p>QQ咨询</p>
+              <p>137797288</p>
             </div>
           </div>
         </div>
@@ -197,7 +197,7 @@ export default {
 </style>
 
 <style lang="less">
-.ivu-poptip-popper {
+.goTopbox .ivu-poptip-popper {
   left: -210px !important;
 }
 </style>

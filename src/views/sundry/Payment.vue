@@ -86,7 +86,7 @@
                 <span>颜色:</span>
                 <p>{{ item.cateName ? item.cateName : "暂无" }}</p>
               </div>
-              <div>{{ item.price }}</div>
+              <div>￥{{ item.price }}</div>
               <div>{{ item.buyNum }}</div>
               <div>￥{{ (item.price * item.buyNum).toFixed(2) }}</div>
             </div>
@@ -133,7 +133,14 @@
                       >{{ item.name }}</Option
                     >
                   </Select>
-                  <p>￥0</p>
+                  <p>
+                    -￥<span
+                      v-for="item in ticketList"
+                      :key="item.id"
+                      v-show="item.id == ticketid"
+                      >{{ item.money || 0 }}</span
+                    >
+                  </p>
                 </div>
               </div>
               <div>
@@ -381,11 +388,11 @@ export default {
     },
     // 计算优惠之后的价格
     isticketNum: function (val) {
-      if (!this.ticketid || this.ticketid == -1) return val;
+      if (!this.ticketid || this.ticketid == -1) return val.toFixed(2);
       for (let i = 0; i < this.ticketList.length; i++) {
         let item = this.ticketList[i];
         if (item.id == this.ticketid) {
-          return Number(val) - item.money;
+          return (Number(val) - item.money).toFixed(2);
         }
       }
     },
@@ -695,6 +702,9 @@ export default {
               > p {
                 margin-left: 0.5rem;
               }
+            }
+            > div:nth-child(1) > p {
+              width: 100%;
             }
             > div:nth-child(2) {
               color: #999;

@@ -34,7 +34,11 @@
                   v-for="(itemJ, indeJ) in item.plistDetail"
                   :key="indeJ"
                   @click="ordetails(item)"
-                  :style="item.plistDetail.length != 1? 'border-right:none':'border-right: 1px solid #ffd39b;'"
+                  :style="
+                    item.plistDetail.length != 1
+                      ? 'border-right:none'
+                      : 'border-right: 1px solid #ffd39b;'
+                  "
                 >
                   <img :src="itemJ.picUrl" />
                   <div>
@@ -48,12 +52,24 @@
                 </div>
               </div>
               <div>
-                <div v-for="(itemJ, indeJ) in item.plistDetail" :style="item.plistDetail.length != 1? 'border-right:none':'border-right: 1px solid #ffd39b;'" :key="indeJ">
+                <div
+                  v-for="(itemJ, indeJ) in item.plistDetail"
+                  :style="
+                    item.plistDetail.length != 1
+                      ? 'border-right:none'
+                      : 'border-right: 1px solid #ffd39b;'
+                  "
+                  :key="indeJ"
+                >
                   {{ itemJ.priceName }}
                 </div>
               </div>
               <div>
-                <div v-for="(itemJ, indeJ) in item.plistDetail" style="border-right: 1px solid #ffd39b;"  :key="indeJ">
+                <div
+                  v-for="(itemJ, indeJ) in item.plistDetail"
+                  style="border-right: 1px solid #ffd39b"
+                  :key="indeJ"
+                >
                   {{ itemJ.buyNum }}
                 </div>
               </div>
@@ -128,7 +144,10 @@ export default {
         .then((data) => {
           if (data.code == 200) {
             this.formid = type;
-            this.orderList = data.data;
+            this.orderList = [];
+            for (var i = data.data.length - 1; i >= 0; i--) {
+              this.orderList.push(data.data[i]);
+            }
           } else {
             this.$toast(this.ErrCode(data.msg));
           }
@@ -263,7 +282,6 @@ export default {
             > div {
               flex: 1;
               display: flex;
-              
             }
             .imgbox {
               width: 100%;

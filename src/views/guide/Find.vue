@@ -10,33 +10,26 @@
         重置密码
       </h5>
       <div class="stepsbox">
-        <div :class="pitchon >= 0? 'active':''">
+        <div :class="pitchon >= 0 ? 'active' : ''">
           <span>
             <b>1</b>
           </span>
           <p>设置密码</p>
         </div>
-        <div :class="pitchon >= 1? 'active_':''"></div>
-        <div :class="pitchon >= 1? 'active':''">
+        <div :class="pitchon >= 1 ? 'active_' : ''"></div>
+        <div :class="pitchon >= 1 ? 'active' : ''">
           <span>
             <b>2</b>
           </span>
           <p>完成</p>
         </div>
-        <!-- <div :class="pitchon >= 2? 'active_':''"></div>
-        <div :class="pitchon >= 2? 'active':''">
-          <span>
-            <b>3</b>
-          </span>
-          <p>完成</p>
-        </div>-->
       </div>
       <div class="formbox">
         <div class="verifybox" v-if="pitchon == 0">
           <div>
             <span>我的手机号:</span>
             <!-- <Input v-model="phoneNum" placeholder="Enter something..." style="width: 300px" /> -->
-            <input type="text" v-model="phoneNum" />
+            <input type="text" v-model="phoneNum" autocomplete="new-accounts" />
           </div>
           <div>
             <span>验证码:</span>
@@ -51,7 +44,9 @@
             <span>再次输入新密码:</span>
             <input type="password" v-model="pwd_" onpaste="return false" />
           </div>
-          <Button type="primary" class="okbtn" @click="phoneNumOk(1)">确定</Button>
+          <Button type="primary" class="okbtn" @click="phoneNumOk(1)"
+            >确定</Button
+          >
           <!-- <p>其他方法验证</p> -->
         </div>
         <div class="accomplishbox" v-else-if="pitchon == 1">
@@ -59,7 +54,12 @@
             <img src="../../assets/img/guide/cg.png" />
             <h6>重置成功,请牢记新的登录密码</h6>
           </div>
-          <Button type="primary" class="okbtn btn" @click="$router.push('/guide/login')">去登陆</Button>
+          <Button
+            type="primary"
+            class="okbtn btn"
+            @click="$router.push('/guide/login')"
+            >去登陆</Button
+          >
           <!-- <p @click="$router.push('/')">进入商城</p> -->
         </div>
       </div>
@@ -259,7 +259,7 @@ export default {
           margin-left: 1rem;
           padding: 0 2rem;
           border-radius: 0;
-          color: #ff8400;
+          color: #fff;
           border: 1px solid #ff8400;
         }
       }

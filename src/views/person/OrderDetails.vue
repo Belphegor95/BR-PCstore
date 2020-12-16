@@ -45,7 +45,7 @@
               }}
             </p>
           </div>
-          <p>您还有17小时10分08秒付款，超时订单将自动关闭</p>
+          <p>请及时付款,下单后超过72小时未付款默认取消。</p>
           <div v-if="orderDetails.state == 0">
             <span>您可以</span>
             <Button type="warning" @click="onGopay">立即付款</Button>

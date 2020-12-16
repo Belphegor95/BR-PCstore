@@ -40,14 +40,13 @@ export default {
   },
   methods: {
     onPolicy: function () {
-      this.$router.push("/policy");
+      this.$router.push("/policy?name=policy");
     },
   },
 };
 </script>
 
 <style lang="less" scoped>
-
 .statement {
   display: flex;
   border-top: 1px solid #f0f0f0;

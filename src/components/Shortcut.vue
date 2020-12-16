@@ -55,7 +55,13 @@
             <DropdownItem name="/person/coupon">我的优惠券</DropdownItem>
           </DropdownMenu> </Dropdown
         > -->
-        <span>联系客服</span>
+        <Poptip placement="bottom-end" style="cursor: pointer">
+          <span >联系客服</span>
+          <div class="poptipbox" slot="content">
+            <img src="../assets/img/WX2.jpg" alt="" />
+            <p>客服微信</p>
+          </div>
+        </Poptip>
       </div>
     </div>
   </div>
@@ -336,6 +342,17 @@ export default {
 }
 span:hover {
   color: #ff8900;
+}
+// 联系客服
+.poptipbox {
+  > img {
+    width: 9rem;
+  }
+  > p {
+    color: #000;
+    text-align: center;
+    font-size: 1.2rem;
+  }
 }
 </style>
 
